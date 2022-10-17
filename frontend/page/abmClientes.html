@@ -1,37 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ABM-CLIENTES</title>
     <!-- CSS only -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
 
-<link rel="stylesheet" href="../css/style.css">
-<link rel="stylesheet" href="../css/abmClientes.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/abmClientes.css">
 </head>
+
 <body>
-    <header >
+    <header>
         <nav class="navbar navbar-expand-lg bg-blue">
             <div class="container-fluid">
                 <a class="navbar-brand" href="#"><img class="logo" src="../image/logo.jpeg" alt=""></a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav">
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="#">Home</a>
+                            <a class="nav-link active" aria-current="page" href="../index.html">Home</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#">Presupuesto</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Servicios</a>
+                            <a class="nav-link" href="./servicios.html">Servicios</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Sucursales</a>
+                            <a class="nav-link" href="./sucursales.html">Sucursales</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#">Contacto</a>
@@ -41,119 +45,127 @@
                         </li>
                     </ul>
                 </div>
-                </div>
-            </nav>
+            </div>
+        </nav>
     </header>
 
     <main>
         <div class="row">
-            
-                <div class="col-lg-3"></div>
-                <div class="col-lg-8">
-                    <form>
-                        <div class="form-group">
-                            <label for="idcliente">idCliente</label>
-                            <div class="col-md-2 idcliente">
-                                <input type="text" class="form-control idCliente" id="idcliente" aria-describedby="idcliente" placeholder="Ingrese idcliente"></small> 
-                            </div>
-                            <div class="idCliente">
-                                <button type="button" class="btn btn-outline-dark">Buscar</button>
 
-                            </div>
-                            <div class="idCliente">
-                                <button type="button" class="btn btn-outline-dark">Agregar</button>
-
-                            </div>
-                            
-                            <div class="idCliente">
-                                <button type="button" class="btn btn-outline-dark ">Modificar</button>
-
-                            </div>
-                            
-                            
-                                <button type="button" class="btn btn-outline-danger">Eliminar</button>
-                            
-                            <p></p>
-                            
+            <div class="col-lg-3"></div>
+            <div class="col-lg-8">
+                <form>
+                    <div class="form-group">
+                        <label for="idcliente">idCliente</label>
+                        <div class="col-md-2 idcliente">
+                            <input type="text" class="form-control idCliente" id="idcliente"
+                                aria-describedby="idcliente" placeholder="Ingrese idcliente"></small>
                         </div>
-                        
-                        <div class="form-group ">
-                            <label for="cliente">Cliente</label>
-                            <div class="col-md-8 idcliente">
-                                <input type="text" class="form-control idCliente" id="cliente" aria-describedby="cliente" placeholder="Ingrese el cliente">
-                                <small id="cliente" class="form-text text-muted"></small>
-
-                            </div>
-                            
+                        <div class="idCliente">
                             <button type="button" class="btn btn-outline-dark">Buscar</button>
-                        </div>
-                        
-                        <div class="form-group col-md-8">
-                            <label for="email">Correo</label>
-                            <input type="email" class="form-control" id="correo" aria-describedby="correo" placeholder="Ingrese el correo">
-                            <small id="cliente" class="form-text text-muted"></small>
-                          </div>
-                          <div class="form-group col-md-4">
-                            <label for="telefono">Telefono</label>
-                            <input type="text" class="form-control" id="telefono" aria-describedby="telefono" placeholder="Ingrese el telefono">
-                            <small id="telefono" class="form-text text-muted"></small>
-                        </div>
-                        <div class="form-group col-md-8">
-                            <label for="domicilio">Domicilio</label>
-                            <input type="text" class="form-control" id="domicilio" aria-describedby="domicilio" placeholder="Ingrese el domicilio">
-                            <small id="domicilio" class="form-text text-muted"></small>
-                        </div>
-                        <div>
-                            <div class="form-group col-md-4">
-                                <label for="cuil">Cuil/Cuit</label>
-                                <input type="text" class="form-control boton" id="cuil" aria-describedby="cuil" placeholder="Ingrese el Cuil/Cuit">
-                                <small id="cuil" class="form-text text-muted"></small>
-                            </div>
-                            <button type="submit" class="btn btn-primary ">Guardar</button>
-                        </div>
-                        <p></p>
-                        <button type="button" class="btn btn-outline-dark volver" onclick="location.href='../index.html'">Volver</button>
-                        
-        
-                        
-                        
-                      </form>
 
-                </div>
-                
-                
-    
-            
+                        </div>
+                        <div class="idCliente">
+                            <button type="button" class="btn btn-outline-dark">Agregar</button>
+
+                        </div>
+
+                        <div class="idCliente">
+                            <button type="button" class="btn btn-outline-dark ">Modificar</button>
+
+                        </div>
+
+
+                        <button type="button" class="btn btn-outline-danger">Eliminar</button>
+
+                        <p></p>
+
+                    </div>
+
+                    <div class="form-group ">
+                        <label for="cliente">Cliente</label>
+                        <div class="col-md-8 idcliente">
+                            <input type="text" class="form-control idCliente" id="cliente" aria-describedby="cliente"
+                                placeholder="Ingrese el cliente">
+                            <small id="cliente" class="form-text text-muted"></small>
+
+                        </div>
+
+                        <button type="button" class="btn btn-outline-dark">Buscar</button>
+                    </div>
+
+                    <div class="form-group col-md-8">
+                        <label for="email">Correo</label>
+                        <input type="email" class="form-control" id="correo" aria-describedby="correo"
+                            placeholder="Ingrese el correo">
+                        <small id="cliente" class="form-text text-muted"></small>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="telefono">Telefono</label>
+                        <input type="text" class="form-control" id="telefono" aria-describedby="telefono"
+                            placeholder="Ingrese el telefono">
+                        <small id="telefono" class="form-text text-muted"></small>
+                    </div>
+                    <div class="form-group col-md-8">
+                        <label for="domicilio">Domicilio</label>
+                        <input type="text" class="form-control" id="domicilio" aria-describedby="domicilio"
+                            placeholder="Ingrese el domicilio">
+                        <small id="domicilio" class="form-text text-muted"></small>
+                    </div>
+                    <div>
+                        <div class="form-group col-md-4">
+                            <label for="cuil">Cuil/Cuit</label>
+                            <input type="text" class="form-control boton" id="cuil" aria-describedby="cuil"
+                                placeholder="Ingrese el Cuil/Cuit">
+                            <small id="cuil" class="form-text text-muted"></small>
+                        </div>
+                        <button type="submit" class="btn btn-primary ">Guardar</button>
+                    </div>
+                    <p></p>
+                    <button type="button" class="btn btn-outline-dark volver"
+                        onclick="location.href='../index.html'">Volver</button>
+
+
+
+
+                </form>
+
+            </div>
+
+
+
+
 
         </div>
-        
+
 
     </main>
 </body>
+
 </html>
 
 
 <footer>
-   
+
     <div class="container__footer">
         <div class="row">
-          <div class="col-md-2">
-              <div class="box__footer">
-                <div class="logo">
-                 <img src="../image/logoweb.jpg" class="d-block w-50" alt="...">
+            <div class="col-md-2">
+                <div class="box__footer">
+                    <div class="logo">
+                        <img src="../image/logoweb.jpg" class="d-block w-50" alt="...">
+                    </div>
                 </div>
-              </div>
-          </div>
-              
-          <div class="col-md-7"> 
-            <div class="box__footer">
-              <div class="terms"><br><br>
-                <p>CONFIA EN NOSOTROS, SOMOS GARANTIA EN PROGRAMACION WEB</p>
             </div>
-          </div>            
+
+            <div class="col-md-7">
+                <div class="box__footer">
+                    <div class="terms"><br><br>
+                        <p>CONFIA EN NOSOTROS, SOMOS GARANTIA EN PROGRAMACION WEB</p>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
-  
-    </footer>
-  
-   </html>
+
+</footer>
+
+</html>

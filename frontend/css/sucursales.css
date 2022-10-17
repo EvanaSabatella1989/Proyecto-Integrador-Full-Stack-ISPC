@@ -1,0 +1,10 @@
+.map{
+    height: 400px;
+    
+    position: relative;
+    overflow: hidden;
+}
+
+.contenido{
+    margin-top: 30px;
+}
