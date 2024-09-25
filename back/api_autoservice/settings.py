@@ -118,11 +118,19 @@ CSRF_TRUSTED_ORIGINS = [
 #  }
 # }
 DATABASES = {
+    # 'default': {
+    #     'ENGINE': 'mysql.connector.django',
+    #     'NAME': 'autoservice',
+    #     'USER': 'admin',
+    #     'PASSWORD': '',
+    #     'HOST': 'localhost',
+    #     'PORT': '3306',
+    # }
     'default': {
         'ENGINE': 'mysql.connector.django',
         'NAME': 'autoservice',
-        'USER': 'admin',
-        'PASSWORD': '',
+        'USER': 'root',
+        'PASSWORD': 'root',
         'HOST': 'localhost',
         'PORT': '3306',
     }
