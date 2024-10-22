@@ -23,7 +23,8 @@ export class ArticuloComponent implements OnInit {
   imagen: string="";
   descripcion: string="";
   categoria: string="";
-  cantidad: string="1";
+  // cantidad: string="1";
+  cantidad: number= 1;
 
   
 
@@ -51,24 +52,27 @@ export class ArticuloComponent implements OnInit {
   }
 
   guardarCantidad(event: any) {
-    this.cantidad=this.cantidad+1
-    console.log(this.cantidad = event.target.value)
+    // this.cantidad=this.cantidad+1
+    // console.log(this.cantidad = event.target.value)
+    // return this.cantidad
+    this.cantidad = parseInt(event.target.value, 10);
   }
 
 
 
   agregarCarrito() {
     this.productos.cantidad = this.cantidad;
-    console.log(this.productos.id);
-    console.log(this.productos.nombre);
-    console.log(this.productos.descripcion);
-    console.log(this.productos.precio);
-    console.log(this.productos.date_created);
-    console.log(this.productos.imagen);
-    let producto = this.productos;
-    producto.id = this.productos.id;
+    // console.log(this.productos.id);
+    // console.log(this.productos.nombre);
+    // console.log(this.productos.descripcion);
+    // console.log(this.productos.precio);
+    // console.log(this.productos.date_created);
+    // console.log(this.productos.imagen);
+    // console.log(this.productos.cantidad)
+    // let producto = this.productos;
+    // producto.id = this.productos.id;
 
-    this.miCarrito.addProduct(producto);
+    this.miCarrito.addProduct(this.productos);
     this.router.navigate(['/carrito'])
 
   }
