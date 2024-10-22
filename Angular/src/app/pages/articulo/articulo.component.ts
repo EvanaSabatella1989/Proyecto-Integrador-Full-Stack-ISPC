@@ -62,13 +62,13 @@ export class ArticuloComponent implements OnInit {
 
   agregarCarrito() {
     this.productos.cantidad = this.cantidad;
-    // console.log(this.productos.id);
-    // console.log(this.productos.nombre);
-    // console.log(this.productos.descripcion);
-    // console.log(this.productos.precio);
-    // console.log(this.productos.date_created);
-    // console.log(this.productos.imagen);
-    // console.log(this.productos.cantidad)
+    console.log(this.productos.id);
+    console.log(this.productos.nombre);
+    console.log(this.productos.descripcion);
+    console.log(this.productos.precio);
+    console.log(this.productos.date_created);
+    console.log(this.productos.imagen);
+    console.log(this.productos.cantidad)
     // let producto = this.productos;
     // producto.id = this.productos.id;
 
