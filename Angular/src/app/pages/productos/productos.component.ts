@@ -16,6 +16,7 @@ export class ProductosComponent implements OnInit {
   categorias: any = {};
   productosCat: any = {};
   catSelec: any = {};
+  isAdmin: boolean = false;  // verifica si el usuario es admin
 
 
   constructor(private tokenService: TokenService, private authService: AuthService, private miCarrito: StoreCartService, private miProductos: ProductoService, private activatedRouter: ActivatedRoute, private router: Router) {
@@ -25,6 +26,9 @@ export class ProductosComponent implements OnInit {
   ngOnInit(): void {
     this.authService.isLoggedIn$.subscribe(resp => this.isLogged = resp)
 
+    // Verifica si el usuario es admin usando el TokenService
+    this.isAdmin = this.tokenService.isAdmin();
+    
     let id = this.activatedRouter.snapshot.params['id'];
     if (id > 0) {
       this.miProductos.detailCat(id).subscribe(

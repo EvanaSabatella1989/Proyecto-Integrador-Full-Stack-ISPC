@@ -14,6 +14,7 @@ export class ServiciosComponent implements OnInit {
   
   miServi:any;
   isLogged:boolean= false;
+  isAdmin: boolean = false;  // verifica si el usuario es admin
 
 
 
@@ -23,6 +24,10 @@ export class ServiciosComponent implements OnInit {
 
   ngOnInit(): void {
     this.authService.isLoggedIn$.subscribe(resp => this.isLogged = resp)
+    
+    // Verifica si el usuario es admin usando el TokenService
+    this.isAdmin = this.tokenService.isAdmin();
+
     this.serv.obtenerServicios().subscribe({
       next:(serviciosTodos)=>{
         this.miServi=serviciosTodos;

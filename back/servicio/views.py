@@ -51,14 +51,34 @@ def servicioList(request, format=None):
   
     elif request.method == 'PUT':
        
-        serializer = ServicioSerializer(servicio, data=request.data)
+        # Verifica si el usuario es admin
+        if not request.user.is_staff:
+            return Response({'detail': 'No tiene permiso para realizar esta acción.'}, 
+                            status=status.HTTP_403_FORBIDDEN)
+
+        try:
+            producto = Servicio.objects.get(pk=request.data.get('id'))
+        except Servicio.DoesNotExist:
+            return Response({'detail': 'Servicio no encontrado.'}, 
+                            status=status.HTTP_404_NOT_FOUND)
+
+        serializer = ServicioSerializer(producto, data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
   
     elif request.method == 'DELETE':
-        servicio.delete()
-        # return HttpResponse(status=204)    #1
+        # Verifica si el usuario es admin
+        if not request.user.is_staff:
+            return Response({'detail': 'No tiene permiso para realizar esta acción.'}, 
+                            status=status.HTTP_403_FORBIDDEN)
+
+        try:
+            producto = Servicio.objects.get(pk=request.data.get('id'))
+        except Servicio.DoesNotExist:
+            return Response({'detail': 'Servicio no encontrado.'}, 
+                            status=status.HTTP_404_NOT_FOUND)
+
+        producto.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

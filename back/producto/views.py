@@ -49,6 +49,17 @@ def productoList(request, format=None):
   
     elif request.method == 'PUT':
        
+         # Verifica si el usuario es admin
+        if not request.user.is_staff:
+            return Response({'detail': 'No tiene permiso para realizar esta acción.'}, 
+                            status=status.HTTP_403_FORBIDDEN)
+
+        try:
+            producto = Producto.objects.get(pk=request.data.get('id'))
+        except Producto.DoesNotExist:
+            return Response({'detail': 'Producto no encontrado.'}, 
+                            status=status.HTTP_404_NOT_FOUND)
+
         serializer = ProductoSerializer(producto, data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -56,11 +67,16 @@ def productoList(request, format=None):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
   
     elif request.method == 'DELETE':
+       # Verifica si el usuario es admin
+        if not request.user.is_staff:
+            return Response({'detail': 'No tiene permiso para realizar esta acción.'}, 
+                            status=status.HTTP_403_FORBIDDEN)
+
+        try:
+            producto = Producto.objects.get(pk=request.data.get('id'))
+        except Producto.DoesNotExist:
+            return Response({'detail': 'Producto no encontrado.'}, 
+                            status=status.HTTP_404_NOT_FOUND)
+
         producto.delete()
-        # return HttpResponse(status=204)    #1
         return Response(status=status.HTTP_204_NO_CONTENT)
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    print("producto")
-    permission_classes = [AllowAny]
-    queryset = Producto.objects.all()
-    serializer_class = ProductoSerializer

@@ -3,8 +3,8 @@
     <div class="container my-5">
       <div class=" agregar">
 
-        <button class="btn btn-light " routerLink="/agregar-productos" *ngIf="isLogged">Agregar</button>
-        <button class="btn btn-light " routerLink="/lista-productos" *ngIf="isLogged">Lista</button>
+        <button class="btn btn-light " routerLink="/agregar-productos" *ngIf="isAdmin">Agregar</button>
+        <button class="btn btn-light " routerLink="/lista-productos" *ngIf="isAdmin">Lista</button>
       </div>
       
       <header class="mb-4">
