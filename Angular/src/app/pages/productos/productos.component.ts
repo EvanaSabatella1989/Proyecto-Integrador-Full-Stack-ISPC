@@ -63,6 +63,13 @@ export class ProductosComponent implements OnInit {
   }
 
   agregarCarrito() {
+
+    if (!this.isLogged) {
+      alert('Debes iniciar sesión para agregar productos al carrito.');
+      this.router.navigate(['/login']); // Redirige a la página de login
+      return;
+    }
+
     console.log(this.productos.id);
     console.log(this.productos.nombre);
     console.log(this.productos.descripcion);
@@ -80,6 +87,14 @@ export class ProductosComponent implements OnInit {
   }
 
   addProductToCart(product: any){
+
+    if (!this.isLogged) {
+      alert('Debes iniciar sesión para agregar productos al carrito.');
+      this.router.navigate(['/login']); // Redirige a la página de login
+      console.log("desde productos");
+      return;
+    }
+  
     this.miCarrito.addProduct({...product, cantidad:1})
   }
   

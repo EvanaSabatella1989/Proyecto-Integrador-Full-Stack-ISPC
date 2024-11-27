@@ -61,6 +61,15 @@ export class ArticuloComponent implements OnInit {
 
 
   agregarCarrito() {
+
+      // se verfica si el usuario está logueado
+  if (!this.tokenService.getToken()) {
+    // Si no esta logueado, redirigimos a la página de login
+    this.router.navigate(['/login']);
+    return; // Salimos de la función para evitar agregar el producto al carrito
+  }
+
+
     this.productos.cantidad = this.cantidad;
     console.log(this.productos.id);
     console.log(this.productos.nombre);
