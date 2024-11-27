@@ -69,10 +69,11 @@ export class ServicioComponent{
   // }
   onEnviar(event:Event){
       // se verifica si el usuario esta logueado
-  if (!this.tokenService.getToken()) {
+      if (!this.tokenService.getToken()) {
     // Si no esta logueado, redirigimos a la página de login
-    this.router.navigate(['/login']);
-    return; // Salimos de la función para evitar agregar el producto al carrito
+      this.router.navigate(['/login']);
+      alert("Debes iniciar sesión antes de continuar");
+        return; // Salimos de la función para evitar enviar el mensaje
   }
 
     event.preventDefault;

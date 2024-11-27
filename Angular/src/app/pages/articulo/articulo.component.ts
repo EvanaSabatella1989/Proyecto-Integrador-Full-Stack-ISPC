@@ -66,6 +66,7 @@ export class ArticuloComponent implements OnInit {
   if (!this.tokenService.getToken()) {
     // Si no esta logueado, redirigimos a la página de login
     this.router.navigate(['/login']);
+    alert("Debes iniciar sesión para continuar con la compra");
     return; // Salimos de la función para evitar agregar el producto al carrito
   }
 
