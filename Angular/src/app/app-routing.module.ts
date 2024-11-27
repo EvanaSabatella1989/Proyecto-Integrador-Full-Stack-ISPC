@@ -28,6 +28,7 @@ import { EditarServiciosComponent } from './pages/editar-servicios/editar-servic
 import { AuthRedirectGuard } from './guards/auth-redirect.guard';
 import { AuthClientGuard } from './guards/auth-client.guard';
 import { EditarProductosComponent } from './pages/editar-productos/editar-productos.component';
+import { AuthAdminGuard } from './guards/auth-admin.guard';
 
 const routes: Routes = [
   {path: '', redirectTo: '/home', pathMatch: 'full'},
@@ -39,7 +40,7 @@ const routes: Routes = [
   {path: 'contacto', component: ContactoComponent},
   {path: 'sucursales', component: SucursalesComponent},
   {path: 'registrarse', component: RegistrarseComponent},
-  {path: 'login',canActivate: [AuthRedirectGuard], component: LoginComponent}, 
+  {path: 'login', component: LoginComponent, canActivate: [AuthRedirectGuard]}, 
   {path: 'carrito', component: CarritoComponent},
   {path: 'productos/:id', component: ProductosComponent},
   {path: 'productos', component: ProductosComponent},
@@ -47,15 +48,15 @@ const routes: Routes = [
   {path: 'articulo/:id', component: ArticuloComponent},
   {path: 'articulo/', component: ArticuloComponent},
   {path: 'servicio/:id', component:ServicioComponent},
-  {path: 'lista-servicios',component:ListaServiciosComponent},
-  {path: 'categorias', component: CategoriasComponent},
-  {path: 'lista-productos',component:ListaProductosComponent},
-  {path: 'editar-servicios/:id',component:EditarServiciosComponent},
-  {path: 'agregar-servicios',component:AgregarServiciosComponent},
-  {path: 'agregar-categorias', component: AgregarCategoriasComponent},
-  {path: 'agregar-productos', component: AgregarProductosComponent},
-  {path: 'editar-categorias/:id', component: EditarCategoriasComponent},
-  {path: 'editar-productos/:id', component:EditarProductosComponent},
+  {path: 'lista-servicios',component:ListaServiciosComponent, canActivate: [AuthAdminGuard] },
+  {path: 'categorias', component: CategoriasComponent, canActivate: [AuthAdminGuard]},
+  {path: 'lista-productos',component:ListaProductosComponent, canActivate: [AuthAdminGuard]},
+  {path: 'editar-servicios/:id',component:EditarServiciosComponent, canActivate: [AuthAdminGuard]},
+  {path: 'agregar-servicios',component:AgregarServiciosComponent, canActivate: [AuthAdminGuard]},
+  {path: 'agregar-categorias', component: AgregarCategoriasComponent, canActivate: [AuthAdminGuard]},
+  {path: 'agregar-productos', component: AgregarProductosComponent, canActivate: [AuthAdminGuard]},
+  {path: 'editar-categorias/:id', component: EditarCategoriasComponent, canActivate: [AuthAdminGuard]},
+  {path: 'editar-productos/:id', component:EditarProductosComponent, canActivate: [AuthAdminGuard]},
 
 
 
