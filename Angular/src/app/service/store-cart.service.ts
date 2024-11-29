@@ -53,4 +53,8 @@ export class StoreCartService {
     sessionStorage.setItem('cart', JSON.stringify(this.myShoppingCart))
     this.myCart.next(this.myShoppingCart);
   }
+
+  isProductInCart(productId: number): boolean {
+    return this.myShoppingCart.some(product => product.id === productId);
+  }
 }

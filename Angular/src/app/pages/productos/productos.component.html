@@ -25,16 +25,39 @@
   
       <div class="row">
 
-        <div *ngFor="let prod of productos"  class="col-lg-3 col-md-6 col-sm-6 d-flex">
+        <!-- <div *ngFor="let prod of productos"  class="col-lg-3 col-md-6 col-sm-6 d-flex">
           <div class="card w-100 my-2 shadow-2-strong">
             <img src="{{prod.imagen}}" class="card-img-top" style="aspect-ratio: 1 / 1" />
             <div class="card-body d-flex flex-column">
               <h5 class="card-title">{{prod.nombre}}</h5>
               <p class="card-text">${{prod.precio}}</p>
               <div class="card-footer d-flex align-items-end pt-3 px-0 pb-0 mt-auto">
-                <!--<a class="btn btn-primary shadow-0 me-1 "(click)="agregarCarrito()">Añadir al carrito</a>-->
                 <a routerLink="/articulo/{{prod.id}}" class="btn btn-primary shadow-0 me-1">Comprar </a>
                 
+              </div> -->
+
+              <div *ngFor="let prod of productos" class="col-lg-3 col-md-6 col-sm-6 d-flex">
+                <div class="card w-100 my-2 shadow-2-strong">
+                  <img src="{{prod.imagen}}" class="card-img-top" style="aspect-ratio: 1 / 1" />
+                  <div class="card-body d-flex flex-column">
+                    <h5 class="card-title">{{prod.nombre}}</h5>
+                    <p class="card-text">${{prod.precio}}</p>
+                    <div class="card-footer d-flex align-items-end pt-3 px-0 pb-0 mt-auto">
+                      <button 
+                        *ngIf="!isInCart(prod.id)" 
+                        class="btn btn-primary shadow-0 me-1" 
+                        routerLink="/articulo/{{prod.id}}">
+                        Comprar
+                      </button>
+                      <button 
+                        *ngIf="isInCart(prod.id)" 
+                        class="btn btn-secondary shadow-0 me-1" 
+                        routerLink="/carrito">
+                        Ver carrito
+                      </button>
+                    </div>
+                  </div>
+                </div>
               </div>
 
   <!--<div class="container my-5">

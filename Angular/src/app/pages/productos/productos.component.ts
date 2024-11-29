@@ -97,5 +97,11 @@ export class ProductosComponent implements OnInit {
   
     this.miCarrito.addProduct({...product, cantidad:1})
   }
+
+  isInCart(productId: number): boolean {
+    return this.miCarrito.isProductInCart(productId);
+  }
+  
+  
   
 }

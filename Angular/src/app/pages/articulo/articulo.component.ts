@@ -47,10 +47,25 @@ export class ArticuloComponent implements OnInit {
   }
   ngOnInit(): void {
     this.authService.isLoggedIn$.subscribe(resp => this.isLogged = resp)
-
+    //desde aquí
+    const id = this.activatedRouter.snapshot.params['id'];
+    this.miProductos.detail(id).subscribe(
+      data => {
+        this.productos = data;
+      }, err => {
+        alert("Error al cargar");
+        this.router.navigate(['']);
+      }
+    );
+  
+    // Verifica si el producto ya está en el carrito
+    if (this.miCarrito.isProductInCart(id)) {
+      alert('Este producto ya está en el carrito.');
+    }
+  
 
   }
-
+//hasta aquí
   guardarCantidad(event: any) {
     // this.cantidad=this.cantidad+1
     // console.log(this.cantidad = event.target.value)
@@ -87,5 +102,10 @@ export class ArticuloComponent implements OnInit {
 
   }
 
-
+  isInCart(productId: number): boolean {
+    return this.miCarrito.isProductInCart(productId);
+  }
+  // isProductInCart(productId: number): boolean {
+  //   return this.miCarrito.isProductInCart(productId);
+  // }
 }
