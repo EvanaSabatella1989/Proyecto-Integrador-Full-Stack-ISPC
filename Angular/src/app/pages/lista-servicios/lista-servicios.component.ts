@@ -37,17 +37,40 @@ export class ListaServiciosComponent {
     })
   }
 
-  delete(item:any){
-    this.miList.forEach((servicio: any) => {
-          if (servicio.id == item.id) {
-            this.list.delete(item.id).subscribe(
-                res=>this.list.obtenerServicios().subscribe(
-                Response=>this.miList=Response
-                )
-            );
-            console.log('borre el servicio numero :'+item.id);
-          }
-        });
+  // delete(item:any){
+  //   this.miList.forEach((servicio: any) => {
+  //         if (servicio.id == item.id) {
+  //           this.list.delete(item.id).subscribe(
+  //               res=>this.list.obtenerServicios().subscribe(
+  //               Response=>this.miList=Response
+  //               )
+  //           );
+  //           console.log('borre el servicio numero :'+item.id);
+  //         }
+  //       });
+  // }
+
+  delete(item: any) {
+    if (confirm(`¿Estás seguro de que deseas eliminar el servicio "${item.nombre}"?`)) {
+      this.miList.forEach((servicio: any) => {
+        if (servicio.id == item.id) {
+          this.list.delete(item.id).subscribe({
+            next: () => {
+              // Actualizar la lista después de eliminar
+              this.list.obtenerServicios().subscribe((Response) => {
+                this.miList = Response;
+              });
+              console.log(`Se eliminó el servicio con ID: ${item.id}`);
+            },
+            error: (errorData) => {
+              console.error('Error al eliminar el servicio:', errorData);
+            },
+          });
+        }
+      });
+    } else {
+      console.log('Eliminación del servicio cancelada por el usuario.');
+    }
   }
     
   

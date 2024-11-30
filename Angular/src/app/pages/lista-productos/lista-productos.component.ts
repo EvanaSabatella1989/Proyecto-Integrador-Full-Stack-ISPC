@@ -29,18 +29,37 @@ export class ListaProductosComponent implements OnInit{
 
     
   }
-  eliminar(produc:any){
-    this.miProd.forEach((producto:any)=>{
-      if(producto.id== produc.id){
-        this.prod.delete(produc.id).subscribe(
-          res=>this.prod.traerProductos().subscribe(
-            Response=>this.miProd=Response
-          )
-        );
-        console.log('elimino el producto: '+this.miProd.id);
-      }
-    })
+  // eliminar(produc:any){
+  //   this.miProd.forEach((producto:any)=>{
+  //     if(producto.id== produc.id){
+  //       this.prod.delete(produc.id).subscribe(
+  //         res=>this.prod.traerProductos().subscribe(
+  //           Response=>this.miProd=Response
+  //         )
+  //       );
+  //       console.log('elimino el producto: '+this.miProd.id);
+  //     }
+  //   })
 
+  // }
+
+  eliminar(produc: any) {
+    if (confirm(`¿Estás seguro de que deseas eliminar el producto "${produc.nombre}"?`)) {
+      this.prod.delete(produc.id).subscribe({
+        next: () => {
+          // Actualizamos la lista de productos después de eliminar
+          this.prod.traerProductos().subscribe((productosActualizados) => {
+            this.miProd = productosActualizados;
+          });
+          console.log(`El producto con ID ${produc.id} ha sido eliminado.`);
+        },
+        error: (errorData) => {
+          console.error('Error al eliminar el producto:', errorData);
+        }
+      });
+    } else {
+      console.log('Eliminación cancelada por el usuario.');
+    }
   }
 
   
