@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ServicioService } from 'src/app/service/servicio.service';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 
+import { TokenService } from 'src/app/service/token.service'
 
 @Component({
   selector: 'app-servicio',
@@ -13,7 +14,7 @@ export class ServicioComponent{
 
   servicios: any={};
 
-  constructor(private miservicio: ServicioService, private activatedRouter: ActivatedRoute, private router: Router,private fb:FormBuilder){
+  constructor(private miservicio: ServicioService, private activatedRouter: ActivatedRoute, private router: Router,private fb:FormBuilder,private tokenService: TokenService){
     const id = this.activatedRouter.snapshot.params['id'];
     let datos:any= {};
     this.miservicio.detail(id).subscribe(
@@ -67,6 +68,14 @@ export class ServicioComponent{
   //   console.log(this.datos);
   // }
   onEnviar(event:Event){
+      // se verifica si el usuario esta logueado
+      if (!this.tokenService.getToken()) {
+    // Si no esta logueado, redirigimos a la página de login
+      this.router.navigate(['/login']);
+      alert("Debes iniciar sesión antes de continuar");
+        return; // Salimos de la función para evitar enviar el mensaje
+  }
+
     event.preventDefault;
 
 
