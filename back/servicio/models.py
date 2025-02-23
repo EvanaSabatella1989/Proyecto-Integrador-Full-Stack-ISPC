@@ -10,7 +10,7 @@ from datetime import datetime
 class Servicio(models.Model):
     id=models.AutoField(primary_key=True)
     nombre = models.CharField(max_length=255)
-    imagen = models.ImageField(upload_to='photos/')
+    imagen = models.ImageField(upload_to='photos/', null=True, blank=True)
     descripcion = models.TextField()
     precio = models.DecimalField(max_digits=6, decimal_places=3)
     fecha_creacion= models.DateTimeField(default=datetime.now)

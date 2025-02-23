@@ -37,18 +37,26 @@ export class ListaServiciosComponent {
     })
   }
 
-  delete(item:any){
-    this.miList.forEach((servicio: any) => {
-          if (servicio.id == item.id) {
-            this.list.delete(item.id).subscribe(
-                res=>this.list.obtenerServicios().subscribe(
-                Response=>this.miList=Response
-                )
-            );
-            console.log('borre el servicio numero :'+item.id);
-          }
-        });
+  delete(item: any) {
+    if (window.confirm(`⚠️ ¿Estás seguro de que quieres eliminar el servicio "${item.nombre}"? Esta acción no se puede deshacer.`)) {
+      this.list.eliminarServicio(item.id).subscribe(
+        () => {
+          alert(`✅ Servicio "${item.nombre}" eliminado correctamente.`);
+          this.list.obtenerServicios().subscribe(
+            (response) => this.miList = response,
+            (error) => console.error('Error al obtener servicios después de eliminar:', error)
+          );
+        },
+        (error) => {
+          alert('❌ Error al eliminar el servicio. Inténtalo de nuevo.');
+          console.error('Error al eliminar el servicio:', error);
+        }
+      );
+    } else {
+      alert('⚠️ Eliminación cancelada.');
+    }
   }
+  
     
   
   }

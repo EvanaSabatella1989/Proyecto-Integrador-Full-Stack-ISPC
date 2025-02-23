@@ -14,11 +14,11 @@ export class AgregarServiciosComponent {
   // nuevoServicio: Servicio = new Servicio();
   //servicio :any =[];
 
-  nombre: string = "";
-  imagen!: File;
-  descripcion: string = "";
-  precio: string = "";
-  fecha_creacion: string = "";
+  nombre: string = '';
+  descripcion: string = '';
+  precio: number = 0;
+  fecha_creacion: string = new Date().toISOString().split('T')[0]; // Formato YYYY-MM-DD
+  imagen?: File;
 
   constructor(private servicioServicio: ServicioService, private router: Router) {
 
@@ -26,47 +26,43 @@ export class AgregarServiciosComponent {
 
   ngOnInit(): void { }
 
-
-  guardarNombre(event: any) {
-   console.log( this.nombre = event.target.value)
+  onFileSelected(event: any) {
+    if (event.target.files.length > 0) {
+      this.imagen = event.target.files[0]; // Guardar la imagen seleccionada
+    }
   }
+  
 
-  guardarDescripcion(event: any) {
-    console.log(this.descripcion = event.target.value)
-  }
-
-  guardarPrecio(event: any) {
-    console.log( this.precio = event.target.value)
-  }
-
-  guardarFecha(event: any) {
-    console.log(this.fecha_creacion = event.target.value)
-  }
-
-  enviarFoto(event: any) {
-    console.log(this.imagen = event.target.files[0])
-  }
-
-
-  create() {
-    const servicio = new FormData();
-    servicio.append('nombre', this.nombre);
-    servicio.append('descripcion', this.descripcion);
-    servicio.append('precio', this.precio);
-    servicio.append('fecha_creacion', this.fecha_creacion);
-    servicio.append('imagen', this.imagen,this.imagen!.name);      
-    this.servicioServicio.create(servicio).subscribe(
-      servicio => this.router.navigate(['/lista-servicios'])
-     
-      ,
-      error => console.log(error)
-
+  create(): void {
+    if (!this.nombre || !this.descripcion || !this.precio) {
+      alert('⚠️ Todos los campos excepto la imagen son obligatorios.');
+      return;
+    }
+  
+    if (!window.confirm('¿Confirmas la creación de este servicio?')) {
+      alert('⏳ Creación cancelada.');
+      return;
+    }
+  
+    const nuevoServicio: Servicio = {
+      nombre: this.nombre,
+      descripcion: this.descripcion,
+      precio: this.precio
+    };
+  
+    this.servicioServicio.crearServicio(nuevoServicio, this.imagen).subscribe(
+      () => {
+        alert('✅ Servicio creado con éxito.');
+        this.router.navigate(['/lista-servicios']);
+      },
+      (error) => {
+        alert('❌ Error al crear el servicio. Inténtalo de nuevo.');
+        console.error('Error al crear el servicio:', error);
+      }
     );
-    console.log(this.imagen.name);
-
   }
-
-
-
 }
+  
+
+
 

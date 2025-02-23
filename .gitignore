@@ -2,5 +2,20 @@
 ./venv
 /venv
 venv/
-*.pyc
+
+# Evitar archivos de caché de Python
 __pycache__/
+*.pyc
+*.pyo
+
+# Evitar archivos de migraciones en Django
+migrations/
+migrations/__pycache__/
+migrations/*.py
+!migrations/__init__.py
+
+# Evitar caché en carpetas específicas
+**/__pycache__/
+admin/__pycache__/
+migrations/__pycache__/
+                                                                                                                                                                                                                                                                                           

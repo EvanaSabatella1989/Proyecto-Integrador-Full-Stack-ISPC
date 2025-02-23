@@ -1,14 +1,14 @@
 export class Servicio {
     public id?: number;
     nombre?: string;
-    imagen?: File;
+    imagen?: string | File; // permitir string o File
     descripcion?: string;
-    precio: string;
+    precio: number;
     fecha_creacion?: string;
     
     
 
-    constructor(nombre:string,descripcion:string,precio:string,fecha_creacion:string,imagen:File){
+    constructor(nombre:string,descripcion:string,precio:number,fecha_creacion:string,imagen:File){
 
         this.nombre=nombre;
         this.imagen=imagen;

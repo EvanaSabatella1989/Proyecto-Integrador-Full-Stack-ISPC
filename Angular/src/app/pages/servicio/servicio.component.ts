@@ -17,7 +17,7 @@ export class ServicioComponent{
   constructor(private miservicio: ServicioService, private activatedRouter: ActivatedRoute, private router: Router,private fb:FormBuilder,private tokenService: TokenService){
     const id = this.activatedRouter.snapshot.params['id'];
     let datos:any= {};
-    this.miservicio.detail(id).subscribe(
+    this.miservicio.obtenerServicio(id).subscribe(
       data => {
         this.servicios=data;
         console.log(this.servicios);

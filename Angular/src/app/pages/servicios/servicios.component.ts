@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Servicio } from 'src/app/models/servicio';
 import { AuthService } from 'src/app/service/auth.service';
 
 import { ServicioService } from 'src/app/service/servicio.service';
@@ -15,6 +16,7 @@ export class ServiciosComponent implements OnInit {
   miServi:any;
   isLogged:boolean= false;
   isAdmin: boolean = false;  // verifica si el usuario es admin
+ 
 
 
 
