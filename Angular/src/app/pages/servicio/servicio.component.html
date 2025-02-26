@@ -1,4 +1,4 @@
-<div class="container ">
+<div class="container">
   <div class="row">
     <div class="col">
       <div class="card">
@@ -11,65 +11,49 @@
           <li class="list-group-item">Costo del servicio: $ {{servicios.precio}}</li>
         </ul>
       </div>
-    </div>
+    </div> <!-- Cierre del primer div.col -->
 
     <div class="col">
       <h4>Dejanos tus datos</h4>
-      <form [formGroup]="datos" (ngSubmit)="onEnviar($event)">
+      <form  [formGroup]="servicioForm" (ngSubmit)="reservarTurno()">
        
         <div class="mb-3 row">
           <div class="col-sm-10">
             <input for="validationCustom01" type="text" class="form-control" id="nombre" placeholder="Nombre" formControlName="nombre">
-            <div *ngIf="Nombre?.errors && Nombre?.touched">
-            <p *ngIf="Nombre?.hasError('required')" class="text-danger">El nombre es un campo requerido</p>
-            <p *ngIf="Nombre?.hasError('nombre')" class="text-danger">El formato del nombre debe ser valido</p>
-             <p *ngIf="Nombre?.errors?.['minlength']" class="text-danger"></p> 
+          </div>
+        </div>
 
-            </div>
+
+        <div class="mb-3 row">
+          <div class="col-sm-10">
+            <input type="email" class="form-control" id="email" placeholder="Correo" formControlName="email">
           </div>
         </div>
 
         <div class="mb-3 row">
           <div class="col-sm-10">
-            <input for="validationCustom01" type="text" class="form-control" id="apellido" placeholder="Apellido" formControlName="apellido">
-            <div *ngIf="Apellido?.errors && Apellido?.touched">
-              <p *ngIf="Apellido?.hasError('required')" class="text-danger">El apellido es un campo requerido</p>
-              <p *ngIf="Apellido?.hasError('apellido')" class="text-danger">El formato del apellido debe ser valido</p>
-          </div>
-        </div>
-        </div>
-
-        <div class="mb-3 row">
-          <div class="col-sm-10">
-            <input type="email" class="form-control" id="email" placeholder="Correo" formControlName="correo">
-            <div *ngIf="Correo?.errors && Correo?.touched">
-              <p *ngIf="Correo?.hasError('required')" class="text-danger">El correo es requerido</p>
-              <p *ngIf="Correo?.hasError('correo')" class="text-danger">El formato del correo debe ser valido</p>
-          </div>
+            <input type="tel" class="form-control" id="tel" placeholder="Número de contacto" formControlName="telefono">
           </div>
         </div>
 
         <div class="mb-3 row">
           <div class="col-sm-10">
-            <input type="tel" class="form-control" id="tel" placeholder="Número de contacto" formControlName="numero">
-            <div *ngIf="Numero?.errors && Numero?.touched">
-              <p *ngIf="Numero?.hasError('required')" class="text-danger">El numero de contacto es un campo requerido</p>
-              <p *ngIf="Numero?.hasError('numero')" class="text-danger">El formato del contacto debe ser valido</p>
-          </div>
+            <input type="datetime-local" class="form-control" formControlName="fecha" required>
           </div>
         </div>
+        
+        
 
         <div class="col-sm-10">
-          <textarea class="form-control" placeholder="Comentario" id="floatingTextarea"></textarea>
+          <textarea class="form-control" placeholder="Comentario" id="floatingTextarea" formControlName="descripcion"></textarea>
           <label for="floatingTextarea"></label>
         </div>
 
-        
-        <button type="submit" class="btn btn-primary">Enviar</button> <p>  </p> <button routerLink="/servicios" class="btn btn-primary">Volver</button>
-     
+        <button type="submit" class="btn btn-primary">Enviar</button> 
+        <p></p>
+        <button routerLink="/servicios" class="btn btn-primary">Volver</button>
       </form>
-      
-    </div>
+    </div> <!-- Cierre del segundo div.col -->
 
-  </div>
-</div>
+  </div> <!-- Cierre de .row -->
+</div> <!-- Cierre de .container -->

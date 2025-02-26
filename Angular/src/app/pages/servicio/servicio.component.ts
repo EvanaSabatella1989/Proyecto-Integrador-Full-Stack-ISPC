@@ -1,27 +1,47 @@
-import {OnInit,  Component} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ServicioService } from 'src/app/service/servicio.service';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { TokenService } from 'src/app/service/token.service';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
-import { TokenService } from 'src/app/service/token.service'
 
 @Component({
   selector: 'app-servicio',
   templateUrl: './servicio.component.html',
   styleUrls: ['./servicio.component.css']
 })
-export class ServicioComponent{
+export class ServicioComponent implements OnInit {
 
-  servicios: any={};
+  servicioForm: FormGroup;
+  servicio: any = {}; // Aquí almacenas la información del servicio seleccionado
+  idServicio: number =0;
+  servicios: any = {};  // Listado de servicios
+ 
 
-  constructor(private miservicio: ServicioService, private activatedRouter: ActivatedRoute, private router: Router,private fb:FormBuilder,private tokenService: TokenService){
+  nombre: string = '';
+  email: string = '';
+  descripcion: string = '';
+  telefono: number = 0;
+  fecha: string = new Date().toISOString().split('T')[0];
+
+  constructor(
+    private miservicio: ServicioService,
+    private activatedRouter: ActivatedRoute,
+    private router: Router,
+    private fb: FormBuilder,
+    private tokenService: TokenService,
+    private http: HttpClient
+  ) {
+
+    // constante que trae los datos del servicio elegido
     const id = this.activatedRouter.snapshot.params['id'];
     let datos:any= {};
     this.miservicio.obtenerServicio(id).subscribe(
       data => {
         this.servicios=data;
         console.log(this.servicios);
-        
+        console.log("servicio cargado con exito");
         
       }, err => {
         alert("Error al cargar");
@@ -29,64 +49,85 @@ export class ServicioComponent{
       }
     )
 
+    //  formulario reactivo 
+    this.servicioForm = this.fb.group({
+      nombre: ['', [Validators.required, Validators.minLength(2)]],
+      email: ['', [Validators.required, Validators.email]],
+      telefono: ['', [Validators.required, Validators.minLength(5)]],
+      fecha: ['', [Validators.required]],
+      descripcion: ['']
+    });
 
-    this.completarDatos();
-  }
-
-  datos!:FormGroup;
-
-
-  completarDatos(){
-    this.datos=this.fb.group({
-      nombre:['',[Validators.required, Validators.minLength(2)]],
-      apellido:['',Validators.required],
-      // correo:['',[Validators.required,Validators.pattern('[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$')]],
-      correo:['',[Validators.required,Validators.email]],
-
-      numero:['',[Validators.required, Validators.minLength(5)]],
-
-    })
-  }
-
-  get Nombre(){
-    return this.datos.get("nombre");
-  }
-
-  get Apellido(){
-    return this.datos.get("apellido");
-  }
-
-  get Correo(){
-    return this.datos.get("correo");
-  }
-
-  get Numero(){
-    return this.datos.get("numero");
-  }
-
-  // enviarDatos(){
-  //   console.log(this.datos);
-  // }
-  onEnviar(event:Event){
-      // se verifica si el usuario esta logueado
-      if (!this.tokenService.getToken()) {
-    // Si no esta logueado, redirigimos a la página de login
-      this.router.navigate(['/login']);
-      alert("Debes iniciar sesión antes de continuar");
-        return; // Salimos de la función para evitar enviar el mensaje
-  }
-
-    event.preventDefault;
-
-
-    if (this.datos.valid) {
-      alert("enviar datos al servidor");
-    }else{
-      this.datos.markAllAsTouched();
-    }
-    
   }
   
+  
+  ngOnInit(): void {
+    // Obtén el id del servicio desde la URL
+    // this.idServicio = this.activatedRouter.snapshot.params['id'];
 
+    // // Carga los detalles del servicio seleccionado
+    // this.miservicio.obtenerServicio(this.idServicio).subscribe(
+    //   data => {
+    //     this.servicio = data;
+    //     this.servicioForm.patchValue({
+    //       nombre: this.servicio.nombre  // Pre-llena el campo nombre con el nombre del servicio seleccionado
+    //     });
+    //     console.log(this.servicio);
+    //   },
+    //   err => {
+    //     alert('Error al cargar el servicio');
+    //     this.router.navigate(['']);
+    //   }
+    // );
+
+    this.servicioForm = this.fb.group({
+      nombre: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      telefono: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')]],
+      fecha: ['', Validators.required],
+      descripcion: ['']
+    });
+  }
+
+  // metodo para guardar los datos e enviar el correo
+  reservarTurno() {
+    if (this.servicioForm.invalid) {
+      alert('Por favor, completa todos los campos');
+      console.log(this.servicioForm.value);
+      return;
+    }
+  
+    // verifica si el usuario está logueado
+    if (!this.tokenService.getToken()) {
+      alert('Debes iniciar sesión antes de continuar');
+      this.router.navigate(['/login']);
+      return;
+    }
+  
+    // convertir la fecha al mismo formato que back
+    const fechaTurno = new Date(this.servicioForm.value.fecha);
+    const fechaISO = fechaTurno.toISOString().slice(0, 16); 
+  
+    // extrae los valores del formulario servicioForm.
+    const reservaData = {
+      nombre: this.servicioForm.value.nombre,
+      email: this.servicioForm.value.email,
+      telefono: this.servicioForm.value.telefono,
+      fecha: fechaISO, 
+      descripcion: this.servicioForm.value.descripcion
+    };
+  
+    // envía los datos al backend
+    this.http.post('http://127.0.0.1:8000/api/reserva/', reservaData).subscribe(
+      () => {
+        alert('✅ Reserva realizada con éxito, muy pronto se pondran en contacto contigo!');
+        this.router.navigate(['servicios/']);
+      },
+      error => {
+        console.error('Error al reservar turno', error);
+        alert('❌ Hubo un error al realizar la reserva, prueba cargando nuevamente los datos');
+      }
+    );
+  }
+  
 }
-

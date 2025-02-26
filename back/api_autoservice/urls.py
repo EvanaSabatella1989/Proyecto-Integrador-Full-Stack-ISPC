@@ -19,8 +19,11 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from servicio.models import Servicio
+from reserva.models import Reserva
+
 from servicio.serializer import ServicioSerializer
 from servicio import views
+
 
 
 from categoria.views import CategoriaUpdateDelete, categoriaList
@@ -29,7 +32,7 @@ from categoria.views import CategoriaUpdateDelete, categoriaList
 from rest_framework import routers
 
 router = routers.DefaultRouter()
-router.register(r'servicio', views.ServicioViewSet)
+# router.register(r'servicio', views.ServicioViewSet)
 
 
 urlpatterns = [
@@ -38,7 +41,7 @@ urlpatterns = [
     path('api/', include('servicio.urls')),
     path('api/', include('producto.urls')),
     path('api/venta/', include('venta.urls')),
-
+    path('api/', include('reserva.urls')),
 
     # path('api/', include('servicio.urls')),
     # path('api/servicio/servicioList/',views.servicioList),

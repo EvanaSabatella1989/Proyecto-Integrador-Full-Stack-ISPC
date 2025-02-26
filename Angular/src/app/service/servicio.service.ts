@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import {Observable} from 'rxjs';
 import { Servicio } from '../models/servicio';
+import { formatDate } from '@angular/common';
 
 
 @Injectable({
@@ -55,45 +56,6 @@ actualizarServicio(id: number, servicio: FormData, imagen?: File): Observable<Se
 eliminarServicio(id: number): Observable<any> {
   return this.http.delete(`${this.url}${id}/`);
 }
+
 }
-
-//servicios
-//  obtenerServicios():Observable<any>{
-//     return this.http.get(this.url+"servicio/");
-    
-//   }
-
-// servicio
-// obtener servicio
-  // public detail(Id:number): Observable<any>{
-  //   return this.http.get<any>(this.url + 'servicio/'+ Id+ '/');
-  // };
-
-//alta de un servicio
-// public create(data:any):Observable<any>{
-//   return this.http.post(this.url+'servicio/',data);
-// } 
-
-//actualizar servicio
-// public update(id:any,servicio:any): Observable<any>{
-
-//   return this.http.put(this.url+'servicio/'+id+'/',servicio);
-
-// }
-// http://localhost:8000/api/servicio/servicio/9/
-// Actualizar un servicio
-// updateServicio(id: number, servicio: Servicio): Observable<Servicio> {
-//   return this.http.put<Servicio>(`${this.url}${id}/`, servicio);
-// }
-
-// //eliminar servicio
-// public delete(id:number):Observable<any>{
-//   return this.http.delete<Servicio>(this.url+'servicio/'+id+'/');
-// }
-
-
-  
-
-
-  
 

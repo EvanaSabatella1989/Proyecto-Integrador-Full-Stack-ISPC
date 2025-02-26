@@ -7,22 +7,22 @@ from user.models import Cliente
 
 
 class Reserva(models.Model):
-    fecha = models.DateTimeField()
-    hora = models.TimeField()
-    ESTADOS_RESERVA = (
-        ('pendiente', 'Pendiente'),
-        ('confirmado', 'Confirmado'),
-        ('cancelado', 'Cancelado'),
-    )
-    estado_reserva = models.CharField(max_length=20, choices=ESTADOS_RESERVA)
-    servicio = models.ForeignKey(Servicio, on_delete=models.CASCADE)
-    sucursal = models.ForeignKey(Sucursal, on_delete=models.CASCADE)
-    cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
+    nombre = models.CharField(max_length=255, null=True, blank=True)
+    email = models.EmailField(default='default@example.com')
+    telefono = models.CharField(max_length=20,null=True, blank=True)
+    fecha= models.DateTimeField()
+    descripcion = models.TextField(blank=True, null=True)
+
 
     class Meta:
         db_table = "reserva"
         verbose_name_plural = "reservas"
         verbose_name = "reserva"
+
+    def save(self, *args, **kwargs):
+        # para que fecha solo tenga año, mes, dia y hora 
+        self.fecha = self.fecha.replace(second=0, microsecond=0)
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.estado_reserva
