@@ -18,4 +18,13 @@ migrations/*.py
 **/__pycache__/
 admin/__pycache__/
 migrations/__pycache__/
+
+# Evitar archivos de caché de Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Ignorar migraciones excepto __init__.py
+**/migrations/
+!**/migrations/__init__.py
                                                                                                                                                                                                                                                                                            
