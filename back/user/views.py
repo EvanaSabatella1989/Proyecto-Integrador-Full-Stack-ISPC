@@ -30,7 +30,17 @@ def login(request):
         token = RefreshToken.for_user(user)
         token['is_admin'] = user.is_staff
 
-        return Response(data={"access_token": str(token.access_token), "refresh_token": str(token), "is_admin": user.is_staff}, status=status.HTTP_200_OK)
+        # return Response(data={"access_token": str(token.access_token), "refresh_token": str(token), "is_admin": user.is_staff}, status=status.HTTP_200_OK)
+        
+        #Modificamos para manejar la sesión de usuario:
+        return Response(data={
+            "access_token": str(token.access_token),
+            "refresh_token": str(token),
+            "is_admin": user.is_staff,
+            "first_name": user.first_name,  # Agregamos el nombre
+            "last_name": user.last_name     # Agregamos el apellido
+        }, status=status.HTTP_200_OK)
+
     return Response(data={"message": "No se encontro ningun usuario"}, status=status.HTTP_404_NOT_FOUND)
 
 
