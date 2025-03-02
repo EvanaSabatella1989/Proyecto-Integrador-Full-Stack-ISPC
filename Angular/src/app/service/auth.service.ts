@@ -5,7 +5,10 @@ import { TokenService } from './token.service';
 import { BehaviorSubject, tap } from 'rxjs';
 
 interface LoginResponse extends Token {
-  is_admin: boolean
+  is_admin: boolean;
+  // Traemos el nombre para manejar la sesión de usuario:
+  first_name: string;
+
 }
 @Injectable({
   providedIn: 'root'
@@ -13,6 +16,10 @@ interface LoginResponse extends Token {
 export class AuthService {
   private isLoggedInSubject = new BehaviorSubject<boolean>(false);
   isLoggedIn$ = this.isLoggedInSubject.asObservable();
+  
+  private userNameSubject = new BehaviorSubject<string>(this.getUserName());
+  userName$ = this.userNameSubject.asObservable();  // Observable para escuchar cambios
+
   apiUrl = 'http://localhost:8000/api'
   constructor(
     private http: HttpClient,
@@ -27,8 +34,12 @@ export class AuthService {
     })
     .pipe(
       tap(resp => {
-        this.isLoggedInSubject.next(true)
-        this.tokenService.createToken(resp.access_token)
+        
+        this.isLoggedInSubject.next(true); // Notifica que el usuario está logueado
+        this.tokenService.createToken(resp.access_token);
+        // guardamos el nombre del usuario en el localStorage
+        localStorage.setItem('first_name', resp.first_name); 
+        this.userNameSubject.next(resp.first_name); // Notificamos el cambio
       })
     )
   }
@@ -43,13 +54,23 @@ export class AuthService {
   }
 
   logout(){
-    this.tokenService.removeToken()
+    this.tokenService.removeToken();
+    //para retirar al usuario:
+    localStorage.removeItem('first_name')
+    console.log('Cerrando sesión...');
+    this.isLoggedInSubject.next(false); // Notifica que el usuario ha cerrado sesión
+    this.userNameSubject.next(''); // Resetear el nombre
     
+  }
+
+  getUserName(): string {
+    return localStorage.getItem('first_name') || '';
   }
 
   isLogged(){
     this.isLoggedInSubject.next(true)
   }
+
   isNotLogged(){
     this.isLoggedInSubject.next(false)
   }
