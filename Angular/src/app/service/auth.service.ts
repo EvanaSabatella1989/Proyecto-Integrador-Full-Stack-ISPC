@@ -38,7 +38,8 @@ export class AuthService {
         this.isLoggedInSubject.next(true); // Notifica que el usuario está logueado
         this.tokenService.createToken(resp.access_token);
         // guardamos el nombre del usuario en el localStorage
-        localStorage.setItem('first_name', resp.first_name); 
+        localStorage.setItem('first_name', resp.first_name);
+        localStorage.setItem('token', resp.access_token) 
         this.userNameSubject.next(resp.first_name); // Notificamos el cambio
       })
     )
@@ -57,6 +58,7 @@ export class AuthService {
     this.tokenService.removeToken();
     //para retirar al usuario:
     localStorage.removeItem('first_name')
+    localStorage.removeItem('token')
     console.log('Cerrando sesión...');
     this.isLoggedInSubject.next(false); // Notifica que el usuario ha cerrado sesión
     this.userNameSubject.next(''); // Resetear el nombre

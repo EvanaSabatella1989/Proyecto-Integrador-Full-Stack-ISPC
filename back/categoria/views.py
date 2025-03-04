@@ -3,8 +3,9 @@ from django.views.decorators.csrf import csrf_exempt
 from rest_framework import viewsets,generics,request,status
 from .serializer import CategoriaSerializer
 from .models import Categoria
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
+from rest_framework.permissions import AllowAny
 
 
 
@@ -20,6 +21,7 @@ class CategoriaUpdateDelete(generics.RetrieveUpdateDestroyAPIView):
 
 
 @csrf_exempt   #trae y crea categorias
+@permission_classes([AllowAny])  # Esto hace que la vista sea pública
 @api_view(['GET', 'POST', 'PUT', 'DELETE'])
 def categoriaList(request, format=None):
     '''

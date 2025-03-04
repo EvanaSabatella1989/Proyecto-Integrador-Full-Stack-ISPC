@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import {Observable} from 'rxjs';
 
@@ -10,6 +10,14 @@ export class ProductoService {
   url:string="http://localhost:8000/api/";
 
   constructor(private http: HttpClient) { }
+
+  private getHeaders(): HttpHeaders {
+      const token = localStorage.getItem('token'); // Recuperar el token JWT
+      return new HttpHeaders({
+        'Authorization': `Bearer ${token}`, // Agregar el token al header
+        'Content-Type': 'application/json'
+      });
+    }
 
   public traerProductos():Observable<any>{
     return this.http.get(this.url +"producto/");

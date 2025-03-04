@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { Producto } from 'src/app/models/product.model';
+import { CarritoItem } from 'src/app/service/store-cart.service'
 import { StoreCartService } from 'src/app/service/store-cart.service';
 
 @Component({
@@ -17,6 +18,8 @@ export class CardProductComponent {
     descripcion: ''
   }
 
+  @Input() cantidad: number = 1;
+
   quality = 1
   precio = 0
   constructor(
@@ -24,24 +27,31 @@ export class CardProductComponent {
   ){}
 
   ngOnInit(): void {
-      this.quality = this.product.cantidad ?? 1;
+      // this.quality = this.product.cantidad ?? 1;
+      this.quality = this.cantidad
       const precioQuality = (this.product.precio * this.quality ).toString()
       this.precio = Number(Number.parseFloat(precioQuality).toFixed(2))
+      console.log("Nombre del producto: " + this.product.nombre)
+      console.log("Imagen: " + this.product.imagen)
   }
 
+  // deleteOfCart() {
+  //   this.storeService.deleteProduct(this.product.id)
+  // }
+
   deleteOfCart() {
-    this.storeService.deleteProduct(this.product.id)
+    this.storeService.removeProduct(this.product.id)
   }
 
   addQuality(e: Event) {
     e.preventDefault()
     this.quality += 1
-    this.storeService.updateQuality(this.product.id, this.quality)
+    this.storeService.updateQuantity(this.product.id, this.quality)
   }
   subtractQuality(e: Event) {
     e.preventDefault()
     if(this.quality === 1) return
     this.quality -= 1
-    this.storeService.updateQuality(this.product.id, this.quality)
+    this.storeService.updateQuantity(this.product.id, this.quality)
   }
 }

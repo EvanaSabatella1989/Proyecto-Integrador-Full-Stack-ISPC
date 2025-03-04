@@ -59,9 +59,9 @@ export class ArticuloComponent implements OnInit {
     );
   
     // Verifica si el producto ya está en el carrito
-    if (this.miCarrito.isProductInCart(id)) {
-      alert('Este producto ya está en el carrito.');
-    }
+    // if (this.miCarrito.isProductInCart(id)) {
+    //   alert('Este producto ya está en el carrito.');
+    // }
   
 
   }
@@ -103,9 +103,11 @@ export class ArticuloComponent implements OnInit {
   }
 
   isInCart(productId: number): boolean {
-    return this.miCarrito.isProductInCart(productId);
+    //return this.miCarrito.isProductInCart(productId);
+    return false;
   }
-  // isProductInCart(productId: number): boolean {
-  //   return this.miCarrito.isProductInCart(productId);
-  // }
+  isProductInCart(productId: number): boolean {
+    // return this.miCarrito.isProductInCart(productId);
+    return false;
+  }
 }
