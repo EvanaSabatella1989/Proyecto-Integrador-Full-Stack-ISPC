@@ -99,7 +99,8 @@ export class ProductosComponent implements OnInit {
   }
 
   isInCart(productId: number): boolean {
-    return this.miCarrito.isProductInCart(productId);
+    // return this.miCarrito.isProductInCart(productId);
+    return false;
   }
   
   

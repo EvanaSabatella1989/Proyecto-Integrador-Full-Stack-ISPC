@@ -5,11 +5,12 @@ from .serializer import ServicioSerializer
 from .models import Servicio
 from rest_framework.views import APIView
 from rest_framework.parsers import JSONParser
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from django.views.decorators.csrf import csrf_exempt
 from django.core.files.storage import FileSystemStorage
 from django.http import HttpResponse
 from rest_framework.parsers import MultiPartParser, FormParser
+from rest_framework.permissions import AllowAny
 
 
 class ServicioViewSet(viewsets.ModelViewSet):
@@ -17,6 +18,7 @@ class ServicioViewSet(viewsets.ModelViewSet):
     serializer_class=ServicioSerializer
     parser_classes=(MultiPartParser, FormParser,JSONParser)
 
+    @permission_classes([AllowAny])  # Esto hace que la vista sea pública
     def list(self,request):
         # lista todos los servicios
         servicios=self.get_queryset()

@@ -2,15 +2,26 @@
   <section class="container-carrito m-3 p-5 shadow">
     <h5>Carrito</h5>
 
-    <div *ngIf="products.length > 0">
-      <app-card-product
+    <div *ngIf="cartItems.length > 0">
+      <!-- <app-card-product
         [product]="product"
         *ngFor="let product of products"
-      ></app-card-product>
+      ></app-card-product> -->
+      <!-- <app-card-product
+      *ngFor="let item of cartItems"
+      [product]="item.producto"
+      [cantidad]="item.cantidad"
+    ></app-card-product> -->
+    <app-card-product
+  [product]="product.producto"
+  *ngFor="let product of cartItems"
+      [product]="product.producto"
+      [cantidad]="product.cantidad"
+></app-card-product>
     </div>
 
     <div
-      *ngIf="products.length === 0"
+      *ngIf="cartItems.length === 0"
       class="d-flex flex-column gap-2 text-center align-items-center justify-content-center"
       style="min-height: 300px"
     >
@@ -20,7 +31,7 @@
 
     <div
       class="d-flex flex-column gap-4 w-100 mt-4"
-      *ngIf="products.length > 0"
+      *ngIf="cartItems.length > 0"
     >
       <div class="d-flex w-100 align-content-end gap-3">
         <h4>Total</h4>

@@ -61,6 +61,8 @@ INSTALLED_APPS = [
     'vehiculo',
     'rest_framework',
     "corsheaders",
+    'carrito',
+    'django_extensions',
 ]
 
 MIDDLEWARE = [
@@ -99,7 +101,7 @@ CORS_ORIGIN_WHITELIST = [
     'http://localhost:4200',
     'http://127.0.0.1:4200',
 ]
-
+CORS_ALLOW_ALL_ORIGINS = True  # Habilita CORS para todas las solicitudes
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:4200",  
 ]
@@ -189,5 +191,14 @@ AUTH_USER_MODEL = "user.UserAccount"
 #      'rest_framework_simplejwt.authentication.JWTAuthentication',
 # )
 # }
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+    # 'DEFAULT_PERMISSION_CLASSES': (
+    #     'rest_framework.permissions.IsAuthenticated',
+    # ),
+}
 
 APPEND_SLASH = False

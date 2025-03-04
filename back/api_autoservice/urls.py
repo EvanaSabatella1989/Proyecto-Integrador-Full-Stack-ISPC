@@ -24,9 +24,9 @@ from reserva.models import Reserva
 from servicio.serializer import ServicioSerializer
 from servicio import views
 
-
-
 from categoria.views import CategoriaUpdateDelete, categoriaList
+
+from carrito.views import Carrito
 
 
 from rest_framework import routers
@@ -50,7 +50,9 @@ urlpatterns = [
     path('api/categoria/<pk>/', categoriaList),
     path('api/categoria/update/<pk>/', categoriaList),
     path('api/categoria/', categoriaList),
-    path('api/categoria/detail/<pk>/', categoriaList)
+    path('api/categoria/detail/<pk>/', categoriaList),
+
+    path('api/', include('carrito.urls'))
 
 ]
 
