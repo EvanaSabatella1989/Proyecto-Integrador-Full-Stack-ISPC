@@ -19,16 +19,15 @@
       <tr>
         <th scope="row">{{item.id}}</th>
         <td>{{item.nombre}}</td>
-        <td><img src="{{item.imagen}}" alt=""></td>
+        <td><img src="{{item.imagen}}" alt="imagen de servicio"></td>
         <td>{{item.descripcion}}</td>
         <td>{{item.precio}}</td>
         <td>{{item.fecha_creacion}}</td>
-        <td><td><a href="editar-servicios/{{item.id}}" class="btn btn-primary" >Editar</a></td>
-        <td><button (click)=delete(item) class="btn btn-danger"> Borrar</button></td>
-      </tr>
-      
-      
+        <!-- <td><a href="editar-servicios/{{item.id}}" class="btn btn-primary" >Editar</a></td> -->
+        <td><a><i class="bi bi-pencil-fill" id="edit" routerLink="/editar-servicios/{{item.id}}"></i></a></td>
+        <td><a (click)=delete(item) ><i class="bi bi-trash-fill" id="borrar"></i></a></td>
+        <!-- <td><button (click)=delete(item) class="btn btn-danger"> Borrar</button></td> -->
+      </tr>  
     </tbody>
   </table>
-
   <a routerLink="/servicios" class="btn btn-info">Volver</a>
