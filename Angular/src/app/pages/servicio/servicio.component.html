@@ -11,49 +11,69 @@
           <li class="list-group-item">Costo del servicio: $ {{servicios.precio}}</li>
         </ul>
       </div>
-    </div> <!-- tarjeta donde se ve el servicio elegido-->
+    </div>
 
     <div class="col">
       <h4>Dejanos tus datos</h4>
-      <form  [formGroup]="servicioForm" (ngSubmit)="reservarTurno()">
-       
+      <form [formGroup]="servicioForm" (ngSubmit)="reservarTurno()">
+        <!-- servicio elegido (campo solo lectura que muestra el nombre del servicio) -->
         <div class="mb-3 row">
-          <div class="col-sm-10">
-            <input for="validationCustom01" type="text" class="form-control" id="nombre" placeholder="Nombre" formControlName="nombre">
+          <div class="form-group">
+            <label for="servicio">Servicio elegido</label>
+            <input type="text" formControlName="servicio" class="form-control" [value]="servicios.nombre" readonly>
+            <!-- campo oculto para enviar el ID del servicio -->
+            <input type="hidden" formControlName="servicioId" [value]="servicios.id">
           </div>
         </div>
 
+        <!-- sucursal -->
+        <div class="mb-3 row">
+          <div class="form-group">
+            <label for="sucursal">Sucursal</label>
+            <select formControlName="sucursal" class="form-control">
+              <option value="" disabled selected>Seleccione una sucursal</option>
+              <option *ngFor="let sucursal of sucursales" [value]="sucursal.id">{{ sucursal.direccion }}</option>
+            </select>
+          </div>
+        </div>
 
+        <!-- nombre -->
+        <div class="mb-3 row">
+          <div class="col-sm-10">
+            <input type="text" class="form-control" id="nombre" placeholder="Nombre" formControlName="nombre">
+          </div>
+        </div>
+
+        <!-- correo -->
         <div class="mb-3 row">
           <div class="col-sm-10">
             <input type="email" class="form-control" id="email" placeholder="Correo" formControlName="email">
           </div>
         </div>
 
+        <!-- telefono -->
         <div class="mb-3 row">
           <div class="col-sm-10">
             <input type="tel" class="form-control" id="tel" placeholder="Número de contacto" formControlName="telefono">
           </div>
         </div>
 
+        <!-- fecha -->
         <div class="mb-3 row">
           <div class="col-sm-10">
             <input type="datetime-local" class="form-control" formControlName="fecha" required>
           </div>
         </div>
-        
-        
 
+        <!-- Descripción -->
         <div class="col-sm-10">
           <textarea class="form-control" placeholder="Comentario" id="floatingTextarea" formControlName="descripcion"></textarea>
-          <label for="floatingTextarea"></label>
         </div>
 
-        <button type="submit" class="btn btn-primary">Enviar</button> 
+        <button type="submit" class="btn btn-primary">Enviar</button>
         <p></p>
         <button routerLink="/servicios" class="btn btn-primary">Volver</button>
       </form>
-    </div> <!-- Cierre del segundo div.col -->
-
-  </div> <!-- Cierre de .row -->
-</div> <!-- Cierre de .container -->
+    </div>
+  </div>
+</div>

@@ -39,3 +39,15 @@ li {
     background-color: #060818;
     color: #FFFFFF;
 }
+select.form-control {
+    border: 1px solid #F5C057; 
+    border-radius: 30px;  
+    background-color: #ffffff; 
+    padding: 8px 12px;
+}
+
+/* Para que el borde cambie cuando se hace clic */
+select.form-control:focus {
+    border-color: #F5C057;
+    outline: none;
+}

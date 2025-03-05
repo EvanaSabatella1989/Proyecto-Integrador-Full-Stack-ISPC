@@ -63,7 +63,7 @@ def reserva(request):
                 Nombre: {reserva.nombre}
                 Email: {reserva.email}
                 Teléfono: {reserva.telefono}
-                Fecha del Turno: {reserva.fecha.strftime}
+                Fecha del Turno: {reserva.fecha.strftime("%Y-%m-%d %H:%M")}
                 Servicio: {reserva.servicio.nombre}
                 Sucursal: {reserva.sucursal.direccion}
                 Descripción: {reserva.descripcion}

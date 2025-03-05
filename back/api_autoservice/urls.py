@@ -42,6 +42,7 @@ urlpatterns = [
     path('api/', include('producto.urls')),
     path('api/venta/', include('venta.urls')),
     path('api/', include('reserva.urls')),
+     path('api/', include('sucursal.urls')),
 
     # path('api/', include('servicio.urls')),
     # path('api/servicio/servicioList/',views.servicioList),
