@@ -26,5 +26,10 @@ class Producto(models.Model):
             return self.imagen.url
         return 'imagen.url'
 
+    # def get_absolute_image_url(self):
+    #     if self.imagen:
+    #         return f"{settings.MEDIA_URL}{self.imagen}"
+    #     return ""
+
     def __str__(self):
         return self.nombre

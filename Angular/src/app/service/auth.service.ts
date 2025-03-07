@@ -20,6 +20,9 @@ export class AuthService {
   private userNameSubject = new BehaviorSubject<string>(this.getUserName());
   userName$ = this.userNameSubject.asObservable();  // Observable para escuchar cambios
 
+  private isAdminSubject = new BehaviorSubject<boolean>(this.tokenService.isAdmin());
+  isAdmin$ = this.isAdminSubject.asObservable();
+
   apiUrl = 'http://localhost:8000/api'
   constructor(
     private http: HttpClient,
@@ -40,7 +43,10 @@ export class AuthService {
         // guardamos el nombre del usuario en el localStorage
         localStorage.setItem('first_name', resp.first_name);
         localStorage.setItem('token', resp.access_token) 
+        localStorage.setItem('is_admin', resp.is_admin ? 'true' : 'false');
+
         this.userNameSubject.next(resp.first_name); // Notificamos el cambio
+        this.isAdminSubject.next(resp.is_admin); // Notificar si es admin
       })
     )
   }
@@ -59,11 +65,17 @@ export class AuthService {
     //para retirar al usuario:
     localStorage.removeItem('first_name')
     localStorage.removeItem('token')
+    localStorage.removeItem('is_admin');
     console.log('Cerrando sesión...');
     this.isLoggedInSubject.next(false); // Notifica que el usuario ha cerrado sesión
     this.userNameSubject.next(''); // Resetear el nombre
+    this.isAdminSubject.next(false);
     
   }
+
+isAdmin(): boolean {
+  return this.tokenService.isAdmin();
+}
 
   getUserName(): string {
     return localStorage.getItem('first_name') || '';
@@ -77,3 +89,4 @@ export class AuthService {
     this.isLoggedInSubject.next(false)
   }
 }
+
