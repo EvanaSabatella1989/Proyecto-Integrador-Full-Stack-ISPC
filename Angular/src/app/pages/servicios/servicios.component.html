@@ -1,8 +1,8 @@
 <main>
     <h1>Servicios</h1>
    
-    <a href="/lista-servicios" class="btn btn-info" id="list" *ngIf="isAdmin">Lista de Servicios</a>
-    <a href="/agregar-servicios" class="btn btn-info" id="list" *ngIf="isAdmin">Agregar</a>
+    <a routerLink="/lista-servicios" class="btn btn-info" id="list" *ngIf="isAdmin">Lista de Servicios</a>
+    <a routerLink="/agregar-servicios" class="btn btn-info" id="list" *ngIf="isAdmin">Agregar</a>
     <div class="row">
         <div class="row row-cols-1 row-cols-md-3 g-4">
 
@@ -26,3 +26,4 @@
         </div>
     </div>
 </main>
+
