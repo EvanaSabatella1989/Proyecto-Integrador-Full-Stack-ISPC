@@ -54,8 +54,8 @@ urlpatterns = [
     path('api/categoria/detail/<pk>/', categoriaList),
 
     path('api/', include('carrito.urls'))
-
 ]
+# ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 # para que cargue la foto
 if settings.DEBUG:

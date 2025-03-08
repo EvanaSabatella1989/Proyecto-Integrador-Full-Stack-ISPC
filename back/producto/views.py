@@ -11,7 +11,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.core.files.storage import FileSystemStorage
 from django.http import HttpResponse
 from rest_framework.response import Response
-
+from rest_framework.permissions import IsAuthenticated
 
 class ProductoViewSet(viewsets.ModelViewSet):
     queryset=Producto.objects.all()
@@ -22,8 +22,9 @@ class ProductoUpdateDelete(generics.RetrieveUpdateDestroyAPIView):
     serializer_class=ProductoSerializer
 
 @csrf_exempt   
-@permission_classes([AllowAny])  # Esto hace que la vista sea pública
+# @permission_classes([AllowAny])  # Esto hace que la vista sea pública
 @api_view(['GET', 'POST','PUT','DELETE'])
+@permission_classes([AllowAny])
 def productoList(request, format=None):
     '''
     List all code snippets, or create a new snippet.

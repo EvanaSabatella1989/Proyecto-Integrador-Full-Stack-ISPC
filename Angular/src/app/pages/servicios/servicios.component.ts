@@ -28,7 +28,16 @@ export class ServiciosComponent implements OnInit {
     this.authService.isLoggedIn$.subscribe(resp => this.isLogged = resp)
     
     // Verifica si el usuario es admin usando el TokenService
-    this.isAdmin = this.tokenService.isAdmin();
+    //this.isAdmin = this.tokenService.isAdmin();
+    
+    this.authService.isAdmin$.subscribe(isAdmin => {
+      this.isAdmin = isAdmin; // 🔹 Actualizar la variable local
+      if (isAdmin) {
+        console.log("El usuario es administrador");
+      } else {
+        console.log("El usuario NO es administrador");
+      }
+    });
 
     this.serv.obtenerServicios().subscribe({
       next:(serviciosTodos)=>{
