@@ -48,7 +48,7 @@ export class CarritoComponent implements OnInit {
   // });
       this.serviceStore.myCart$.subscribe(items => {
        this.cartItems = items;
-       console.log(this.cartItems)
+       console.log("Productos preparados : " +this.cartItems)
        this.total_precio = items
          .map(item => item.producto.precio * item.cantidad)
           .reduce((acc, precio) => acc + precio, 0);
@@ -57,10 +57,12 @@ export class CarritoComponent implements OnInit {
 
   preferenceMP(){
     this.status = 'loading'
-    this.payService.preference(this.products)
+    // this.payService.preference(this.products)
+    console.log("Productos a enviar: " + this.cartItems)
+    this.payService.preference(this.cartItems)
     .subscribe({
       next: (resp) => {
-        console.log(resp)
+        console.log("resp: " + resp)
         window.location.replace(resp.init_point)
       },
       error: (error) => {
