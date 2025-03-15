@@ -7,8 +7,8 @@ from user.models import Cliente
 
 class Venta(models.Model):
 
-    numero_factura = models.IntegerField()
-    total = models.DecimalField(max_digits=6, decimal_places=2)
+    numero_factura = models.BigIntegerField()
+    total = models.DecimalField(max_digits=15, decimal_places=2) 
     TIPOS_PAGO = (
         ('efectivo', 'Efectivo'),
         ('tarjeta', 'Tarjeta de crédito'),
