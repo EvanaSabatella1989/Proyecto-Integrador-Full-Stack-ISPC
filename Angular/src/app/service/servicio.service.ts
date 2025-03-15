@@ -11,6 +11,7 @@ import { formatDate } from '@angular/common';
 export class ServicioService {
 // url2:string="http://localhost:8000/photos/photos/";
 url:string="http://localhost:8000/api/servicios/"
+urlDos:string="http://localhost:8000/api/reserva/"
 
  constructor(private http:HttpClient) { }
 
@@ -55,6 +56,16 @@ actualizarServicio(id: number, servicio: FormData, imagen?: File): Observable<Se
 // Eliminar un servicio
 eliminarServicio(id: number): Observable<any> {
   return this.http.delete(`${this.url}${id}/`);
+}
+
+// obtener los horarios disponibles para la reserva
+getHorariosDisponibles(sucursalId:number,fecha:string):Observable<any>{
+  return this.http.get(`${this.urlDos}disponibilidad/${sucursalId}/${fecha}/`);
+
+}
+
+hacerReserva(reservaData: any): Observable<any> {
+  return this.http.post(this.urlDos, reservaData);
 }
 
 }

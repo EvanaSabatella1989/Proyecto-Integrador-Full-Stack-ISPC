@@ -2,78 +2,91 @@
   <div class="row">
     <div class="col">
       <div class="card">
-        <img src="{{servicios.imagen}}" class="card-img-top" alt="...">
+        <img src="{{servicio.imagen}}" class="card-img-top" alt="...">
         <div class="card-body">
-          <h5 class="card-title">{{servicios.nombre}}</h5>
-          <p class="card-text">{{servicios.descripcion}}</p>
+          <h5 class="card-title">{{servicio.nombre}}</h5>
+          <p class="card-text">{{servicio.descripcion}}</p>
         </div>
         <ul class="list-group list-group-flush">
-          <li class="list-group-item">Costo del servicio: $ {{servicios.precio}}</li>
+          <li class="list-group-item">Costo del servicio: $ {{servicio.precio}}</li>
         </ul>
       </div>
     </div>
 
-    <div class="col">
-      <h4>Dejanos tus datos</h4>
+    <div class="container">
+      <h2>Reservar Turno</h2>
+    
+      <!-- Mensaje de éxito o error -->
+      <div *ngIf="mensaje" class="alert" [ngClass]="{'alert-success': mensaje.includes('✅'), 'alert-danger': mensaje.includes('❌')}">
+        {{ mensaje }}
+      </div>
+    
       <form [formGroup]="servicioForm" (ngSubmit)="reservarTurno()">
-        <!-- servicio elegido (campo solo lectura que muestra el nombre del servicio) -->
-        <div class="mb-3 row">
-          <div class="form-group">
-            <label for="servicio">Servicio elegido</label>
-            <input type="text" formControlName="servicio" class="form-control" [value]="servicios.nombre" readonly>
-            <!-- campo oculto para enviar el ID del servicio -->
-            <input type="hidden" formControlName="servicioId" [value]="servicios.id">
-          </div>
+        
+        <!-- Nombre -->
+        <div class="form-group">
+          <label for="nombre">Nombre:</label>
+          <input id="nombre" type="text" class="form-control" formControlName="nombre">
+          <small *ngIf="servicioForm.controls['nombre'].invalid && servicioForm.controls['nombre'].touched" class="text-danger">
+            Nombre es obligatorio y debe tener al menos 2 caracteres.
+          </small>
         </div>
-
-        <!-- sucursal -->
-        <div class="mb-3 row">
-          <div class="form-group">
-            <label for="sucursal">Sucursal</label>
-            <select formControlName="sucursal" class="form-control">
-              <option value="" disabled selected>Seleccione una sucursal</option>
-              <option *ngFor="let sucursal of sucursales" [value]="sucursal.id">{{ sucursal.direccion }}</option>
-            </select>
-          </div>
+    
+        <!-- Email -->
+        <div class="form-group">
+          <label for="email">Email:</label>
+          <input id="email" type="email" class="form-control" formControlName="email">
+          <small *ngIf="servicioForm.controls['email'].invalid && servicioForm.controls['email'].touched" class="text-danger">
+            Ingresa un email válido.
+          </small>
         </div>
-
-        <!-- nombre -->
-        <div class="mb-3 row">
-          <div class="col-sm-10">
-            <input type="text" class="form-control" id="nombre" placeholder="Nombre" formControlName="nombre">
-          </div>
+    
+        <!-- Servicio -->
+        <div class="form-group">
+          <label for="servicio">Servicio:</label>
+          <input id="servicio" type="text" class="form-control" formControlName="servicio">
         </div>
-
-        <!-- correo -->
-        <div class="mb-3 row">
-          <div class="col-sm-10">
-            <input type="email" class="form-control" id="email" placeholder="Correo" formControlName="email">
-          </div>
+    
+        <!-- Selección de Sucursal -->
+        <div class="form-group">
+          <label for="sucursal">Sucursal:</label>
+          <select id="sucursal" class="form-control" formControlName="sucursal">
+            <option value="">Selecciona una sucursal</option>
+            <option *ngFor="let sucursal of sucursales" [value]="sucursal.id">{{ sucursal.nombre }}</option>
+          </select>
+          <small *ngIf="servicioForm.controls['sucursal'].invalid && servicioForm.controls['sucursal'].touched" class="text-danger">
+            Debes seleccionar una sucursal.
+          </small>
         </div>
-
-        <!-- telefono -->
-        <div class="mb-3 row">
-          <div class="col-sm-10">
-            <input type="tel" class="form-control" id="tel" placeholder="Número de contacto" formControlName="telefono">
-          </div>
+    
+        <!-- Selección de Fecha -->
+        <div class="form-group">
+          <label for="fecha">Fecha:</label>
+          <input id="fecha" type="date" class="form-control" formControlName="fecha_reserva">
+          <small *ngIf="servicioForm.controls['fecha_reserva'].invalid && servicioForm.controls['fecha_reserva'].touched" class="text-danger">
+            Selecciona una fecha válida.
+          </small>
         </div>
-
-        <!-- fecha -->
-        <div class="mb-3 row">
-          <div class="col-sm-10">
-            <input type="datetime-local" class="form-control" formControlName="fecha" required>
-          </div>
+    
+        <!-- Selección de Horario -->
+        <div class="form-group">
+          <label for="hora">Horario Disponible:</label>
+          <select id="hora" class="form-control" formControlName="hora_reserva" [disabled]="horariosDisponibles.length === 0">
+            <option value="">Selecciona un horario</option>
+            <option *ngFor="let hora of horariosDisponibles" [value]="hora">{{ hora }}</option>
+          </select>
+          <small *ngIf="horariosDisponibles.length === 0" class="text-warning">
+            No hay horarios disponibles para la fecha y sucursal seleccionadas.
+          </small>
         </div>
-
-        <!-- Descripción -->
-        <div class="col-sm-10">
-          <textarea class="form-control" placeholder="Comentario" id="floatingTextarea" formControlName="descripcion"></textarea>
-        </div>
-
-        <button type="submit" class="btn btn-primary">Enviar</button>
-        <p></p>
-        <button routerLink="/servicios" class="btn btn-primary">Volver</button>
+    
+        <!-- Botón de Reservar -->
+        <button type="submit" class="btn btn-primary mt-3" [disabled]="servicioForm.invalid || horariosDisponibles.length === 0">
+          Reservar Turno
+        </button>
+    
       </form>
     </div>
+    
   </div>
 </div>

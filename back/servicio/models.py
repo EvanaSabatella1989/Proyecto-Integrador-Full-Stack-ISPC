@@ -1,5 +1,4 @@
 from django.db import models
-from categoria.models import Categoria
 from datetime import datetime
 
 # Create your models here.
