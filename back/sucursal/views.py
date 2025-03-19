@@ -10,7 +10,7 @@ import logging
 from django.shortcuts import render,get_object_or_404
 from datetime import datetime, timedelta
 from rest_framework.decorators import api_view
-
+from django.db.models import Prefetch
 from sucursal.models import HorarioSucursal
 
 logger = logging.getLogger(__name__)
@@ -76,23 +76,35 @@ def eliminar_horario(request, horario_id):
 
 # horarios disponibles en las sucursales
 @api_view(['GET'])
-def horarios_disponibles(request):
-    """
-    Devuelve todos los horarios disponibles de todas las sucursales.
-    """
+def horarios_disponibles(request, sucursal_id):
     try:
-        horarios = HorarioSucursal.objects.filter(disponible=True).order_by('fecha', 'hora')
-
-        if not horarios.exists():
-            return Response({'message': 'No hay horarios disponibles en ninguna sucursal.'}, status=status.HTTP_200_OK)
-
+        horarios = HorarioSucursal.objects.filter(sucursal_id=sucursal_id, disponible=True).order_by('fecha', 'hora')
         serializer = HorarioSucursalSerializer(horarios, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
-    
+        return Response(serializer.data, status=200)
     except Exception as e:
-        return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-    
+        return Response({'error': str(e)}, status=500)
+# @api_view(['GET'])
+# def horarios_disponibles(request):
+#     """
+#     Devuelve los horarios disponibles, opcionalmente filtrados por sucursal.
+#     """
+#     try:
+#         sucursal_id = request.GET.get('sucursal')  # Obtener sucursal de la URL
+#         horarios = HorarioSucursal.objects.filter(disponible=True)
 
+#         if sucursal_id:
+#             horarios = horarios.filter(sucursal_id=sucursal_id)  # Filtrar por sucursal
+
+#         horarios = horarios.order_by('fecha', 'hora')
+
+#         if not horarios.exists():
+#             return Response({'message': 'No hay horarios disponibles.'}, status=status.HTTP_200_OK)
+
+#         serializer = HorarioSucursalSerializer(horarios, many=True)
+#         return Response(serializer.data, status=status.HTTP_200_OK)
+    
+#     except Exception as e:
+#         return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 @api_view(['GET'])

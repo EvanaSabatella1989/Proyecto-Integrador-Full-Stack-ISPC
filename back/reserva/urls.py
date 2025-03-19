@@ -8,7 +8,5 @@ from .views import Reserva
 
 urlpatterns = [
     
-    
-   
-    path('reserva/', reserva, name="reserva"),  # Ruta personalizada para la reserva
+    path('reserva/', reserva, name="reserva"), 
 ]

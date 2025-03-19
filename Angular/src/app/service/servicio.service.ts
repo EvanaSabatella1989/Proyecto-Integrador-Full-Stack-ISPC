@@ -12,6 +12,7 @@ export class ServicioService {
 // url2:string="http://localhost:8000/photos/photos/";
 url:string="http://localhost:8000/api/servicios/"
 urlDos:string="http://localhost:8000/api/reserva/"
+urlTres:string="http://127.0.0.1:8000/api/"
 
  constructor(private http:HttpClient) { }
 
@@ -58,14 +59,20 @@ eliminarServicio(id: number): Observable<any> {
   return this.http.delete(`${this.url}${id}/`);
 }
 
-// obtener los horarios disponibles para la reserva
-getHorariosDisponibles(sucursalId:number,fecha:string):Observable<any>{
-  return this.http.get(`${this.urlDos}disponibilidad/${sucursalId}/${fecha}/`);
-
+/// Obtener todas las sucursales disponibles
+obtenerSucursales(): Observable<any> {
+  return this.http.get<any>('http://127.0.0.1:8000/api/sucursal/');
 }
 
-hacerReserva(reservaData: any): Observable<any> {
-  return this.http.post(this.urlDos, reservaData);
+// Obtener los horarios disponibles para una sucursal específica
+// obtenerHorariosDisponibles(sucursalId: number): Observable<any> {
+//   const url = `${this.urlTres}?sucursal=${sucursalId}`;
+//   console.log('Haciendo solicitud a:', url);  // Verificamos la URL que se está llamando
+//   return this.http.get<any>(url);
+// }
+
+obtenerHorariosDisponibles(sucursalId: number): Observable<any> {
+  return this.http.get(`${this.urlTres}horarios-disponibles/${sucursalId}/`);
 }
 
 }

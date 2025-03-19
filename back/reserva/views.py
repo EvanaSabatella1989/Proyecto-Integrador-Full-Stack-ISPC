@@ -1,43 +1,3 @@
-# from django.shortcuts import render
-# from rest_framework.response import Response
-# from rest_framework.decorators import api_view
-# from django.core.mail import send_mail
-# from .serializer import ReservaSerializer
-# import logging
-# logger = logging.getLogger(__name__)
-
-
-
-# # Create your views here.
-# @api_view(['POST'])
-# def reserva(request):
-#     try:
-#         # Intenta deserializar los datos y guardar la reserva
-#         serializer = ReservaSerializer(data=request.data)
-        
-#         if serializer.is_valid():
-#             # Guarda la reserva si es válida
-#             serializer.save()
-
-#            # enviar correo con Mailtrap
-#             send_mail(
-#                 'Nueva Reserva de Turno',
-#                 f"Nombre: {request.data['nombre']}\nEmail: {request.data['email']}\nTeléfono: {request.data['telefono']}\nFecha del Turno: {request.data['fecha']}\nDescripción: {request.data['descripcion']}",
-#                 'autoservicebsas@gmail.com',#un correo ficticio
-#                 ['autoservicebsas@gmail.com'],#para donde debe ir
-#                 fail_silently=False,
-#             )
-
-#             # Respuesta exitosa
-#             return Response({'message': 'Reserva de turno enviada'}, status=200)
-#         else:
-#             # Respuesta en caso de que la validación del serializer falle
-#             return Response(serializer.errors, status=400)
-
-#     except Exception as e:
-#         # Manejo de excepciones: si ocurre un error en el proceso
-#         logger.error(f"Error en la reserva: {e}")
-#         return Response({'error': str(e)}, status=500)
 from django.shortcuts import render,get_object_or_404
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
@@ -60,16 +20,26 @@ class ReservaViewSet(viewsets.ModelViewSet):
 @api_view(['POST'])
 def reserva(request):
     try:
-        horario = HorarioSucursal.objects.get(id=request.data['horario'])
-        if not horario.disponible:
+        print(request.data)
+        # Buscar la fecha y hora de la sucursal
+        fecha = HorarioSucursal.objects.get(id=request.data['fecha_sucursal'])
+        hora = HorarioSucursal.objects.get(id=request.data['hora_sucursal'])
+
+        # Verificar disponibilidad del horario
+        if not fecha.disponible or not hora.disponible:
+            
             return Response({'error': 'Este horario ya está reservado'}, status=status.HTTP_400_BAD_REQUEST)
 
-        horario.disponible = False  # Se marca como reservado
-        horario.save()
+        # Marcarlo como reservado
+        fecha.disponible = False
+        hora.disponible = False
+        fecha.save()
+        hora.save()
 
+        # Guardar la reserva
         serializer = ReservaSerializer(data=request.data)
         if serializer.is_valid():
-            reserva = serializer.save()  # 🔹 Guarda la reserva y almacena el objeto en la variable
+            reserva = serializer.save()
 
             # Enviar correo con la información de la reserva
             send_mail(
@@ -77,23 +47,25 @@ def reserva(request):
                 f"""
                 Nombre: {reserva.nombre_cliente}
                 Email: {reserva.correo_cliente}
-                Fecha: {reserva.horario.fecha} a las {reserva.horario.hora}
+                Fecha: {reserva.fecha_sucursal.fecha} a las {reserva.hora_sucursal.hora}
                 Servicio: {reserva.servicio.nombre}
                 Sucursal: {reserva.sucursal.nombre}
                 """,
-                'autoservicebsas@gmail.com',  # Correo ficticio
-                ['autoservicebsas@gmail.com'],  # Para donde debe ir
+                'autoservicebsas@gmail.com',
+                ['autoservicebsas@gmail.com'],
                 fail_silently=False,
             )
 
-            # Respuesta exitosa
             return Response({'message': 'Reserva de turno enviada'}, status=200)
         else:
+            print(request.data)
             return Response(serializer.errors, status=400)
 
     except Exception as e:
         logger.error(f"Error en la reserva: {e}")
         return Response({'error': str(e)}, status=500)
+
+
 
 
 # esta opcion funciona
