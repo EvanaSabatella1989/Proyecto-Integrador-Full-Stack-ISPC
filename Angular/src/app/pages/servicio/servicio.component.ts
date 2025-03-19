@@ -4,7 +4,7 @@ import { ServicioService } from 'src/app/service/servicio.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TokenService } from 'src/app/service/token.service';
 import { HttpClient } from '@angular/common/http';
-import { ChangeDetectorRef } from '@angular/core';
+
 
 @Component({
   selector: 'app-servicio',
@@ -26,7 +26,7 @@ export class ServicioComponent implements OnInit {
     private fb: FormBuilder,
     private tokenService: TokenService,
     private http: HttpClient,
-    private cdr: ChangeDetectorRef
+   
   ) { 
     
   }
@@ -35,9 +35,7 @@ export class ServicioComponent implements OnInit {
     this.inicializarFormulario();
     this.cargarServicio();
     this.cargarSucursales();
-    this.servicioForm.valueChanges.subscribe(() => {
-      this.cdr.detectChanges();  // Forza la detección de cambios
-    });
+   
   
   }
 
