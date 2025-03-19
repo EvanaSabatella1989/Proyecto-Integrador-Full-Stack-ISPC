@@ -3,15 +3,7 @@
     <h5>Carrito</h5>
 
     <div *ngIf="cartItems.length > 0">
-      <!-- <app-card-product
-        [product]="product"
-        *ngFor="let product of products"
-      ></app-card-product> -->
-      <!-- <app-card-product
-      *ngFor="let item of cartItems"
-      [product]="item.producto"
-      [cantidad]="item.cantidad"
-    ></app-card-product> -->
+      
     <app-card-product
   [product]="product.producto"
   *ngFor="let product of cartItems"

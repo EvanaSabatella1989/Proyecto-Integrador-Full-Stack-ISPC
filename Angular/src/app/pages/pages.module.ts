@@ -27,6 +27,9 @@ import { AgregarCategoriasComponent } from './agregar-categorias/agregar-categor
 import { EditarCategoriasComponent } from './editar-categorias/editar-categorias.component';
 import { EditarProductosComponent } from './editar-productos/editar-productos.component';
 import { EditarServiciosComponent } from './editar-servicios/editar-servicios.component';
+import { PagoExitosoComponent } from './pago-exitoso/pago-exitoso.component';
+import { PagoFallidoComponent } from './pago-fallido/pago-fallido.component';
+import { PagoPendienteComponent } from './pago-pendiente/pago-pendiente.component';
 
 
 
@@ -56,7 +59,10 @@ import { EditarServiciosComponent } from './editar-servicios/editar-servicios.co
     AgregarCategoriasComponent,
     EditarCategoriasComponent,
     EditarServiciosComponent,
-    EditarProductosComponent
+    EditarProductosComponent,
+    PagoExitosoComponent,
+    PagoFallidoComponent,
+    PagoPendienteComponent
 
   ],
   imports: [

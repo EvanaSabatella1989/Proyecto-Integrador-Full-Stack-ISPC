@@ -48,26 +48,53 @@ export class CarritoComponent implements OnInit {
   // });
       this.serviceStore.myCart$.subscribe(items => {
        this.cartItems = items;
-       console.log(this.cartItems)
+       console.log("Productos preparados : " +this.cartItems)
        this.total_precio = items
          .map(item => item.producto.precio * item.cantidad)
           .reduce((acc, precio) => acc + precio, 0);
      });
   }
 
-  preferenceMP(){
-    this.status = 'loading'
-    this.payService.preference(this.products)
-    .subscribe({
-      next: (resp) => {
-        console.log(resp)
-        window.location.replace(resp.init_point)
+  // preferenceMP(){
+  //   this.status = 'loading'
+  //   // this.payService.preference(this.products)
+  //   console.log("Productos a enviar: " + this.cartItems)
+  //   this.payService.preference(this.cartItems)
+  //   .subscribe({
+  //     next: (resp) => {
+  //       console.log("resp: " + resp)
+  //       //window.location.replace(resp.init_point)
+  //       window.open(resp.init_point, '_blank');
+  //     },
+  //     error: (error) => {
+  //       this.status = 'failed'
+  //       console.log(error)
+  //     }
+  //   })
+  // }
+
+  preferenceMP() {
+    this.status = 'loading';
+    console.log("Productos a enviar:", this.cartItems);
+
+    this.payService.preference(this.cartItems).subscribe({
+      next: (resp: { init_point: string }) => {  // ✅ Tipado correcto
+        console.log("Respuesta de Mercado Pago:", resp);
+
+        if (resp.init_point) {
+          // window.open(resp.init_point, '_blank');  // ✅ Abre en nueva pestaña
+          window.location.replace(resp.init_point)
+          this.status = 'success';
+        } else {
+          console.error('No se recibió un link de pago');
+          this.status = 'failed';
+        }
       },
-      error: (error) => {
-        this.status = 'failed'
-        console.log(error)
+      error: (error: any) => {
+        console.error('Error en la solicitud de pago:', error);
+        this.status = 'failed';
       }
-    })
+    });
   }
 
 }

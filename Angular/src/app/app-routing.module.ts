@@ -29,6 +29,9 @@ import { AuthRedirectGuard } from './guards/auth-redirect.guard';
 import { AuthClientGuard } from './guards/auth-client.guard';
 import { EditarProductosComponent } from './pages/editar-productos/editar-productos.component';
 import { AuthAdminGuard } from './guards/auth-admin.guard';
+import { PagoExitosoComponent } from './pages/pago-exitoso/pago-exitoso.component';
+import { PagoFallidoComponent } from './pages/pago-fallido/pago-fallido.component';
+import { PagoPendienteComponent } from './pages/pago-pendiente/pago-pendiente.component';
 
 const routes: Routes = [
   {path: '', redirectTo: '/home', pathMatch: 'full'},
@@ -57,7 +60,9 @@ const routes: Routes = [
   {path: 'agregar-productos', component: AgregarProductosComponent, canActivate: [AuthAdminGuard]},
   {path: 'editar-categorias/:id', component: EditarCategoriasComponent, canActivate: [AuthAdminGuard]},
   {path: 'editar-productos/:id', component:EditarProductosComponent, canActivate: [AuthAdminGuard]},
-
+  {path: 'pago-exitoso', component: PagoExitosoComponent },
+  {path: 'pago-fallido', component: PagoFallidoComponent },
+  {path: 'pago-pendiente', component: PagoPendienteComponent},
 
 
   {path: '**', component: Pagina404Component}
