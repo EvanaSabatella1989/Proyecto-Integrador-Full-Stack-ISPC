@@ -11,7 +11,7 @@
     <!-- Nombre del cliente -->
     <div class="form-group">
       <label for="nombre_cliente">Nombre</label>
-      <input type="text" id="nombre_cliente" formControlName="nombre_cliente" class="form-control" placeholder="Nombre del cliente" required>
+      <input type="text" id="nombre_cliente" formControlName="nombre_cliente" class="form-control" placeholder="Nombre" required>
       <div *ngIf="servicioForm.get('nombre_cliente')?.invalid && servicioForm.get('nombre_cliente')?.touched" class="text-danger">
         El nombre es obligatorio y debe tener al menos 2 caracteres.
       </div>
@@ -32,22 +32,17 @@
     </div>
 
     <!-- Selección de sucursal -->
-    <div class="form-group">
-      <label for="sucursal">Sucursal:</label>
-      <select id="sucursal" formControlName="sucursal" (change)="alCambiarSucursal()" class="form-control">
-        <option *ngFor="let sucursal of sucursales" [value]="sucursal.id">{{ sucursal.nombre }}</option>
-      </select>
-    </div>
-
-    <!-- Selección de fecha y hora -->
-    <div class="form-group">
-      <label for="fecha">Fecha y Hora:</label>
-      <select id="fecha" formControlName="fecha_sucursal" class="form-control">
-        <option *ngFor="let horario of horariosDisponibles" [value]="horario.id">
-          {{ horario.fecha }} - {{ horario.hora }}
-        </option>
-      </select>
-    </div>
+    <label for="sucursal">Sucursal:</label>
+    <select id="sucursal" formControlName="sucursal" (change)="alCambiarSucursal()">
+      <option *ngFor="let sucursal of sucursales" [value]="sucursal.id">{{ sucursal.nombre }}</option>
+    </select>
+    
+    <label for="fecha">Fecha y Hora:</label>
+    <select id="fecha" formControlName="fecha_sucursal" (change)="alCambiarFecha($event)">
+      <option *ngFor="let horario of horariosDisponibles" [value]="horario.id">
+        {{ horario.fecha }} - {{ horario.hora }}
+      </option>
+    </select>
 
     <!-- Nombre del servicio (solo lectura) -->
     <div class="form-group">

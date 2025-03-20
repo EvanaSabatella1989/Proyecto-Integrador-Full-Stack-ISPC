@@ -4,6 +4,7 @@ import { ServicioService } from 'src/app/service/servicio.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TokenService } from 'src/app/service/token.service';
 import { HttpClient } from '@angular/common/http';
+import { ChangeDetectorRef } from '@angular/core';
 
 
 @Component({
@@ -26,7 +27,7 @@ export class ServicioComponent implements OnInit {
     private fb: FormBuilder,
     private tokenService: TokenService,
     private http: HttpClient,
-   
+    private cdr: ChangeDetectorRef
   ) { 
     
   }
@@ -35,7 +36,9 @@ export class ServicioComponent implements OnInit {
     this.inicializarFormulario();
     this.cargarServicio();
     this.cargarSucursales();
-   
+    this.servicioForm.valueChanges.subscribe(() => {
+      this.cdr.detectChanges();  // Forza la detección de cambios
+    });
   
   }
 
@@ -92,46 +95,46 @@ export class ServicioComponent implements OnInit {
 // metodo que se ejecuta cuando se cambia la sucursal
   alCambiarSucursal() {
     const sucursalId = this.servicioForm.get('sucursal')?.value;
-    if (sucursalId) {
-      this.miservicio.obtenerHorariosDisponibles(sucursalId).subscribe(
-        (horarios) => {
-          if (horarios.length === 0) {
-            this.mensaje = '❌ No hay disponibilidad de reservas para esta sucursal en este momento.';
-            this.horariosDisponibles = []; // Limpiar los horarios disponibles
-          } else {
-            this.horariosDisponibles = horarios;
-            this.mensaje = ''; // Limpiar mensaje de error si hay horarios
-          }
-        },
-        (error) => {
-          console.error('Error al obtener horarios', error);
-          this.mensaje = 'Hubo un error al obtener la disponibilidad de horarios.';
+  if (sucursalId) {
+    this.miservicio.obtenerHorariosDisponibles(sucursalId).subscribe(
+      (horarios) => {
+        if (horarios.length === 0) {
+          this.mensaje = '❌ No hay disponibilidad de reservas para esta sucursal en este momento.';
+          this.horariosDisponibles = []; // Limpiar los horarios disponibles
+        } else {
+          this.horariosDisponibles = horarios;
+          this.mensaje = ''; // Limpiar mensaje de error si hay horarios
         }
-      );
-    }
+      },
+      (error) => {
+        console.error('Error al obtener horarios', error);
+        this.mensaje = 'Hubo un error al obtener la disponibilidad de horarios.';
+      }
+    );
   }
+}
   
-// Método que se ejecuta cuando se selecciona una fecha y hora
+// metodo que se ejecuta cuando se selecciona una fecha y hora
 alCambiarFecha(event: any) {
-  // Buscar el horario seleccionado por su ID
-  const horarioSeleccionado = this.horariosDisponibles.find(horario => horario.id === parseInt(event.target.value));
+  //  buscar el horario seleccionado por su ID
+   const horarioSeleccionado = this.horariosDisponibles.find(horario => horario.id === parseInt(event.target.value));
 
-  if (horarioSeleccionado) {
-    // Actualizar el valor de hora_sucursal y fecha_sucursal
-    this.servicioForm.patchValue({
-      hora_sucursal: horarioSeleccionado.id,
-      fecha_sucursal: horarioSeleccionado.id // Aquí ponemos el ID de la fecha seleccionada
-    });
-
-    console.log('Hora seleccionada:', horarioSeleccionado.hora); // Verificar que la hora se asigna correctamente
-  }
+   if (horarioSeleccionado) {
+    //  actualizar el valor de hora_sucursal y fecha_sucursal
+     this.servicioForm.patchValue({
+       hora_sucursal: horarioSeleccionado.id,
+       fecha_sucursal: horarioSeleccionado.id //ponemos el ID de la fecha seleccionada
+     });
+ 
+     console.log('Hora seleccionada:', horarioSeleccionado.hora); //verificar que la hora se asigna correctamente
+   }
 }
 
 
 
-  // 🟢 7. Método para reservar turno
+  // método para reservar turno
   reservarTurno() {
-    console.log("Formulario enviado:", this.servicioForm.value); // Para ver los valores que se envían
+    console.log("Formulario enviado:", this.servicioForm.value); //ver los valores que se envían
   
     // Verificar si el formulario es inválido
     if (this.servicioForm.invalid) {
@@ -146,11 +149,11 @@ alCambiarFecha(event: any) {
       return;
     }
   
-    // Datos de la reserva (se enviará solo el ID del horario)
+    // Datos de la reserva 
     const reservaData = {
       nombre_cliente: this.servicioForm.value.nombre_cliente,
       correo_cliente: this.servicioForm.value.correo_cliente,
-      hora_sucursal: this.servicioForm.value.hora_sucursal, // Aquí solo se manda el ID del horario
+      hora_sucursal: this.servicioForm.value.hora_sucursal, 
       fecha_sucursal:this.servicioForm.value.fecha_sucursal,
       servicio: this.servicioForm.value.servicioId,
       sucursal: this.servicioForm.value.sucursal
@@ -161,10 +164,10 @@ alCambiarFecha(event: any) {
     // Enviar la reserva al backend
     this.http.post('http://127.0.0.1:8000/api/reserva/', reservaData).subscribe(
       response => {
-        console.log("Reserva exitosa:", response); // Verificamos si la respuesta es correcta
+        console.log("Reserva exitosa:", response); //verificamos si la respuesta es correcta
         this.mensaje = '✅ Reserva realizada con éxito';
         setTimeout(() => {
-          this.router.navigate(['servicios/']); // Redirigir después de la reserva exitosa
+          this.router.navigate(['servicios/']); //redirigir después de la reserva exitosa
         }, 3000);
       },
       error => {
