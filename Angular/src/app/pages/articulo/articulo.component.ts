@@ -14,6 +14,7 @@ import {  Producto, Rating } from 'src/app/models/product.model';
 })
 export class ArticuloComponent implements OnInit {
   isLogged: boolean = false;
+  isAdmin: boolean = false;
   productos: any = {};
   catSelec: any = {};
 
@@ -47,7 +48,20 @@ export class ArticuloComponent implements OnInit {
   }
   ngOnInit(): void {
     this.authService.isLoggedIn$.subscribe(resp => this.isLogged = resp)
-    //desde aquí
+
+    this.authService.isAdmin$.subscribe(isAdmin => {
+      this.isAdmin = isAdmin; // 🔹 Actualizar la variable local
+    });
+
+    // Obtener el carrito al cargar el componente
+    this.miCarrito.getCarrito();
+    // Suscribirse a los cambios en el carrito
+    this.miCarrito.myCart$.subscribe(carrito => {
+      this.productosEnCarrito = carrito.map(item => item.producto.id); // Guardar los IDs de los productos en el carrito
+  });
+
+
+    
     const id = this.activatedRouter.snapshot.params['id'];
     this.miProductos.detail(id).subscribe(
       data => {
@@ -57,15 +71,12 @@ export class ArticuloComponent implements OnInit {
         this.router.navigate(['']);
       }
     );
-  
-    // Verifica si el producto ya está en el carrito
-    // if (this.miCarrito.isProductInCart(id)) {
-    //   alert('Este producto ya está en el carrito.');
-    // }
-  
 
   }
-//hasta aquí
+
+  // Nueva variable para guardar los productos en el carrito
+  productosEnCarrito: number[] = [];
+
   guardarCantidad(event: any) {
     // this.cantidad=this.cantidad+1
     // console.log(this.cantidad = event.target.value)
@@ -103,11 +114,7 @@ export class ArticuloComponent implements OnInit {
   }
 
   isInCart(productId: number): boolean {
-    //return this.miCarrito.isProductInCart(productId);
-    return false;
+    return this.productosEnCarrito.includes(productId);
   }
-  isProductInCart(productId: number): boolean {
-    // return this.miCarrito.isProductInCart(productId);
-    return false;
-  }
+  
 }

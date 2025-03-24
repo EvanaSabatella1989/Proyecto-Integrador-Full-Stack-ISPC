@@ -44,17 +44,22 @@
                     <p class="card-text">${{prod.precio}}</p>
                     <div class="card-footer d-flex align-items-end pt-3 px-0 pb-0 mt-auto">
                       <button 
-                        *ngIf="!isInCart(prod.id)" 
                         class="btn btn-primary shadow-0 me-1" 
                         routerLink="/articulo/{{prod.id}}">
-                        Comprar
+                        Ver detalle
                       </button>
-                      <button 
+                      <!-- <button 
+                        *ngIf="isAdmin" 
+                        class="btn btn-primary shadow-0 me-1" 
+                        routerLink="/articulo/{{prod.id}}">
+                        Ver detalle
+                      </button> -->
+                      <!-- <button 
                         *ngIf="isInCart(prod.id)" 
                         class="btn btn-secondary shadow-0 me-1" 
                         routerLink="/carrito">
                         Ver carrito
-                      </button>
+                      </button> -->
                     </div>
                   </div>
                 </div>

@@ -92,23 +92,11 @@ export class StoreCartService {
     });
   }
 
-  // getCarrito(): void {
-  //   this.http.get<{items: Producto[]}>(`${this.apiUrl}/`, { headers: this.getHeaders()}).subscribe(response => {
-  //     this.carrito.next(response.items);
-  //   });
-  // }
-
   getCarrito(): void {
     this.http.get<{ items: CarritoItem[] }>(`${this.apiUrl}/`, { headers: this.getHeaders()}).subscribe(response => {
       this.carrito.next(response.items);
     });
   }
-
-  // getCarrito(): Observable<Carrito> {
-  //   this.http.get<{items: Producto[]}>(`${this.apiUrl}/`, { headers: this.getHeaders()}).subscribe(response => {
-  //     this.carrito.next(response.items);
-  //   });
-  // }
 
   addProduct(producto: Producto): void {
     this.http.post(`${this.apiUrl}/agregar/`, { producto_id: producto.id, cantidad: 1 }, { headers: this.getHeaders()})
@@ -125,5 +113,10 @@ export class StoreCartService {
       { producto_id: productoId, cantidad: cantidad }, 
       { headers: this.getHeaders() }
     ).subscribe(() => this.getCarrito());
+  }
+
+  isProductInCart(productId: number): boolean {
+    const carritoActual = this.carrito.getValue(); // Obtener los datos actuales del carrito
+    return carritoActual.some(item => item.producto.id === productId);
   }
 }

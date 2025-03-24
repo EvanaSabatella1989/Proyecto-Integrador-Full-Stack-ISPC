@@ -33,10 +33,10 @@
             <!-- Default input -->
             
             <div *ngIf="!isInCart(productos.id) " class="d-flex justify-content-left">
-              <div class="form-outline me-1" style="width: 100px">
+              <!-- <div class="form-outline me-1" style="width: 100px">
                 <input type="number" [(ngModel)]="cantidad" (input)="guardarCantidad($event)" value="1" min="1" class="form-control" />
-              </div>
-            <button
+              </div> -->
+            <button *ngIf="!isAdmin"
               class="btn btn-primary shadow-0 me-1"
               (click)="agregarCarrito()"
             >
@@ -48,7 +48,7 @@
               class="btn btn-primary shadow-0 me-1" 
               routerLink="/carrito"
               >
-              Finalizar compra
+              Ver carrito
             </button>
           </div>
             

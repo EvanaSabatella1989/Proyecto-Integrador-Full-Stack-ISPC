@@ -12,6 +12,7 @@ import { Subscription } from 'rxjs';
 
 export class NavComponent implements OnInit, OnDestroy {
   isLogged:boolean= false;
+  isAdmin: boolean = false;
   //agregamos el userName para mostrar en la sesión de usuario:
   userName: string = '';
   private subscriptions: Subscription = new Subscription();
@@ -24,7 +25,10 @@ export class NavComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.userName = this.authService.getUserName();
-
+    this.authService.isAdmin$.subscribe(isAdmin => {
+      this.isAdmin = isAdmin; // 🔹 Actualizar la variable local
+      
+    });
     // Suscribirse a cambios de sesión y nombre de usuario
     this.subscriptions.add(
       this.authService.userName$.subscribe(name => this.userName = name) // Escuchar cambios en el nombre
@@ -50,4 +54,6 @@ export class NavComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();  // Evita fugas de memoria
   }
+
+  
 }

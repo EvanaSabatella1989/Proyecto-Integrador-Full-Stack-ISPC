@@ -59,7 +59,7 @@
       </div>
 
       <div class="d-flex gap-2" *ngIf="isLogged">
-        <a
+        <a *ngIf="!isAdmin"
           routerLink="/carrito"
           class="icon-link"
           style="color: yellow; margin-left: 10px"
@@ -98,7 +98,7 @@
           <span style="color: antiquewhite;">{{userName}}</span>
           <ul class="dropdown-menu">
             
-            <li><a class="dropdown-item" href="">Perfil</a></li>
+            <li><a class="dropdown-item" href="" routerLink="/perfil">Perfil</a></li>
             <li>
               <button class="dropdown-item" type="button" (click)="logout()">
                 Cerrar sesión

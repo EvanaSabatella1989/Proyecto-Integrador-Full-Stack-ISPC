@@ -27,6 +27,7 @@ from servicio import views
 from categoria.views import CategoriaUpdateDelete, categoriaList
 
 from carrito.views import Carrito
+from vehiculo.views import Vehiculo
 
 
 from rest_framework import routers
@@ -53,7 +54,8 @@ urlpatterns = [
     path('api/categoria/', categoriaList),
     path('api/categoria/detail/<pk>/', categoriaList),
 
-    path('api/', include('carrito.urls'))
+    path('api/', include('carrito.urls')),
+    path('api/', include('vehiculo.urls'))
 ]
 # ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
