@@ -1,4 +1,4 @@
-<main>
+<!-- <main>
     <div class="container contenido">
         <div class="row">
             <div class="col-lg-9">
@@ -82,4 +82,37 @@
             </div>
         </div>            
     </div>     
-</main>
+</main> --><!-- sucursales.component.html -->
+<main>
+    <div class="container contenido">
+      <div class="row">
+        <div class="col-lg-9">
+          <div class="card">
+            <div class="card-block">
+              <div class="map">
+                <iframe *ngFor="let sucursal of sucursales" 
+                        [src]="sucursal.mapaUrl" 
+                        width="840" height="960"></iframe>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-3">
+          <div class="list-group">
+            <div *ngFor="let sucursal of sucursales">
+              <address class="list-group-item list-group-item-success">
+                <strong>{{ sucursal.nombre }}</strong><br>
+                {{ sucursal.direccion }}
+              </address>
+              <a href="tel:{{ sucursal.telefono }}" 
+                 class="list-group-item clickToCall clickableBackgroundColor active">
+                 <span class="fa fa-phone mr-2"></span>Llamar
+              </a>
+            </div>
+          </div>    
+        </div>
+      </div>            
+    </div>     
+  </main>
+  
+  

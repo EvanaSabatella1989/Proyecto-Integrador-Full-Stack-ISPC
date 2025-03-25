@@ -2,7 +2,7 @@ from django.shortcuts import render
 from rest_framework import viewsets, status
 from reserva.models import Reserva
 from .models import Sucursal
-from .serializers import SucursalSerializer,HorarioSucursalSerializer
+from .serializers import SucursalSerializer
 from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
@@ -11,7 +11,7 @@ from django.shortcuts import render,get_object_or_404
 from datetime import datetime, timedelta
 from rest_framework.decorators import api_view
 from django.db.models import Prefetch
-from sucursal.models import HorarioSucursal
+# from sucursal.models import HorarioSucursal
 
 logger = logging.getLogger(__name__)
 
@@ -33,58 +33,58 @@ def listar_sucursales(request):
 
 
 # horarios disponibles de una sucursal
-@api_view(['GET'])
-def obtener_horarios(request, sucursal_id):
-    horarios = HorarioSucursal.objects.filter(sucursal_id=sucursal_id, disponible=True)
-    serializer = HorarioSucursalSerializer(horarios, many=True)
-    return Response(serializer.data)
+# @api_view(['GET'])
+# def obtener_horarios(request, sucursal_id):
+#     horarios = HorarioSucursal.objects.filter(sucursal_id=sucursal_id, disponible=True)
+#     serializer = HorarioSucursalSerializer(horarios, many=True)
+#     return Response(serializer.data)
 
 
-# modificar disponibilidad de un horario
-@api_view(['POST'])
-def modificar_horario(request):
-    try:
-        horario = HorarioSucursal.objects.get(id=request.data['id'])
-        horario.disponible = request.data['disponible']
-        horario.save()
-        return Response({'message': 'Horario actualizado'}, status=status.HTTP_200_OK)
-    except HorarioSucursal.DoesNotExist:
-        return Response({'error': 'Horario no encontrado'}, status=status.HTTP_404_NOT_FOUND)
+# # modificar disponibilidad de un horario
+# @api_view(['POST'])
+# def modificar_horario(request):
+#     try:
+#         horario = HorarioSucursal.objects.get(id=request.data['id'])
+#         horario.disponible = request.data['disponible']
+#         horario.save()
+#         return Response({'message': 'Horario actualizado'}, status=status.HTTP_200_OK)
+#     except HorarioSucursal.DoesNotExist:
+#         return Response({'error': 'Horario no encontrado'}, status=status.HTTP_404_NOT_FOUND)
     
 
 # sgregar un nuevo horario
-@api_view(['POST'])
-def agregar_horario(request):
-    serializer = HorarioSucursalSerializer(data=request.data)
-    if serializer.is_valid():
-        serializer.save()
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+# @api_view(['POST'])
+# def agregar_horario(request):
+#     serializer = HorarioSucursalSerializer(data=request.data)
+#     if serializer.is_valid():
+#         serializer.save()
+#         return Response(serializer.data, status=status.HTTP_201_CREATED)
+#     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 
-# Eliminar un horario
-@api_view(['DELETE'])
-def eliminar_horario(request, horario_id):
-    try:
-        horario = HorarioSucursal.objects.get(id=horario_id)
-        horario.delete()
-        return Response({'message': 'Horario eliminado'}, status=status.HTTP_200_OK)
-    except HorarioSucursal.DoesNotExist:
-        return Response({'error': 'Horario no encontrado'}, status=status.HTTP_404_NOT_FOUND)
+# # Eliminar un horario
+# @api_view(['DELETE'])
+# def eliminar_horario(request, horario_id):
+#     try:
+#         horario = HorarioSucursal.objects.get(id=horario_id)
+#         horario.delete()
+#         return Response({'message': 'Horario eliminado'}, status=status.HTTP_200_OK)
+#     except HorarioSucursal.DoesNotExist:
+#         return Response({'error': 'Horario no encontrado'}, status=status.HTTP_404_NOT_FOUND)
     
 
-# horarios disponibles en las sucursales
-@api_view(['GET'])
-def horarios_disponibles(request, sucursal_id):
-    try:
-        horarios = HorarioSucursal.objects.filter(sucursal_id=sucursal_id, disponible=True).order_by('fecha', 'hora')
-        serializer = HorarioSucursalSerializer(horarios, many=True)
-        return Response(serializer.data, status=200)
-    except Exception as e:
-        return Response({'error': str(e)}, status=500)
+# # horarios disponibles en las sucursales
 # @api_view(['GET'])
-# def horarios_disponibles(request):
+# def horarios_disponibles(request, sucursal_id):
+#     try:
+#         horarios = HorarioSucursal.objects.filter(sucursal_id=sucursal_id, disponible=True).order_by('fecha', 'hora')
+#         serializer = HorarioSucursalSerializer(horarios, many=True)
+#         return Response(serializer.data, status=200)
+#     except Exception as e:
+#         return Response({'error': str(e)}, status=500)
+# # @api_view(['GET'])
+# # def horarios_disponibles(request):
 #     """
 #     Devuelve los horarios disponibles, opcionalmente filtrados por sucursal.
 #     """
@@ -107,23 +107,23 @@ def horarios_disponibles(request, sucursal_id):
 #         return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
-@api_view(['GET'])
-def horarios_reservados(request):
-    # mensaje en la api
-    """
-    Lista de  todos los horarios reservados de todas las sucursales.
-    """
-    try:
-        horarios = HorarioSucursal.objects.filter(disponible=False).order_by('fecha', 'hora')
+# @api_view(['GET'])
+# def horarios_reservados(request):
+#     # mensaje en la api
+#     """
+#     Lista de  todos los horarios reservados de todas las sucursales.
+#     """
+#     try:
+#         horarios = HorarioSucursal.objects.filter(disponible=False).order_by('fecha', 'hora')
 
-        if not horarios.exists():
-            return Response({'message': 'No hay horarios reservados en ninguna sucursal.'}, status=status.HTTP_200_OK)
+#         if not horarios.exists():
+#             return Response({'message': 'No hay horarios reservados en ninguna sucursal.'}, status=status.HTTP_200_OK)
 
-        serializer = HorarioSucursalSerializer(horarios, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+#         serializer = HorarioSucursalSerializer(horarios, many=True)
+#         return Response(serializer.data, status=status.HTTP_200_OK)
     
-    except Exception as e:
-        return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+#     except Exception as e:
+#         return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 

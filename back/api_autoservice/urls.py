@@ -42,7 +42,7 @@ urlpatterns = [
     path('api/', include('producto.urls')),
     path('api/venta/', include('venta.urls')),
     path('api/', include('reserva.urls')),
-     path('api/', include('sucursal.urls')),
+    path('api/', include('sucursal.urls')),
 
     # path('api/', include('servicio.urls')),
     # path('api/servicio/servicioList/',views.servicioList),
@@ -53,7 +53,8 @@ urlpatterns = [
     path('api/categoria/', categoriaList),
     path('api/categoria/detail/<pk>/', categoriaList),
 
-    path('api/', include('carrito.urls'))
+    path('api/', include('carrito.urls')),
+    path('api/',include('turno.urls'))
 ]
 # ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

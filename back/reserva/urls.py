@@ -1,12 +1,15 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from .views import ReservaViewSet,reserva
-from .views import Reserva
+from .views import ReservaViewSet
+from .views import reservar_turno,eliminar_turno
 
 
-
+router = DefaultRouter()
+router.register(r"reservas", ReservaViewSet,basename='reservas')
 
 urlpatterns = [
     
-    path('reserva/', reserva, name="reserva"), 
+    path('', include(router.urls)), 
+    path('reservar-turno/', reservar_turno, name='reservar_turno'),
+    path('eliminar-turno/<int:reserva_id>/',eliminar_turno,name='eliminar_turno'),
 ]

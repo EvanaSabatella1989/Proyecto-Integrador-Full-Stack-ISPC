@@ -1,11 +1,13 @@
 from rest_framework import serializers
-
-from .models import Reserva
+from .models import Reserva,Turno
+from user.models import Cliente
 
 class ReservaSerializer(serializers.ModelSerializer):
     # fecha = serializers.DateTimeField(format="%Y-%m-%dT%H:%M", input_formats=["%Y-%m-%dT%H:%M"])  # solo año, mes, dia y hora
+    
+
     class Meta:
-        model = Reserva
-        fields = ['sucursal','servicio','hora_sucursal','fecha_sucursal','nombre_cliente','correo_cliente']
+            model = Reserva
+            fields = '__all__'
 
      

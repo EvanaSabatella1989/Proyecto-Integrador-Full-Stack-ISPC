@@ -3,6 +3,8 @@ from pathlib import Path
 from datetime import timedelta
 
 
+
+
 # configuracion para el envio de correos a  Mailtrap y hacer las pruebas
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.mailtrap.io'  # Servidor SMTP de Mailtrap

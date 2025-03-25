@@ -4,9 +4,9 @@ from .models import Turno
 
 
 class TurnoAdmin(admin.ModelAdmin):
-    list_display = ('fecha', 'hora')
-    list_display_links = ('fecha', 'hora')
-    search_fields = ('fecha', 'hora', 'sucursal')
+    list_display = ('servicio', 'sucursal','fecha','hora','disponible')
+    list_display_links = ('servicio', 'sucursal','fecha','hora','disponible')
+    search_fields = ('servicio', 'sucursal','fecha','hora','disponible')
     list_per_page = 25
 
 

@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from .models import Sucursal
-from sucursal.models import HorarioSucursal
+# from sucursal.models import HorarioSucursal
 
 
 class SucursalSerializer(serializers.ModelSerializer):
@@ -8,7 +8,7 @@ class SucursalSerializer(serializers.ModelSerializer):
         model = Sucursal
         fields = '__all__'
 
-class HorarioSucursalSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = HorarioSucursal
-        fields = '__all__'
+# class HorarioSucursalSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = HorarioSucursal
+#         fields = '__all__'
