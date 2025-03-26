@@ -1,62 +1,59 @@
-<div class="container">
-  <h2>Reservar Servicio</h2>
-
-  <!-- Mensaje de éxito o error -->
-  <div *ngIf="mensaje" class="alert" [ngClass]="{'alert-success': mensaje.includes('éxito'), 'alert-danger': mensaje.includes('error'), 'alert-warning': mensaje.includes('disponibilidad')}">
-    {{ mensaje }}
-  </div>
-
-  <!-- Formulario de reserva -->
-  <form [formGroup]="servicioForm" (ngSubmit)="reservarTurno()">
-    <!-- Nombre del cliente -->
-    <div class="form-group">
-      <label for="nombre_cliente">Nombre</label>
-      <input type="text" id="nombre_cliente" formControlName="nombre_cliente" class="form-control" placeholder="Nombre" required>
-      <div *ngIf="servicioForm.get('nombre_cliente')?.invalid && servicioForm.get('nombre_cliente')?.touched" class="text-danger">
-        El nombre es obligatorio y debe tener al menos 2 caracteres.
+<div class="container ">
+  <div class="row">
+    <div class="col">
+      <div class="card">
+        <img src="{{servicio.imagen}}" class="card-img-top" alt="...">
+        <div class="card-body">
+          <h5 class="card-title">{{servicio.nombre}}</h5>
+          <p class="card-text">{{servicio.descripcion}}</p>
+        </div>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">Costo del servicio: $ {{servicio.precio}}</li>
+        </ul>
       </div>
     </div>
+<div  class="col">
+  
 
-    <!-- Correo del cliente -->
-    <div class="form-group">
-      <label for="correo_cliente">Correo</label>
-      <input type="email" id="correo_cliente" formControlName="correo_cliente" class="form-control" placeholder="Correo electrónico" required>
-      <div *ngIf="servicioForm.get('correo_cliente')?.invalid && servicioForm.get('correo_cliente')?.touched" class="text-danger">
-        Ingresa un correo válido.
-      </div>
-    </div>
-
-    <!-- Mostrar mensaje si no hay disponibilidad -->
-    <div *ngIf="mensaje && mensaje.includes('disponibilidad')" class="alert alert-warning" role="alert">
-      {{ mensaje }}
-    </div>
-
-    <!-- Selección de sucursal -->
-    <label for="sucursal">Sucursal:</label>
-    <select id="sucursal" formControlName="sucursal" (change)="alCambiarSucursal()">
-      <option *ngFor="let sucursal of sucursales" [value]="sucursal.id">{{ sucursal.nombre }}</option>
-    </select>
-    
-    <label for="fecha">Fecha y Hora:</label>
-    <select id="fecha" formControlName="fecha_sucursal" (change)="alCambiarFecha($event)">
-      <option *ngFor="let horario of horariosDisponibles" [value]="horario.id">
-        {{ horario.fecha }} - {{ horario.hora }}
-      </option>
-    </select>
-
+  
+  <form [formGroup]="reservaForm" (ngSubmit)="reservar()" class="p-4 border rounded shadow-sm">
+    <h5>Reserva un turno para el servicio de tu vehiculo</h5>
     <!-- Nombre del servicio (solo lectura) -->
-    <div class="form-group">
-      <label for="servicio">Servicio</label>
+    <div class="mb-3">
+      <label for="servicio" class="form-label fw-bold">Servicio</label>
       <input type="text" id="servicio" formControlName="servicio" class="form-control" [value]="servicio.nombre" readonly>
     </div>
-
-    <!-- ID del servicio (solo para enviar al backend) -->
-    <input type="hidden" formControlName="servicioId">
-
-    <!-- Botón de reserva -->
-    <button type="submit" class="btn btn-primary" >Reservar</button>
-    
-    <!-- Botón de Volver -->
-    <a routerLink="/servicios" class="btn btn-primary">Volver</a>
+  
+    <!-- Selección de sucursal -->
+    <div class="mb-3">
+      <label for="sucursal" class="form-label fw-bold">Sucursal</label>
+      <select id="sucursal" formControlName="sucursal" class="form-control" (change)="cargarTurnos()">
+        <option *ngFor="let sucursal of sucursales" [value]="sucursal.id">
+          {{ sucursal.nombre }}
+        </option>
+      </select>
+    </div>
+  
+    <!-- Selección de turno -->
+    <div class="mb-3">
+      <label for="turno" class="form-label fw-bold">Turno</label>
+      <select id="turno" formControlName="turno" class="form-control">
+        <option *ngFor="let turno of turnos" [value]="turno.id">
+          {{ turno.fecha }} - {{ turno.hora }}
+        </option>
+      </select>
+      <div *ngIf="turnos.length === 0 && reservaForm.value.sucursal" class="text-danger mt-2">
+        ❌ No hay turnos disponibles en esta sucursal. Por favor, elige otra.
+      </div>
+    </div>
+  
+    <!-- Botón de envío -->
+    <button type="submit" class="btn btn-primary w-100">Reservar</button>
   </form>
+  
+   <!-- Mostrar mensaje de confirmación o error -->
+  
+  
+  
 </div>
+

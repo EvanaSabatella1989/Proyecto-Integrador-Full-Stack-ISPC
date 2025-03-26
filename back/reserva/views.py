@@ -71,7 +71,7 @@ def reservar_turno(request):
             message=f"Tu reserva para el servicio {turno.servicio.nombre} en la sucursal {turno.sucursal.nombre} "
                     f"ha sido confirmada para el día {turno.fecha} a las {turno.hora}.",
             from_email=settings.DEFAULT_FROM_EMAIL,
-            recipient_list=[data.get("cliente_email")]
+            recipient_list=[data.get("correo_cliente")]
         )
 
         return JsonResponse({"message": "Reserva confirmada", "reserva_id": reserva.id}, status=201)

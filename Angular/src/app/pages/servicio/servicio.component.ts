@@ -5,7 +5,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TokenService } from 'src/app/service/token.service';
 import { HttpClient } from '@angular/common/http';
 import { ChangeDetectorRef } from '@angular/core';
-
+import { AuthService } from 'src/app/service/auth.service';
 
 @Component({
   selector: 'app-servicio',
@@ -13,12 +13,15 @@ import { ChangeDetectorRef } from '@angular/core';
   styleUrls: ['./servicio.component.css']
 })
 export class ServicioComponent implements OnInit {
-  // Formularios reactivos y variables
   servicioForm!: FormGroup;
-  servicio: any = {}; // información del servicio seleccionado
-  sucursales: any[] = []; // Lista de sucursales
-  mensaje: string = ''; // Mensaje para mostrar al usuario
-  horariosDisponibles: any[] = [];
+  servicio: any = {};
+  reservaForm: FormGroup;
+  sucursales: any[] = [];
+  turnos: any[] = []
+  clienteId = 1;  // id de usuario autenticado
+  mensajeConfirmacion='';
+
+
 
   constructor(
     private miservicio: ServicioService,
@@ -27,28 +30,26 @@ export class ServicioComponent implements OnInit {
     private fb: FormBuilder,
     private tokenService: TokenService,
     private http: HttpClient,
-    private cdr: ChangeDetectorRef
-  ) { 
-    
+    private authService: AuthService
+  ) {
+    //  this.clienteId = this.authService.getClienteId();
+
+    this.reservaForm = this.fb.group({
+      sucursal: [''],
+      turno: ['']
+    });
   }
 
   ngOnInit(): void {
-    this.inicializarFormulario();
     this.cargarServicio();
     this.cargarSucursales();
-    this.servicioForm.valueChanges.subscribe(() => {
-      this.cdr.detectChanges();  // Forza la detección de cambios
-    });
-  
   }
 
-  // cargar detalles del servicio seleccionado
   cargarServicio() {
     const id = this.activatedRouter.snapshot.params['id'];
     this.miservicio.obtenerServicio(id).subscribe(
       data => {
         this.servicio = data;
-        // Rellenar el formulario con el nombre y ID del servicio
         this.servicioForm.patchValue({
           servicio: this.servicio.nombre,
           servicioId: this.servicio.id
@@ -60,121 +61,81 @@ export class ServicioComponent implements OnInit {
       }
     );
   }
-
-  // inicializar formulario reactivo
-  inicializarFormulario() {
-    this.servicioForm = this.fb.group({
-      nombre_cliente: ['', [Validators.required, Validators.minLength(2)]],
-      correo_cliente: ['', [Validators.required, Validators.email]],
-      sucursal: ['', Validators.required], // Sucursal seleccionada
-      fecha_sucursal: ['', Validators.required], // Fecha de la reserva
-      hora_sucursal: ['', Validators.required], // Horario disponible para la fecha y sucursal
-      servicio: ['', Validators.required], // Nombre del servicio
-      servicioId: ['', Validators.required] // ID del servicio
-      
+ 
+  
+  cargarSucursales() {
+    this.miservicio.obtenerSucursales().subscribe(data => {
+      this.sucursales = data;
     });
-
-    
-   
   }
   
+  cargarTurnos() {
+    const sucursalId = this.reservaForm.value.sucursal;
+  console.log("Sucursal seleccionada:", sucursalId);
 
-  // obtener lista de sucursales disponibles
-  cargarSucursales() {
-    this.miservicio.obtenerSucursales().subscribe(
-      (data: any[]) => {
-        this.sucursales = data;
-        console.log('Sucursales:', data);  
-      },
-      error => {
-        console.error('Error al cargar sucursales', error);
-      }
-    );
-  }
-
-// metodo que se ejecuta cuando se cambia la sucursal
-  alCambiarSucursal() {
-    const sucursalId = this.servicioForm.get('sucursal')?.value;
   if (sucursalId) {
-    this.miservicio.obtenerHorariosDisponibles(sucursalId).subscribe(
-      (horarios) => {
-        if (horarios.length === 0) {
-          this.mensaje = '❌ No hay disponibilidad de reservas para esta sucursal en este momento.';
-          this.horariosDisponibles = []; // Limpiar los horarios disponibles
-        } else {
-          this.horariosDisponibles = horarios;
-          this.mensaje = ''; // Limpiar mensaje de error si hay horarios
+    this.miservicio.obtenerTurnos(sucursalId).subscribe(
+      (data) => {
+        this.turnos = data;
+        if (this.turnos.length === 0) {
+          console.warn("No hay turnos disponibles para esta sucursal.");
         }
       },
       (error) => {
-        console.error('Error al obtener horarios', error);
-        this.mensaje = 'Hubo un error al obtener la disponibilidad de horarios.';
+        console.error("Error al obtener turnos:", error);
       }
     );
   }
 }
-  
-// metodo que se ejecuta cuando se selecciona una fecha y hora
-alCambiarFecha(event: any) {
-  //  buscar el horario seleccionado por su ID
-   const horarioSeleccionado = this.horariosDisponibles.find(horario => horario.id === parseInt(event.target.value));
 
-   if (horarioSeleccionado) {
-    //  actualizar el valor de hora_sucursal y fecha_sucursal
-     this.servicioForm.patchValue({
-       hora_sucursal: horarioSeleccionado.id,
-       fecha_sucursal: horarioSeleccionado.id //ponemos el ID de la fecha seleccionada
-     });
- 
-     console.log('Hora seleccionada:', horarioSeleccionado.hora); //verificar que la hora se asigna correctamente
-   }
-}
-
-
-
-  // método para reservar turno
-  reservarTurno() {
-    console.log("Formulario enviado:", this.servicioForm.value); //ver los valores que se envían
-  
-    // Verificar si el formulario es inválido
-    if (this.servicioForm.invalid) {
-      console.log("El formulario es inválido");
-      return;
-    }
-  
-    // Verificar si el usuario está logueado
+reservar() {
+  // Verificar si el usuario está logueado
     if (!this.tokenService.isValidToken()) {
       alert('Debes iniciar sesión antes de continuar');
       this.router.navigate(['/login']);
       return;
     }
-  
-    // Datos de la reserva 
-    const reservaData = {
-      nombre_cliente: this.servicioForm.value.nombre_cliente,
-      correo_cliente: this.servicioForm.value.correo_cliente,
-      hora_sucursal: this.servicioForm.value.hora_sucursal, 
-      fecha_sucursal:this.servicioForm.value.fecha_sucursal,
-      servicio: this.servicioForm.value.servicioId,
-      sucursal: this.servicioForm.value.sucursal
-    };
-  
-    console.log("Datos de reserva enviados:", reservaData); // Verificamos los datos que se enviarán
-  
-    // Enviar la reserva al backend
-    this.http.post('http://127.0.0.1:8000/api/reserva/', reservaData).subscribe(
-      response => {
-        console.log("Reserva exitosa:", response); //verificamos si la respuesta es correcta
-        this.mensaje = '✅ Reserva realizada con éxito';
-        setTimeout(() => {
-          this.router.navigate(['servicios/']); //redirigir después de la reserva exitosa
-        }, 3000);
-      },
-      error => {
-        console.error('Error al realizar la reserva', error);
-        this.mensaje = '❌ Hubo un error, por favor intenta nuevamente';
+  const datosReserva = {
+    cliente_id: this.clienteId,
+    turno_id: this.reservaForm.value.turno,
+    confirmado: true
+  };
+
+  // llamada al servicie para reservar el turno
+  this.miservicio.reservarTurno(datosReserva).subscribe(
+    (response) => {
+      // mensaje de éxito si la reserva fue confirmada
+      alert('Reserva confirmada. Revisa tu correo para más detalles.');
+      this.router.navigate(['/servicios']);
+    },
+    (error) => {
+      // si hay un error, significa que no se pudo reservar el turno
+      if (error.status === 400 && error.error.error === 'Turno no disponible') {
+        // mensaje cuando no hay turnos disponibles
+        alert('Lo sentimos, no hay horarios disponibles para esa sucursal. Intenta con otro turno.');
+      } else {
+        // mensaje genérico de error
+        alert('Hubo un error al reservar el turno. Intenta nuevamente.');
       }
-    );
-  }
-  
+    }
+  );
+  console.log(datosReserva);
 }
+
+  }
+
+ 
+  // reservar() {tambien sirve para reservar
+  //   const datosReserva = {
+  //     cliente_id: this.clienteId,
+  //     turno_id: this.reservaForm.value.turno,
+  //     confirmado: true
+  //   };
+
+  //   this.miservicio.reservarTurno(datosReserva).subscribe(response => {
+  //     alert('Reserva confirmada');
+  //   });
+  // }
+
+
+ 

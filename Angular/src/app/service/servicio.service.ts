@@ -12,7 +12,7 @@ export class ServicioService {
 // url2:string="http://localhost:8000/photos/photos/";
 url:string="http://localhost:8000/api/servicios/"
 urlDos:string="http://localhost:8000/api/reserva/"
-urlTres:string="http://127.0.0.1:8000/api/"
+urlTres:string="http://127.0.0.1:8000/api"
 
  constructor(private http:HttpClient) { }
 
@@ -59,11 +59,53 @@ eliminarServicio(id: number): Observable<any> {
   return this.http.delete(`${this.url}${id}/`);
 }
 
-/// Obtener todas las sucursales disponibles
+
+
+// / Obtener todas las sucursales disponibles
 obtenerSucursales(): Observable<any> {
   return this.http.get<any>('http://127.0.0.1:8000/api/sucursal/');
 }
 
+
+// Obtener los turnos disponibles de una sucursal
+obtenerTurnos(sucursalId: number): Observable<any> {
+  return this.http.get(`${this.urlTres}/disponibles/${sucursalId}/`);
+}
+
+// Reservar un turno
+reservarTurno(datosReserva: any): Observable<any> {
+  return this.http.post(`${this.urlTres}/reservar-turno/`, datosReserva);
+}
+
+// obtenerTurnosDisponibles(sucursalId: number): Observable<any[]> {
+//   console.log(`Obteniendo turnos desde: ${this.urlTres}/disponibles/?sucursal_id=${sucursalId}`); 
+//   return this.http.get<any[]>(`${this.urlTres}/disponibles/?sucursal_id=${sucursalId}`);
+// }
+// obtenerTurnosDisponibles(sucursalId: number): Observable<any[]>{
+//   const url = `${this.urlTres}/disponibles/${sucursalId}/`; 
+//   console.log("URL de solicitud:para ver", url); // Verifica la URL
+//   return this.http.get<any[]>(url);
+// }
+
+// reservarTurno(cliente_id: number, turno_id: number, cliente_email: string): Observable<any> {
+//   const data = {
+//     cliente_id: cliente_id,
+//     turno_id: turno_id,
+//     cliente_email: cliente_email
+//   };
+  
+//   return this.http.post(`${this.urlTres}/reservar-turno/`, data);
+// }
+
+
+// funciona pero no envia
+// reservarTurno(data: any): Observable<any> {
+//   return this.http.post(`${this.urlTres}/reservar-turno/`, data);
+// }
+// Enviar reserva de turno
+// reservarTurno(data: any): Observable<any> {
+//   return this.http.post<any>(`${this.urlTres}/reservar-turno/`, data);
+// }
 // Obtener los horarios disponibles para una sucursal específica
 // obtenerHorariosDisponibles(sucursalId: number): Observable<any> {
 //   const url = `${this.urlTres}?sucursal=${sucursalId}`;
@@ -71,9 +113,9 @@ obtenerSucursales(): Observable<any> {
 //   return this.http.get<any>(url);
 // }
 
-obtenerHorariosDisponibles(sucursalId: number): Observable<any> {
-  return this.http.get(`${this.urlTres}horarios-disponibles/${sucursalId}/`);
-}
+// obtenerHorariosDisponibles(sucursalId: number): Observable<any> {
+//   return this.http.get(`${this.urlTres}horarios-disponibles/${sucursalId}/`);
+// }
 
 }
 
