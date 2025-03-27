@@ -30,6 +30,8 @@ import { EditarServiciosComponent } from './editar-servicios/editar-servicios.co
 import { PagoExitosoComponent } from './pago-exitoso/pago-exitoso.component';
 import { PagoFallidoComponent } from './pago-fallido/pago-fallido.component';
 import { PagoPendienteComponent } from './pago-pendiente/pago-pendiente.component';
+import { PerfilComponent } from './perfil/perfil.component';
+import { AgregarVehiculoComponent } from './agregar-vehiculo/agregar-vehiculo.component';
 
 
 
@@ -62,7 +64,9 @@ import { PagoPendienteComponent } from './pago-pendiente/pago-pendiente.componen
     EditarProductosComponent,
     PagoExitosoComponent,
     PagoFallidoComponent,
-    PagoPendienteComponent
+    PagoPendienteComponent,
+    PerfilComponent,
+    AgregarVehiculoComponent,
 
   ],
   imports: [

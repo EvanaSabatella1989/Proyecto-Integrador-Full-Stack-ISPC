@@ -77,6 +77,10 @@ isAdmin(): boolean {
   return this.tokenService.isAdmin();
 }
 
+obtenerIdUsuario(): string {
+  return '';
+}
+
   getUserName(): string {
     return localStorage.getItem('first_name') || '';
   }

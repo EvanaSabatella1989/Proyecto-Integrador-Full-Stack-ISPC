@@ -1,14 +1,18 @@
 from django.db import models
 from user.models import Cliente
+# from user.models import UserAccount
 from datetime import datetime
 
 # Create your models here.
 
 
 class Vehiculo(models.Model):
-    modelo = models.CharField(max_length=100)
-    imagen = models.ImageField(upload_to='photos/%Y/%m/')
-    tipo = models.CharField(max_length=100)
+    marca = models.CharField(max_length=100, default="Desconocido")  # Nueva columna ejemplo Honda, Yamaha
+    modelo = models.CharField(max_length=100)  #ejemplo Civic, YZF-R3
+    categoria = models.CharField(max_length=100, default="Desconocido")  # Nueva columna (Ej: Moto, Auto, Camión)
+    tipo = models.CharField(max_length=100, default="Otro") # ejemplo autos(sedán, pickup) ejemplo moto (deportiva, scooter, enduro)
+    anio_fabricacion = models.PositiveIntegerField(default=2000)  # Nueva columna
+    # imagen = models.ImageField(upload_to='photos/%Y/%m/')
     cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
     date_created = models.DateTimeField(default=datetime.now)
 
@@ -23,4 +27,5 @@ class Vehiculo(models.Model):
         return ''
 
     def __str__(self):
-        return self.modelo
+        # return self.modelo
+        return f"{self.marca} {self.modelo} ({self.anio_fabricacion})"

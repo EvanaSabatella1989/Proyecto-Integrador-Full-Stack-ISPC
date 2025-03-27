@@ -32,6 +32,8 @@ import { AuthAdminGuard } from './guards/auth-admin.guard';
 import { PagoExitosoComponent } from './pages/pago-exitoso/pago-exitoso.component';
 import { PagoFallidoComponent } from './pages/pago-fallido/pago-fallido.component';
 import { PagoPendienteComponent } from './pages/pago-pendiente/pago-pendiente.component';
+import { PerfilComponent } from './pages/perfil/perfil.component';
+import { AgregarVehiculoComponent } from './pages/agregar-vehiculo/agregar-vehiculo.component';
 
 const routes: Routes = [
   {path: '', redirectTo: '/home', pathMatch: 'full'},
@@ -44,7 +46,7 @@ const routes: Routes = [
   {path: 'sucursales', component: SucursalesComponent},
   {path: 'registrarse', component: RegistrarseComponent},
   {path: 'login', component: LoginComponent, canActivate: [AuthRedirectGuard]}, 
-  {path: 'carrito', component: CarritoComponent},
+  {path: 'carrito', component: CarritoComponent, canActivate: [AuthClientGuard]},
   {path: 'productos/:id', component: ProductosComponent},
   {path: 'productos', component: ProductosComponent},
   {path: 'preguntas-frecuentes', component: PreguntasFrecuentesComponent},
@@ -63,6 +65,8 @@ const routes: Routes = [
   {path: 'pago-exitoso', component: PagoExitosoComponent },
   {path: 'pago-fallido', component: PagoFallidoComponent },
   {path: 'pago-pendiente', component: PagoPendienteComponent},
+  {path: 'perfil', component: PerfilComponent},
+  {path: 'agregar-vehiculo', component: AgregarVehiculoComponent, canActivate: [AuthClientGuard]},
 
 
   {path: '**', component: Pagina404Component}
