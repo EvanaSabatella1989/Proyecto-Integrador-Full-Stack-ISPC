@@ -46,7 +46,7 @@
         ❌ No hay turnos disponibles en esta sucursal. Por favor, elige otra.
       </div>
     </div>
-  
+    <div *ngIf="isLoading">Cargando, por favor espera...⌛</div>
     <!-- Botón de envío -->
     <button type="submit" class="btn btn-primary w-100">Reservar</button>
   </form>

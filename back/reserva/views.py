@@ -65,7 +65,7 @@ def reservar_turno(request):
             from_email=settings.DEFAULT_FROM_EMAIL,
             recipient_list=["admin@tuempresa.com"]
         )
-        # ENVIAR CORREO AL CLIENTE
+        # ENVIAR CORREO AL CLIENTE revisar!!! no funciona
         send_mail(
             subject="Reserva Confirmada",
             message=f"Tu reserva para el servicio {turno.servicio.nombre} en la sucursal {turno.sucursal.nombre} "

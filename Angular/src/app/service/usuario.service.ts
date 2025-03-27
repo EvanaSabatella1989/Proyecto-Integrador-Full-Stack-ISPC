@@ -17,6 +17,7 @@ import { Observable } from 'rxjs';
 })
 export class UsuarioService {
   private apiUrl = "http://localhost:8000/api/perfil/";
+  private apiUrl2="http://localhost:8000/api";
 
   constructor(private http: HttpClient) {}
 
@@ -35,4 +36,10 @@ export class UsuarioService {
   obtenerPerfil(): Observable<any> {
     return this.http.get<any>(this.apiUrl,{ headers: this.getHeaders()});
   }
+
+  // para obtener los id de clientes relacionados a usuario
+  obtenerClienteId(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl2}/perfil-cliente/`, { headers: this.getHeaders() });
+  }
+  
 }

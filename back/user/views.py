@@ -60,6 +60,8 @@ from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.views import APIView
+from user.models import Cliente
 
 from .serializers import UserSerializer
 
@@ -112,3 +114,23 @@ def obtener_perfil(request):
     usuario = request.user  # Obtiene el usuario autenticado
     serializer = UserSerializer(usuario)
     return Response(serializer.data)
+
+
+# para obtener los id de los clientes relacionados a usuario
+class PerfilClienteView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        # obtengo el usuario autenticado
+        user = request.user
+
+        # obtengo el cliente relacionado con ese usuario
+        try:
+            cliente = Cliente.objects.get(user=user)
+            # retornar el cliente_id relacionado con el usuario
+            return Response({
+                'cliente_id': cliente.id
+            })
+        except Cliente.DoesNotExist:
+            # si no existe el cliente, retornamos un error
+            return Response({'detail': 'Cliente no encontrado'}, status=404)
