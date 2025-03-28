@@ -6,7 +6,7 @@ class Turno(models.Model):
     servicio = models.ForeignKey(Servicio, on_delete=models.CASCADE, default=1)
     sucursal = models.ForeignKey(Sucursal, on_delete=models.CASCADE, default=1)
     fecha = models.DateField()
-    hora = models.TimeField()
+    hora = models.TimeField('%H:%M')
     disponible = models.BooleanField(default=True)
 
 
@@ -15,9 +15,10 @@ class Meta:
         verbose_name_plural = "turnos"
         verbose_name = "turno"
 
-def __str__(self):
-        return f"{self.servicio} - {self.fecha} {self.hora}"
-
+def save(self, *args, **kwargs):
+        if self.hora:
+            self.hora = self.hora.replace(second=0, microsecond=0)  # elimina los segundos y microsegundos
+        super().save(*args, **kwargs)
 # # Create your models here.
 
 

@@ -4,11 +4,9 @@ from .models import Sucursal
 
 
 class SucursalSerializer(serializers.ModelSerializer):
+    
+
     class Meta:
         model = Sucursal
         fields = '__all__'
 
-# class HorarioSucursalSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = HorarioSucursal
-#         fields = '__all__'

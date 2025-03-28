@@ -25,8 +25,7 @@ def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
 
 
-def __str__(self):
-        # return f"Reserva de {self.usuario} para {self.turno}"    
+def __str__(self):  
         return f"reserva para {self.cliente}el dia {self.turno}"
 
 
