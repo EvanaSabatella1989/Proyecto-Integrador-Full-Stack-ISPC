@@ -7,7 +7,7 @@ class ReservaAdmin(admin.ModelAdmin):
     list_display_links =   ('cliente','turno','estado')
     search_fields =  ('cliente','turno','estado')
     list_per_page = 25
-# falta usuario
+
 
 admin.site.register(Reserva,ReservaAdmin)
-# Register your models here.
+

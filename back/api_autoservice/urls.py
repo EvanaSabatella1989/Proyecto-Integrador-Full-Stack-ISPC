@@ -45,7 +45,7 @@ urlpatterns = [
     path('api/', include('reserva.urls')),
     path('api/', include('sucursal.urls')),
 
-    # path('api/', include('servicio.urls')),
+    path('api/',include('contacto.urls')),
     # path('api/servicio/servicioList/',views.servicioList),
     # path('api/servicio/delete/<pk>/', ServicioUpdateDelete.as_view()),
     path('api/', include('categoria.urls')),

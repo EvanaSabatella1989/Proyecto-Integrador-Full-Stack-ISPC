@@ -65,6 +65,7 @@ INSTALLED_APPS = [
     "corsheaders",
     'carrito',
     'django_extensions',
+    'contacto',
 ]
 
 MIDDLEWARE = [

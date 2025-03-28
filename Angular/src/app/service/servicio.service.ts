@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import {Observable} from 'rxjs';
 import { Servicio } from '../models/servicio';
 import { formatDate } from '@angular/common';
-
+import { Sucursal } from '../models/sucursal';
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +13,7 @@ export class ServicioService {
 url:string="http://localhost:8000/api/servicios/"
 urlDos:string="http://localhost:8000/api/reserva/"
 urlTres:string="http://127.0.0.1:8000/api"
+url4:string="http://127.0.0.1:8000/api/sucursal/"
 
  constructor(private http:HttpClient) { }
 
@@ -62,11 +63,13 @@ eliminarServicio(id: number): Observable<any> {
 
 
 // / Obtener todas las sucursales disponibles
-obtenerSucursales(): Observable<any> {
-  return this.http.get<any>('http://127.0.0.1:8000/api/sucursal/');
+// obtenerSucursales(): Observable<any> {
+//   return this.http.get<any>('http://127.0.0.1:8000/api/sucursal/');
+// }
+
+obtenerSucursales(): Observable<Sucursal[]> {
+  return this.http.get<Sucursal[]>(this.url4);
 }
-
-
 // Obtener los turnos disponibles de una sucursal
 obtenerTurnos(sucursalId: number): Observable<any> {
   return this.http.get(`${this.urlTres}/disponibles/${sucursalId}/`);
