@@ -103,15 +103,18 @@ WSGI_APPLICATION = 'api_autoservice.wsgi.application'
 CORS_ORIGIN_WHITELIST = [
     'http://localhost:4200',
     'http://127.0.0.1:4200',
+    # 'https://evanasabatella1989.github.io/Frontend-SdA-Deploy/'
 ]
 CORS_ALLOW_ALL_ORIGINS = True  # Habilita CORS para todas las solicitudes
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:4200",  
+    "http://localhost:4200",
+    # "https://evanasabatella1989.github.io/Frontend-SdA-Deploy/",  
 ]
 
 CSRF_TRUSTED_ORIGINS = [
     'http://localhost:4200',
     'http://127.0.0.1:4200',
+    # 'https://evanasabatella1989.github.io/Frontend-SdA-Deploy/',
 ]
 
 # Database
@@ -205,3 +208,6 @@ REST_FRAMEWORK = {
 }
 
 APPEND_SLASH = False
+
+# FRONTEND_URL = "https://evanasabatella1989.github.io/Frontend-SdA-Deploy"
+

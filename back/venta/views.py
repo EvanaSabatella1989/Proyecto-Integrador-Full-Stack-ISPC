@@ -119,6 +119,7 @@ from decimal import Decimal
 from django.db import transaction
 import mercadopago
 from django.shortcuts import get_object_or_404
+from django.conf import settings
 
 # Agrega credenciales de Mercado Pago
 sdk = mercadopago.SDK("APP_USR-4989301092010028-031112-8ec03be037cc76704baaec21a1604e49-2319025513")
@@ -146,19 +147,25 @@ class ReferenceMPView(APIView):
             if "precio" in x and "cantidad" in x and "nombre" in x else x for x in items
         ]
 
+        FRONTEND_URL = getattr(settings, "FRONTEND_URL", "http://localhost:4200")
+
         preference_data = {
             "items": newlist,
             "back_urls": {
-                "success": "http://localhost:4200/pago-exitoso",
-                "failure": "http://localhost:4200/pago-fallido",
-                "pending": "http://localhost:4200/pago-pendiente"
+                "success": f"{FRONTEND_URL}/pago-exitoso",
+                "failure": f"{FRONTEND_URL}/pago-fallido",
+                "pending": f"{FRONTEND_URL}/pago-pendiente",
             },
-            "auto_return": "approved"
+            # "auto_return": "approved"
         }
+
+       
+
 
         preference = sdk.preference().create(preference_data)
 
         if preference['status'] == 400:
+            print(preference)
             return Response({"error": "Error al crear la preferencia de pago"}, status=status.HTTP_400_BAD_REQUEST)
 
         response = preference.get("response", {})
@@ -174,7 +181,8 @@ class ConfirmarPagoView(APIView):
         pago_status = request.data.get("status")  # Estado del pago recibido
         payment_id = request.data.get("payment_id")  # ID del pago en Mercado Pago
 
-        if pago_status != "approved":
+        
+        if pago_status.lower() != "approved":
             return Response({"error": "El pago no fue aprobado"}, status=status.HTTP_400_BAD_REQUEST)
 
         try:
