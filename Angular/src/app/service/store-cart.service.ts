@@ -119,4 +119,15 @@ export class StoreCartService {
     const carritoActual = this.carrito.getValue(); // Obtener los datos actuales del carrito
     return carritoActual.some(item => item.producto.id === productId);
   }
+
+  clearCart() {
+  this.carrito.next([]); // ✅ Reinicia el carrito vacío
+  localStorage.removeItem('carrito'); // ✅ Limpia el almacenamiento local (si lo usás)
+}
+
+emptyCart() {
+  return this.http.delete(`${this.apiUrl}/vaciar_carrito/`, { headers: this.getHeaders() });
+}
+
+
 }

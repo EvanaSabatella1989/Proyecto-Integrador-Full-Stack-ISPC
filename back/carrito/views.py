@@ -150,3 +150,15 @@ def modificar_cantidad_carrito(request):
         return Response({"message": "Cantidad actualizada correctamente"}, status=status.HTTP_200_OK)
     except CarritoItem.DoesNotExist:
         return Response({"error": "Producto no encontrado en el carrito"}, status=status.HTTP_404_NOT_FOUND)
+
+@api_view(['DELETE'])
+@permission_classes([IsAuthenticated])
+def vaciar_carrito(request):
+    try:
+        cliente = get_cliente_from_request(request)  # Esto devuelve un Cliente
+        carrito = Carrito.objects.filter(user=cliente).first()  # usar 'user' según tu modelo
+        if carrito:
+            carrito.items.all().delete()  # vaciar items
+        return Response({"message": "Carrito vaciado correctamente"}, status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

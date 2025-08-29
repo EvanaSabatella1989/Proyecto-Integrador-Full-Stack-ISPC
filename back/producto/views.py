@@ -42,7 +42,7 @@ def productoList(request, format=None):
         # data = JSONParser().parse(request)    
         # data.imagen=request.FILES.get('imagen')
         # serializer = SnippetSerializer(data=data)     #1
-      
+        parser_classes = (MultiPartParser, FormParser)  # ✅ habilitar multipart
         serializer = ProductoSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()

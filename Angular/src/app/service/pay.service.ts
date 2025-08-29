@@ -40,7 +40,9 @@ export class PayService {
   
     return this.http.post<{init_point: string}>(`${this.apiUrl}/venta/preference`, {
       items: formattedItems
-    }, { headers: this.getHeaders() });
+    }, { headers: this.getHeaders() })
+    ;
+    
   }
 
   

@@ -1,6 +1,9 @@
 import os
 from pathlib import Path
 from datetime import timedelta
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
 
 
 
@@ -50,6 +53,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'cloudinary',
+    'cloudinary_storage',
     'user',
     'rest_framework_simplejwt',
     'producto',
@@ -209,5 +214,13 @@ REST_FRAMEWORK = {
 
 APPEND_SLASH = False
 
-# FRONTEND_URL = "https://evanasabatella1989.github.io/Frontend-SdA-Deploy"
+FRONTEND_URL = "https://evanasabatella1989.github.io/Frontend-SdA-Deploy"
+
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': 'ddzdqm09i',
+    'API_KEY': '311632245973846',
+    'API_SECRET': 'y4lap6151Iw6ud6Ye6bFXhWWjjk'
+}
+
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
