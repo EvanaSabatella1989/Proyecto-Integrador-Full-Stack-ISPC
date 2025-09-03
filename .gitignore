@@ -2,6 +2,7 @@
 ./venv
 /venv
 venv/
+.env
 
 # Evitar archivos de caché de Python
 __pycache__/

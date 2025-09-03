@@ -4,6 +4,9 @@ from datetime import timedelta
 import cloudinary
 import cloudinary.uploader
 import cloudinary.api
+from decouple import config
+
+
 
 
 
@@ -36,10 +39,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-ue_9_cd$j!ezi1(i07f)u_6qr*c_2#p(ef7n%&5f!(b_-mh5d$'
+SECRET_KEY = config("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config("DEBUG", default=False, cast=bool)
 
 ALLOWED_HOSTS = []
 
@@ -128,11 +131,11 @@ DATABASES = {
    
     'default': {
         'ENGINE': 'mysql.connector.django',
-        'NAME': 'autoservice',
-        'USER': 'root',
-        'PASSWORD': 'root',
-        'HOST': 'localhost',
-        'PORT': '3306',
+        'NAME': config("DB_NAME", default="autoservice"),
+        'USER': config("DB_USER", default="root"),
+        'PASSWORD': config("DB_PASSWORD", default="root"),
+        'HOST': config("DB_HOST", default="localhost"),
+        'PORT': config("DB_PORT", default="3306"),
     }
 }
 
@@ -217,9 +220,9 @@ APPEND_SLASH = False
 FRONTEND_URL = "https://evanasabatella1989.github.io/Frontend-SdA-Deploy"
 
 CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': 'ddzdqm09i',
-    'API_KEY': '311632245973846',
-    'API_SECRET': 'y4lap6151Iw6ud6Ye6bFXhWWjjk'
+    'CLOUD_NAME': config("CLOUD_NAME"),
+    'API_KEY': config("API_KEY"),
+    'API_SECRET': config("API_SECRET")
 }
 
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
