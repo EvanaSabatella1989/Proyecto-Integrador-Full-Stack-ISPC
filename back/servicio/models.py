@@ -1,15 +1,15 @@
 from django.db import models
 from datetime import datetime
+from cloudinary_storage.storage import MediaCloudinaryStorage
 
-# Create your models here.
-# def upload_path(instance,filename):
-#     return '/'.join(['imagen', str(instance.title),filename])
 
 
 class Servicio(models.Model):
     id=models.AutoField(primary_key=True)
     nombre = models.CharField(max_length=255)
-    imagen = models.ImageField(upload_to='photos/', null=True, blank=True)
+     # imagen = models.ImageField(upload_to='photos/', null=True, blank=True)
+    # imagen = models.ImageField(upload_to='servicios/') # Cloudinary maneja el upload
+    imagen = models.ImageField(storage=MediaCloudinaryStorage(), upload_to='servicios/', blank=True, null=True)
     descripcion = models.TextField()
     precio = models.DecimalField(max_digits=6, decimal_places=3)
     fecha_creacion= models.DateTimeField(default=datetime.now)
@@ -26,3 +26,4 @@ class Servicio(models.Model):
 
     def __str__(self):
         return self.nombre
+

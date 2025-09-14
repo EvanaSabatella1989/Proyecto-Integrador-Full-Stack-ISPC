@@ -12,6 +12,7 @@ from django.core.files.storage import FileSystemStorage
 from django.http import HttpResponse
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.parsers import MultiPartParser ,FormParser
 
 class ProductoViewSet(viewsets.ModelViewSet):
     queryset=Producto.objects.all()
