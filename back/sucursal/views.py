@@ -18,17 +18,8 @@ logger = logging.getLogger(__name__)
 class SucursalViewSet(viewsets.ModelViewSet):
     queryset = Sucursal.objects.all()
     serializer_class = SucursalSerializer
-    parser_classes = (MultiPartParser, FormParser, JSONParser)
-    permission_classes = [AllowAny]  # permisos aplicados a toda la vista
 
+    
 
-
-
-#  todas las sucursales
-@api_view(['GET'])
-def listar_sucursales(request):
-    sucursales = Sucursal.objects.all()
-    serializer = SucursalSerializer(sucursales, many=True)
-    return Response(serializer.data)
 
 

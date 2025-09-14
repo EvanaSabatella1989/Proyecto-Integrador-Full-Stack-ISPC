@@ -92,7 +92,9 @@ def login_view(request):
             "refresh_token": token["refresh"],
             "is_admin": user.is_staff,
             "first_name": user.first_name,
-            "last_name": user.last_name
+            "last_name": user.last_name,
+             "id": user.id
+            
         }, status=status.HTTP_200_OK)
 
     return Response({"message": "Credenciales inválidas"}, status=status.HTTP_401_UNAUTHORIZED)

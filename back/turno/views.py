@@ -14,15 +14,34 @@ class TurnoViewSet(viewsets.ModelViewSet):
     queryset = Turno.objects.all()
     serializer_class = TurnoSerializer
 
-# @action(detail=False, methods=["get"])
-# def disponibles(self, request):
-#     turnos = Turno.objects.filter(disponible=True)
-#     serializer = self.get_serializer(turnos, many=True)
-#     return Response(serializer.data)
-def turnos_disponibles(request, sucursal_id):
-    turnos = Turno.objects.filter(sucursal_id=sucursal_id, disponible=True).order_by('fecha', 'hora')
-    turnos_data = [
-        {"id": t.id, "fecha": t.fecha, "hora": t.hora.strftime("%H:%M"), "sucursal": t.sucursal.nombre,"servicio":t.servicio.nombre}
-        for t in turnos
-    ]
-    return JsonResponse(turnos_data, safe=False)
+# 
+    @action(detail=False, methods=['get'])
+    def disponibles(self, request):
+        sucursal_id = request.query_params.get('sucursal')
+        fecha = request.query_params.get('fecha')
+        turnos = Turno.objects.filter(disponible=True)
+
+        if sucursal_id:
+            turnos = turnos.filter(sucursal_id=sucursal_id)
+        if fecha:
+            turnos = turnos.filter(fecha=fecha)
+
+        serializer = TurnoSerializer(turnos, many=True)
+        return Response(serializer.data)
+
+
+    # endpoint para turnos disponibles por sucursal
+    @action(detail=False, methods=['get'], url_path='disponibles-por-sucursal')
+    def disponibles_por_sucursal(self, request):
+        sucursal_id = request.query_params.get('sucursal')
+        if not sucursal_id:
+            return Response([])
+
+        # solo turnos libres
+        turnos = Turno.objects.filter(
+            sucursal_id=sucursal_id,
+            disponible=True
+        ).order_by('fecha', 'hora')
+
+        serializer = TurnoSerializer(turnos, many=True)
+        return Response(serializer.data)

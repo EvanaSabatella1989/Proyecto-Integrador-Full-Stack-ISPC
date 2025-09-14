@@ -3,7 +3,7 @@ from django.contrib.auth import get_user_model
 User = get_user_model()
 from vehiculo.serializers import VehiculoSerializer
 from carrito.serializers import CarritoSerializer
-
+from user.models import Cliente
 
 class UserSerializer(serializers.ModelSerializer):
     vehiculos = VehiculoSerializer(many=True, read_only=True, source="cliente.vehiculo_set")
@@ -32,3 +32,14 @@ class UserSerializer(serializers.ModelSerializer):
             last_name=validated_data["last_name"]
         )
         return user
+    
+
+class ClienteSerializer(serializers.ModelSerializer):
+    email = serializers.CharField(source='user.email', read_only=True)
+    first_name = serializers.CharField(source='user.first_name', read_only=True)
+    last_name = serializers.CharField(source='user.last_name', read_only=True)
+
+    class Meta:
+        model = Cliente
+        fields = ['id', 'email', 'first_name', 'last_name', 'direccion', 'num_telefono']
+

@@ -14,7 +14,8 @@
 
                             <div class="card-body">
                                 <h5 class="card-title ">{{servicio.nombre}}</h5>
-                                <a href="servicio/{{servicio.id}}/" class="btn btn-primary" >Reservar</a>
+                                <!-- <a href="servicio/{{servicio.id}}/" class="btn btn-primary" >Reservar</a> -->
+                                  <button [routerLink]="['/servicios', servicio.id, 'reservar']">Reservar</button>
                             
                             </div>
                         </div>

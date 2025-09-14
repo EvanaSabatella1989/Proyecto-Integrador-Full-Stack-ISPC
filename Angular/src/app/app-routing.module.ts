@@ -34,6 +34,7 @@ import { PagoFallidoComponent } from './pages/pago-fallido/pago-fallido.componen
 import { PagoPendienteComponent } from './pages/pago-pendiente/pago-pendiente.component';
 import { PerfilComponent } from './pages/perfil/perfil.component';
 import { AgregarVehiculoComponent } from './pages/agregar-vehiculo/agregar-vehiculo.component';
+import { ReservaComponent } from './pages/reserva/reserva.component';
 
 const routes: Routes = [
   {path: '', redirectTo: '/home', pathMatch: 'full'},
@@ -67,6 +68,7 @@ const routes: Routes = [
   {path: 'pago-pendiente', component: PagoPendienteComponent},
   {path: 'perfil', component: PerfilComponent},
   {path: 'agregar-vehiculo', component: AgregarVehiculoComponent, canActivate: [AuthClientGuard]},
+   {path: 'servicios/:id/reservar', component: ReservaComponent},
 
 
   {path: '**', component: Pagina404Component}

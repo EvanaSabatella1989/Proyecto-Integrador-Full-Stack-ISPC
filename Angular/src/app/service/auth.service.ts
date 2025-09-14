@@ -8,7 +8,7 @@ interface LoginResponse extends Token {
   is_admin: boolean;
   // Traemos el nombre para manejar la sesión de usuario:
   first_name: string;
-
+  id:number;
 }
 @Injectable({
   providedIn: 'root'
@@ -37,9 +37,10 @@ export class AuthService {
     })
     .pipe(
       tap(resp => {
-        
+        console.log('Respuesta login:', resp);
         this.isLoggedInSubject.next(true); // Notifica que el usuario está logueado
         this.tokenService.createToken(resp.access_token);
+        localStorage.setItem('user_id', resp.id.toString()); //para tarer el id del usuario
         // guardamos el nombre del usuario en el localStorage
         localStorage.setItem('first_name', resp.first_name);
         localStorage.setItem('token', resp.access_token) 
@@ -79,6 +80,10 @@ isAdmin(): boolean {
 
 obtenerIdUsuario(): string {
   return '';
+}
+
+obtenerIdUsuario2(): number {
+  return Number(localStorage.getItem('user_id'));
 }
 
   getUserName(): string {

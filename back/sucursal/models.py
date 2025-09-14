@@ -10,15 +10,11 @@ class Sucursal(models.Model):
     latitud = models.FloatField(default=0.0)
     longitud = models.FloatField(default=0.0)
 
-    def __str__(self):
-        return self.nombre
-    
-
-class Meta:
+    class Meta:
         db_table = "sucursal"
         verbose_name_plural = "sucursales"
         verbose_name = "sucursal"
-    
-def __str__(self):
-        return f"{self.sucursal.nombre} :{self.sucursal.direccion}"
+
+    def __str__(self):
+        return self.nombre
 

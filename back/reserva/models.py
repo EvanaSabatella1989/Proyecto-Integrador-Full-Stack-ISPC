@@ -1,32 +1,22 @@
 from django.db import models
-from turno.models import Turno
 from user.models import Cliente
-    
+from sucursal.models import Sucursal
+from servicio.models import Servicio
+from turno.models import Turno
+
 class Reserva(models.Model):
-    cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE,null=True, blank=True) 
-    turno = models.OneToOneField(Turno,on_delete=models.CASCADE)
-    estado = models.CharField(
-        max_length=20,
-        choices=[("pendiente", "Pendiente"), ("confirmado", "Confirmado"), ("cancelado", "Cancelado")],
-        default="pendiente",
-    )
+    cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE,null=True, blank=True)
+    servicio = models.ForeignKey(Servicio, on_delete=models.CASCADE)
+    turno = models.OneToOneField(Turno, on_delete=models.CASCADE,null=True, blank=True)  
+    # OneToOne para que un turno pueda tener solo UNA reserva
+    estado = models.CharField(max_length=20, choices=[
+        ('pendiente', 'Pendiente'),
+        ('confirmada', 'Confirmada'),
+        ('cancelada', 'Cancelada')
+    ], default='pendiente')
 
-class Meta:
-    db_table = "reserva"
-    verbose_name_plural = "reservas"
-    verbose_name = "reserva"
-
-
-def save(self, *args, **kwargs):
-        """forzar la lógica de confirmación al guardar la reserva"""
-        if self.estado == "confirmado":
-            self.turno.disponible = False
-            self.turno.save()
-        super().save(*args, **kwargs)
-
-
-def __str__(self):  
-        return f"reserva para {self.cliente}el dia {self.turno}"
+    def __str__(self):
+        return f"Reserva de {self.cliente} para {self.servicio} en {self.turno}"
 
 
 

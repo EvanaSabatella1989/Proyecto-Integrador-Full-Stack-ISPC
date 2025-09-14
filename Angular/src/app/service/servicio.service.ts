@@ -62,23 +62,38 @@ eliminarServicio(id: number): Observable<any> {
 
 
 
-// / Obtener todas las sucursales disponibles
-// obtenerSucursales(): Observable<any> {
-//   return this.http.get<any>('http://127.0.0.1:8000/api/sucursal/');
-// }
+// lista de sucursales
+  obtenerSucursales(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.urlTres}/sucursal/`);
+  }
 
-obtenerSucursales(): Observable<Sucursal[]> {
-  return this.http.get<Sucursal[]>(this.url4);
-}
-// Obtener los turnos disponibles de una sucursal
-obtenerTurnos(sucursalId: number): Observable<any> {
-  return this.http.get(`${this.urlTres}/disponibles/${sucursalId}/`);
+  // turnos disponibles por sucursal y fecha
+  obtenerTurnosDisponibles(sucursalId: number, fecha: string): Observable<any[]> {
+    return this.http.get<any[]>(`${this.urlTres}/turnos/disponibles/?sucursal=${sucursalId}&fecha=${fecha}`);
+  }
+
+// crear reserva
+  crearReserva(reserva: any): Observable<any> {
+    const token = localStorage.getItem('token');
+    if(!token){
+      console.error('No hay token guardado');
+    }
+    return this.http.post(`${this.urlTres}/reservas/`,reserva,{
+      headers:{Authorization:`Bearer ${token}`}
+    });
+    
+  }
+
+ obtenerDiasDisponibles(sucursalId: number) {
+  return this.http.get<{ dias_disponibles: string[] }>(
+    `${this.urlTres}sucursal/${sucursalId}/dias-disponibles/`
+  );
 }
 
-// Reservar un turno
-reservarTurno(datosReserva: any): Observable<any> {
-  return this.http.post(`${this.urlTres}/reservar-turno/`, datosReserva);
+obtenerTurnosPorSucursal(sucursalId: number) {
+  return this.http.get<any[]>(`${this.urlTres}/turnos/disponibles-por-sucursal/?sucursal=${sucursalId}`);
 }
+
 
 // obtenerTurnosDisponibles(sucursalId: number): Observable<any[]> {
 //   console.log(`Obteniendo turnos desde: ${this.urlTres}/disponibles/?sucursal_id=${sucursalId}`); 

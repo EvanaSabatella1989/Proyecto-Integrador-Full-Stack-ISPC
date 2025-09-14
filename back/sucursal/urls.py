@@ -5,9 +5,9 @@ from .views import SucursalViewSet
 # from sucursal.views import  HorarioSucursal
 from . import views
 
+router = DefaultRouter()
+router.register(r'sucursal', SucursalViewSet, basename='sucursal')
 
-
-urlpatterns=[
-    path('sucursal/', views.listar_sucursales, name='listar_sucursales'),
-    
+urlpatterns = [
+    path('', include(router.urls)),
 ]
