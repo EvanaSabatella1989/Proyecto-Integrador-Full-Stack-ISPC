@@ -9,6 +9,8 @@ class Sucursal(models.Model):
     telefono = models.CharField(max_length=20, default='')
     latitud = models.FloatField(default=0.0)
     longitud = models.FloatField(default=0.0)
+    ciudad = models.CharField(max_length=100, default='', blank=True)
+    provincia = models.CharField(max_length=100, default='', blank=True)
 
     class Meta:
         db_table = "sucursal"

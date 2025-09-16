@@ -6,13 +6,18 @@ export class Sucursal {
     latitud?: number;
     longitud?:number;
     mapaUrl?: any;
+    ciudad?: string;
+    provincia?: string;
 
-    constructor(nombre:string,direccion:string,telefono:number,latitud:number,longuitud:number){
+
+    constructor(nombre:string,direccion:string,telefono:number,latitud:number,longuitud:number,ciudad:string,provincia:string){
         this.nombre=nombre;
         this.direccion=direccion;
         this.telefono=telefono;
         this.latitud=latitud;
         this.latitud=longuitud;
+        this.ciudad=ciudad;
+        this.provincia=provincia;
     }
 
 }

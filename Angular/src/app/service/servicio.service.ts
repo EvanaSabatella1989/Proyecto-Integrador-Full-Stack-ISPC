@@ -95,45 +95,18 @@ obtenerTurnosPorSucursal(sucursalId: number) {
 }
 
 
-// obtenerTurnosDisponibles(sucursalId: number): Observable<any[]> {
-//   console.log(`Obteniendo turnos desde: ${this.urlTres}/disponibles/?sucursal_id=${sucursalId}`); 
-//   return this.http.get<any[]>(`${this.urlTres}/disponibles/?sucursal_id=${sucursalId}`);
-// }
-// obtenerTurnosDisponibles(sucursalId: number): Observable<any[]>{
-//   const url = `${this.urlTres}/disponibles/${sucursalId}/`; 
-//   console.log("URL de solicitud:para ver", url); // Verifica la URL
-//   return this.http.get<any[]>(url);
-// }
+// crud sucursal
+createSucursal(sucursal: Sucursal): Observable<Sucursal> {
+  return this.http.post<Sucursal>(this.url4, sucursal);
+}
 
-// reservarTurno(cliente_id: number, turno_id: number, cliente_email: string): Observable<any> {
-//   const data = {
-//     cliente_id: cliente_id,
-//     turno_id: turno_id,
-//     cliente_email: cliente_email
-//   };
-  
-//   return this.http.post(`${this.urlTres}/reservar-turno/`, data);
-// }
+updateSucursal(id: number, sucursal: Sucursal): Observable<Sucursal> {
+  return this.http.put<Sucursal>(`${this.url4}${id}/`, sucursal);
+}
 
-
-// funciona pero no envia
-// reservarTurno(data: any): Observable<any> {
-//   return this.http.post(`${this.urlTres}/reservar-turno/`, data);
-// }
-// Enviar reserva de turno
-// reservarTurno(data: any): Observable<any> {
-//   return this.http.post<any>(`${this.urlTres}/reservar-turno/`, data);
-// }
-// Obtener los horarios disponibles para una sucursal específica
-// obtenerHorariosDisponibles(sucursalId: number): Observable<any> {
-//   const url = `${this.urlTres}?sucursal=${sucursalId}`;
-//   console.log('Haciendo solicitud a:', url);  // Verificamos la URL que se está llamando
-//   return this.http.get<any>(url);
-// }
-
-// obtenerHorariosDisponibles(sucursalId: number): Observable<any> {
-//   return this.http.get(`${this.urlTres}horarios-disponibles/${sucursalId}/`);
-// }
+deleteSucursal(id: number): Observable<any> {
+  return this.http.delete(`${this.url4}${id}/`);
+}
 
 }
 
