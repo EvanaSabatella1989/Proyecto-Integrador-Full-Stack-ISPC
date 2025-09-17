@@ -4,6 +4,7 @@ import {Observable} from 'rxjs';
 import { Servicio } from '../models/servicio';
 import { formatDate } from '@angular/common';
 import { Sucursal } from '../models/sucursal';
+import { Turno } from '../models/turno';
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +15,7 @@ url:string="http://localhost:8000/api/servicios/"
 urlDos:string="http://localhost:8000/api/reserva/"
 urlTres:string="http://127.0.0.1:8000/api"
 url4:string="http://127.0.0.1:8000/api/sucursal/"
+urlTurno:string="http://127.0.0.1:8000/api/turnos/"
 
  constructor(private http:HttpClient) { }
 
@@ -63,10 +65,13 @@ eliminarServicio(id: number): Observable<any> {
 
 
 // lista de sucursales
-  obtenerSucursales(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.urlTres}/sucursal/`);
-  }
+  // obtenerSucursales(): Observable<any[]> {
+  //   return this.http.get<any[]>(`${this.urlTres}/sucursal/`);
+  // }
+obtenerSucursales(): Observable<Sucursal[]> {
+  return this.http.get<Sucursal[]>(`${this.urlTres}/sucursal/`);
 
+}
   // turnos disponibles por sucursal y fecha
   obtenerTurnosDisponibles(sucursalId: number, fecha: string): Observable<any[]> {
     return this.http.get<any[]>(`${this.urlTres}/turnos/disponibles/?sucursal=${sucursalId}&fecha=${fecha}`);
@@ -84,12 +89,14 @@ eliminarServicio(id: number): Observable<any> {
     
   }
 
+  // dias disponibles  de sucursales
  obtenerDiasDisponibles(sucursalId: number) {
   return this.http.get<{ dias_disponibles: string[] }>(
     `${this.urlTres}sucursal/${sucursalId}/dias-disponibles/`
   );
 }
 
+//turnos disponibles de por sucursal
 obtenerTurnosPorSucursal(sucursalId: number) {
   return this.http.get<any[]>(`${this.urlTres}/turnos/disponibles-por-sucursal/?sucursal=${sucursalId}`);
 }
@@ -108,5 +115,21 @@ deleteSucursal(id: number): Observable<any> {
   return this.http.delete(`${this.url4}${id}/`);
 }
 
+//crud para turnos
+  getTurnos(): Observable<Turno[]> {
+    return this.http.get<Turno[]>(this.urlTurno);
+  }
+
+  createTurno(turno: Turno): Observable<Turno> {
+    return this.http.post<Turno>(this.urlTurno, turno);
+  }
+
+  updateTurno(id: number, turno: Turno): Observable<Turno> {
+    return this.http.put<Turno>(`${this.urlTurno}${id}/`, turno);
+  }
+
+  deleteTurno(id: number): Observable<any> {
+    return this.http.delete(`${this.urlTurno}${id}/`);
+  }
 }
 

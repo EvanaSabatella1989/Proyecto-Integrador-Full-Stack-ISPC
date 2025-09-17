@@ -33,6 +33,7 @@ import { PagoPendienteComponent } from './pago-pendiente/pago-pendiente.componen
 import { PerfilComponent } from './perfil/perfil.component';
 import { AgregarVehiculoComponent } from './agregar-vehiculo/agregar-vehiculo.component';
 import { ReservaComponent } from './reserva/reserva.component';
+import { TurnosComponent } from './turnos/turnos.component';
 
 
 
@@ -70,6 +71,7 @@ import { ReservaComponent } from './reserva/reserva.component';
     PerfilComponent,
     AgregarVehiculoComponent,
     ReservaComponent,
+    TurnosComponent,
  
 
   ],
