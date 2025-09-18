@@ -62,6 +62,9 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from user.models import Cliente
+from rest_framework import viewsets
+from .serializers import ClienteSerializer
+
 
 from .serializers import UserSerializer
 
@@ -136,3 +139,9 @@ class PerfilClienteView(APIView):
         except Cliente.DoesNotExist:
             # si no existe el cliente, retornamos un error
             return Response({'detail': 'Cliente no encontrado'}, status=404)
+        
+     
+#para el admin 
+class ClienteViewSet(viewsets.ModelViewSet):
+    queryset = Cliente.objects.all()
+    serializer_class = ClienteSerializer        

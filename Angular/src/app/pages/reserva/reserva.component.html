@@ -1,6 +1,6 @@
-<div class="container mt-5 mb-5"> 
+<div class="container mt-5 mb-5">
   <div class="row g-4">
-    <!-- izquierda servicio -->
+    <!-- izquierda servicio (usuario) -->
     <div class="col-md-6">
       <div class="card shadow-sm rounded">
         <img *ngIf="servicio.imagen" [src]="servicio.imagen" class="card-img-top" alt="{{ servicio.nombre }}" style="object-fit: cover; max-height: 300px;">
@@ -12,11 +12,11 @@
       </div>
     </div>
 
-    <!-- derecah formulario -->
+    <!-- derecha formulario (usuario) -->
     <div class="col-md-6">
       <div class="card shadow-sm rounded p-4" style="background-color: #f8f9fa;">
         <h3 class="mb-4">Reservar turno</h3>
-        <form [formGroup]="reservaForm" (ngSubmit)="reservar()">
+        <form [formGroup]="reservaForm" (ngSubmit)="reservar()" *ngIf="!isAdmin">
           <div class="mb-3">
             <label class="form-label">Sucursal:</label>
             <select formControlName="sucursal" class="form-select" (change)="alCambiarSucursal()">
@@ -37,4 +37,6 @@
       </div>
     </div>
   </div>
+
+  
 </div>

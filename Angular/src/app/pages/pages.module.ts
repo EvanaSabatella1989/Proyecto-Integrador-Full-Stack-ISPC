@@ -34,6 +34,7 @@ import { PerfilComponent } from './perfil/perfil.component';
 import { AgregarVehiculoComponent } from './agregar-vehiculo/agregar-vehiculo.component';
 import { ReservaComponent } from './reserva/reserva.component';
 import { TurnosComponent } from './turnos/turnos.component';
+import { AgregarReservasComponent } from './agregar-reservas/agregar-reservas.component';
 
 
 
@@ -72,6 +73,7 @@ import { TurnosComponent } from './turnos/turnos.component';
     AgregarVehiculoComponent,
     ReservaComponent,
     TurnosComponent,
+    AgregarReservasComponent,
  
 
   ],

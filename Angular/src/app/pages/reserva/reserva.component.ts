@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'src/app/service/auth.service';
 import { ServicioService } from 'src/app/service/servicio.service';
 import { TokenService } from 'src/app/service/token.service';
+declare var bootstrap: any;
 
 @Component({
   selector: 'app-reserva',
@@ -18,12 +19,17 @@ export class ReservaComponent {
   mensaje = '';
   diasDisponibles: string[] = [];
   clienteId?='';
+  
+  modalInstance: any;
+  isAdmin: boolean = false;
 
  constructor(private authService: AuthService, private servicioService: ServicioService, 
   private fb: FormBuilder, private route: ActivatedRoute, 
   private router: Router, private tokenService: TokenService) { }
 
 ngOnInit(): void {
+    this.isAdmin = this.authService.isAdmin(); 
+
     const servicioId = this.route.snapshot.params['id'];
 
      // cargar servicio
@@ -38,14 +44,18 @@ ngOnInit(): void {
       console.log(data)
     });
 
-     // Formulario
+     // inicializar formulario
     this.reservaForm = this.fb.group({
       sucursal: ['', Validators.required],
       servicio: ['', Validators.required],
-      turno: ['', Validators.required]
+      turno: ['', Validators.required],
+     
     });  
+
+  
 }
 
+//---------PARA QUE EL USUARIO HAGA SU RESERVA--------
   alCambiarSucursal() {
    const sucursalId = this.reservaForm.value.sucursal;
   if (sucursalId) {
@@ -106,4 +116,5 @@ ngOnInit(): void {
     );
   }
 
+  
 }

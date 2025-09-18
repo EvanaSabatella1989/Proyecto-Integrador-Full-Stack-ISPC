@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Token } from '../models/token.model';
 import { TokenService } from './token.service';
-import { BehaviorSubject, tap } from 'rxjs';
+import { BehaviorSubject, Observable, tap } from 'rxjs';
 
 interface LoginResponse extends Token {
   is_admin: boolean;
@@ -98,6 +98,9 @@ obtenerIdUsuario2(): number {
     this.isLoggedInSubject.next(false)
   }
 
+  obtenerClientes(): Observable<any[]> {
+  return this.http.get<any[]>(`${this.apiUrl}/clientes/`);
+}
 
 }
 

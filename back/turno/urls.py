@@ -4,7 +4,6 @@ from .views import TurnoViewSet
 
 
 router = DefaultRouter()
-router = DefaultRouter()
 router.register(r'turnos', TurnoViewSet,basename='turno')
 
 

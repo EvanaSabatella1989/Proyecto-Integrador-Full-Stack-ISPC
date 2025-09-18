@@ -36,6 +36,7 @@ import { PerfilComponent } from './pages/perfil/perfil.component';
 import { AgregarVehiculoComponent } from './pages/agregar-vehiculo/agregar-vehiculo.component';
 import { ReservaComponent } from './pages/reserva/reserva.component';
 import { TurnosComponent } from './pages/turnos/turnos.component';
+import { AgregarReservasComponent } from './pages/agregar-reservas/agregar-reservas.component';
 
 const routes: Routes = [
   {path: '', redirectTo: '/home', pathMatch: 'full'},
@@ -70,6 +71,7 @@ const routes: Routes = [
   {path: 'perfil', component: PerfilComponent},
   {path: 'agregar-vehiculo', component: AgregarVehiculoComponent, canActivate: [AuthClientGuard]},
   {path: 'servicios/:id/reservar', component: ReservaComponent},
+  { path: 'admin/reservas', component: AgregarReservasComponent },
   {path:'turnos',component:TurnosComponent},
 
 

@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import {Observable} from 'rxjs';
+import { Observable } from 'rxjs';
 import { Servicio } from '../models/servicio';
 import { formatDate } from '@angular/common';
 import { Sucursal } from '../models/sucursal';
@@ -10,112 +10,143 @@ import { Turno } from '../models/turno';
   providedIn: 'root'
 })
 export class ServicioService {
-// url2:string="http://localhost:8000/photos/photos/";
-url:string="http://localhost:8000/api/servicios/"
-urlDos:string="http://localhost:8000/api/reserva/"
-urlTres:string="http://127.0.0.1:8000/api"
-url4:string="http://127.0.0.1:8000/api/sucursal/"
-urlTurno:string="http://127.0.0.1:8000/api/turnos/"
+  // url2:string="http://localhost:8000/photos/photos/";
+  url: string = "http://localhost:8000/api/servicios/"
+  urlDos: string = "http://localhost:8000/api/reservas/"
+  urlTres: string = "http://127.0.0.1:8000/api"
+  url4: string = "http://127.0.0.1:8000/api/sucursal/"
+  urlTurno: string = "http://127.0.0.1:8000/api/turnos/"
 
- constructor(private http:HttpClient) { }
+  constructor(private http: HttpClient) { }
 
- ngOnInit(){}
+  ngOnInit() { }
 
- // obtener todos los servicios
- obtenerServicios(): Observable<any> {
-  return this.http.get(this.url);
-}
+  // ----------SERVICIOS-------
 
-// obtener un servicio por ID
-obtenerServicio(id: number): Observable<Servicio> {
-  return this.http.get<Servicio>(`${this.url}${id}/`);
-}
-
-// crear un nuevo servicio (con imagen)
-crearServicio(servicio: Servicio, imagen?: File): Observable<Servicio> {
-  const formData = new FormData();
-  formData.append('nombre', servicio.nombre ?? '');
-  formData.append('descripcion', servicio.descripcion ?? '');
-  formData.append('precio', servicio.precio ? servicio.precio.toString() : ''); // Asegura que sea string
-
-  // solo agrega la imagen si existe
-  if (imagen) {
-    formData.append('imagen', imagen, imagen.name);
+  // obtener todos los servicios
+  obtenerServicios(): Observable<any> {
+    return this.http.get(this.url);
   }
 
-  return this.http.post<Servicio>(this.url, formData);
-}
-
-
-// ctualizar un servicio
-actualizarServicio(id: number, servicio: FormData, imagen?: File): Observable<Servicio> {
-  const formData = new FormData();
-  if (imagen) {
-    formData.append('imagen', imagen);
+  // obtener un servicio por ID
+  obtenerServicio(id: number): Observable<Servicio> {
+    return this.http.get<Servicio>(`${this.url}${id}/`);
   }
 
-  return this.http.put<Servicio>(`${this.url}${id}/`, servicio);
-}
+  // crear un nuevo servicio (con imagen)
+  crearServicio(servicio: Servicio, imagen?: File): Observable<Servicio> {
+    const formData = new FormData();
+    formData.append('nombre', servicio.nombre ?? '');
+    formData.append('descripcion', servicio.descripcion ?? '');
+    formData.append('precio', servicio.precio ? servicio.precio.toString() : ''); // Asegura que sea string
 
-// Eliminar un servicio
-eliminarServicio(id: number): Observable<any> {
-  return this.http.delete(`${this.url}${id}/`);
-}
+    // solo agrega la imagen si existe
+    if (imagen) {
+      formData.append('imagen', imagen, imagen.name);
+    }
+
+    return this.http.post<Servicio>(this.url, formData);
+  }
+
+
+  // ctualizar un servicio
+  actualizarServicio(id: number, servicio: FormData, imagen?: File): Observable<Servicio> {
+    const formData = new FormData();
+    if (imagen) {
+      formData.append('imagen', imagen);
+    }
+
+    return this.http.put<Servicio>(`${this.url}${id}/`, servicio);
+  }
+
+  // Eliminar un servicio
+  eliminarServicio(id: number): Observable<any> {
+    return this.http.delete(`${this.url}${id}/`);
+  }
 
 
 
-// lista de sucursales
-  // obtenerSucursales(): Observable<any[]> {
-  //   return this.http.get<any[]>(`${this.urlTres}/sucursal/`);
-  // }
-obtenerSucursales(): Observable<Sucursal[]> {
-  return this.http.get<Sucursal[]>(`${this.urlTres}/sucursal/`);
+ 
 
-}
+
+ 
+
+  // ---------RESERVA---------------
+  crearReserva(reserva: any): Observable<any> {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      console.error('No hay token guardado');
+    }
+    return this.http.post(`${this.urlTres}/reservas/`, reserva, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+
+  }
+
+   obtenerReservas(): Observable<any[]> {
+    const token = localStorage.getItem('token'); // o como tengas tu JWT
+    return this.http.get<any[]>(`${this.urlDos}`,{
+        headers: { Authorization: `Bearer ${token}` }
+    });
+    
+
+  }
+  // actualizar reserva
+  actualizarReserva(id: number, reserva: any): Observable<any> {
+    const token = localStorage.getItem('token');
+    return this.http.put(`${this.urlDos}${id}/`, reserva, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+  }
+
+  // eliminar reserva
+  eliminarReserva(id: number): Observable<any> {
+    const token = localStorage.getItem('token');
+    return this.http.delete(`${this.urlDos}${id}/`, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+  }
+
+  // dias disponibles  de sucursales
+  obtenerDiasDisponibles(sucursalId: number) {
+    return this.http.get<{ dias_disponibles: string[] }>(
+      `${this.urlTres}sucursal/${sucursalId}/dias-disponibles/`
+    );
+  }
+
+  //turnos disponibles de por sucursal
+  obtenerTurnosPorSucursal(sucursalId: number) {
+    return this.http.get<any[]>(`${this.urlTres}/turnos/disponibles-por-sucursal/?sucursal=${sucursalId}`);
+  }
+
+  // --------FIN RESERVA------
+
+// ---------SUCURSAL------------
+  // crud sucursal
+  createSucursal(sucursal: Sucursal): Observable<Sucursal> {
+    return this.http.post<Sucursal>(this.url4, sucursal);
+  }
+
+  updateSucursal(id: number, sucursal: Sucursal): Observable<Sucursal> {
+    return this.http.put<Sucursal>(`${this.url4}${id}/`, sucursal);
+  }
+
+  deleteSucursal(id: number): Observable<any> {
+    return this.http.delete(`${this.url4}${id}/`);
+  }
+
+  // ---------TURNOS-------------
+
+    obtenerSucursales(): Observable<Sucursal[]> {
+    return this.http.get<Sucursal[]>(`${this.urlTres}/sucursal/`);
+
+  }
   // turnos disponibles por sucursal y fecha
   obtenerTurnosDisponibles(sucursalId: number, fecha: string): Observable<any[]> {
     return this.http.get<any[]>(`${this.urlTres}/turnos/disponibles/?sucursal=${sucursalId}&fecha=${fecha}`);
   }
 
-// crear reserva
-  crearReserva(reserva: any): Observable<any> {
-    const token = localStorage.getItem('token');
-    if(!token){
-      console.error('No hay token guardado');
-    }
-    return this.http.post(`${this.urlTres}/reservas/`,reserva,{
-      headers:{Authorization:`Bearer ${token}`}
-    });
-    
-  }
-
-  // dias disponibles  de sucursales
- obtenerDiasDisponibles(sucursalId: number) {
-  return this.http.get<{ dias_disponibles: string[] }>(
-    `${this.urlTres}sucursal/${sucursalId}/dias-disponibles/`
-  );
-}
-
-//turnos disponibles de por sucursal
-obtenerTurnosPorSucursal(sucursalId: number) {
-  return this.http.get<any[]>(`${this.urlTres}/turnos/disponibles-por-sucursal/?sucursal=${sucursalId}`);
-}
-
-
-// crud sucursal
-createSucursal(sucursal: Sucursal): Observable<Sucursal> {
-  return this.http.post<Sucursal>(this.url4, sucursal);
-}
-
-updateSucursal(id: number, sucursal: Sucursal): Observable<Sucursal> {
-  return this.http.put<Sucursal>(`${this.url4}${id}/`, sucursal);
-}
-
-deleteSucursal(id: number): Observable<any> {
-  return this.http.delete(`${this.url4}${id}/`);
-}
-
-//crud para turnos
+  //crud para turnos
   getTurnos(): Observable<Turno[]> {
     return this.http.get<Turno[]>(this.urlTurno);
   }

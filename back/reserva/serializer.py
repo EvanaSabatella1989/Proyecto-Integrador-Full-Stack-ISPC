@@ -15,5 +15,22 @@ class ReservaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Reserva
         fields = '__all__'
+        
+    def get_turno(self, obj):
+        if obj.turno:
+            return {
+                "id": obj.turno.id,
+                "fecha": obj.turno.fecha,
+                "hora": obj.turno.hora
+            }
+        return None
+
+    def get_sucursal(self, obj):
+        if obj.servicio and obj.servicio.sucursal:
+            return {
+                "id": obj.servicio.sucursal.id,
+                "nombre": obj.servicio.sucursal.nombre
+            }
+        return None
 
      
