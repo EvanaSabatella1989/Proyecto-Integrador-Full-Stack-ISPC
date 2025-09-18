@@ -11,6 +11,7 @@ from decouple import config
 
 
 
+
 # configuracion para el envio de correos a  Mailtrap y hacer las pruebas
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.mailtrap.io'  # Servidor SMTP de Mailtrap
@@ -50,6 +51,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'user',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -58,7 +60,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'cloudinary',
     'cloudinary_storage',
-    'user',
     'rest_framework_simplejwt',
     'producto',
     'categoria',
@@ -197,7 +198,7 @@ TEMPLATE_DIRS = (
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-AUTH_USER_MODEL = "user.UserAccount"
+AUTH_USER_MODEL ="user.UserAccount"
 
 
 # REST_FRAMEWORK = {
