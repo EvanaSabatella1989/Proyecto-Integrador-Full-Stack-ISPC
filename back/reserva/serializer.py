@@ -6,17 +6,71 @@ from user.serializers import ClienteSerializer
 from servicio.serializer import ServicioSerializer
 from turno.serializers import TurnoSerializer
 
+# class ReservaSerializer(serializers.ModelSerializer):
+#     cliente = ClienteSerializer(read_only=True)
+#     # servicio = ServicioSerializer(read_only=True)
+#     servicio=serializers.PrimaryKeyRelatedField(queryset=Servicio.objects.all())
+#     turno = serializers.PrimaryKeyRelatedField(queryset=Turno.objects.all())
+    
+#     # Campos calculados para la lista
+#     # servicio_info = serializers.SerializerMethodField()
+#     # turno_info = serializers.SerializerMethodField()
+#     # sucursal_info = serializers.SerializerMethodField()
+
+#     class Meta:
+#         model = Reserva
+#         fields = '__all__'
+#         # fields = ['id', 'cliente', 'servicio', 'servicio_info', 'turno', 'turno_info', 'sucursal_info', 'estado']
+        
+#     def get_turno(self, obj):
+#         if obj.turno:
+#             return {
+#                 "id": obj.turno.id,
+#                 "fecha": obj.turno.fecha,
+#                 "hora": obj.turno.hora
+#             }
+#         return None
+
+#     def get_sucursal(self, obj):
+#         if obj.servicio and obj.servicio.sucursal:
+#             return {
+#                 "id": obj.servicio.sucursal.id,
+#                 "nombre": obj.servicio.sucursal.nombre
+#             }
+#         return None
+    
+#     def get_servicio_info(self, obj):
+#         if obj.servicio:
+#             return {
+#                 "id": obj.servicio.id,
+#                 "nombre": obj.servicio.nombre
+#             }
+#         return None
+
 class ReservaSerializer(serializers.ModelSerializer):
     cliente = ClienteSerializer(read_only=True)
-    # servicio = ServicioSerializer(read_only=True)
-    servicio=serializers.PrimaryKeyRelatedField(queryset=Servicio.objects.all())
+    servicio = serializers.PrimaryKeyRelatedField(queryset=Servicio.objects.all())
     turno = serializers.PrimaryKeyRelatedField(queryset=Turno.objects.all())
     
+    # Campos calculados para la lista
+    servicio_info = serializers.SerializerMethodField()
+    turno_info = serializers.SerializerMethodField()
+    sucursal_info = serializers.SerializerMethodField()
+
     class Meta:
         model = Reserva
-        fields = '__all__'
-        
-    def get_turno(self, obj):
+        fields = ['id', 'cliente', 'servicio', 'servicio_info',
+                  'turno', 'turno_info', 'sucursal_info', 'estado']
+
+    def get_servicio_info(self, obj):
+        if obj.servicio:
+            return {
+                "id": obj.servicio.id,
+                "nombre": obj.servicio.nombre
+            }
+        return None
+
+    def get_turno_info(self, obj):
         if obj.turno:
             return {
                 "id": obj.turno.id,
@@ -25,12 +79,13 @@ class ReservaSerializer(serializers.ModelSerializer):
             }
         return None
 
-    def get_sucursal(self, obj):
-        if obj.servicio and obj.servicio.sucursal:
+    def get_sucursal_info(self, obj):
+        if obj.turno and obj.turno.sucursal:
             return {
-                "id": obj.servicio.sucursal.id,
-                "nombre": obj.servicio.sucursal.nombre
+                "id": obj.turno.sucursal.id,
+                "nombre": obj.turno.sucursal.nombre
             }
         return None
+
 
      

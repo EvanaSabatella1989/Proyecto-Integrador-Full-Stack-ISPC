@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Servicio } from 'src/app/models/servicio';
 import { AuthService } from 'src/app/service/auth.service';
 
 import { ServicioService } from 'src/app/service/servicio.service';
 import { TokenService } from 'src/app/service/token.service';
+declare var bootstrap: any;
 
 @Component({
   selector: 'app-servicios',
@@ -12,50 +14,137 @@ import { TokenService } from 'src/app/service/token.service';
   styleUrls: ['./servicios.component.css']
 })
 export class ServiciosComponent implements OnInit {
-  
-  miServi:any;
-  isLogged:boolean= false;
+
+  miServi: any;
+  isLogged: boolean = false;
   isAdmin: boolean = false;  // verifica si el usuario es admin
- 
+  servicioActual: Servicio | null = null;
+  servicioForm!: FormGroup;
+  imagenSeleccionada?: File | null = null;
+  modalInstance: any;
+  nombre: string = '';
+  descripcion: string = '';
+  precio: number = 0;
 
 
-
-  constructor(private tokenService: TokenService, private authService: AuthService, private serv: ServicioService, private activatedRouter: ActivatedRoute, private router: Router) {
-    
-   }
-
-  ngOnInit(): void {
-    this.authService.isLoggedIn$.subscribe(resp => this.isLogged = resp)
-    
-    // Verifica si el usuario es admin usando el TokenService
-    //this.isAdmin = this.tokenService.isAdmin();
-    
-    this.authService.isAdmin$.subscribe(isAdmin => {
-      this.isAdmin = isAdmin; // 🔹 Actualizar la variable local
-      if (isAdmin) {
-        console.log("El usuario es administrador");
-      } else {
-        console.log("El usuario NO es administrador");
-      }
-    });
-
-    this.serv.obtenerServicios().subscribe({
-      next:(serviciosTodos)=>{
-        this.miServi=serviciosTodos;
-        console.log(" Exito se cargo los servicios");
-      },
-      error:(errorData)=> {
-        console.log("error del componenete servicio ");
-        console.error(errorData);
-        this.router.navigate(['']);
-      }
-    })
-  
-
-   
-
+  constructor(private tokenService: TokenService, private authService: AuthService, private serv: ServicioService, private activatedRouter: ActivatedRoute, private router: Router, private fb: FormBuilder) {
 
   }
-  
+
+   ngOnInit(): void {
+    this.authService.isLoggedIn$.subscribe(resp => this.isLogged = resp);
+    this.authService.isAdmin$.subscribe(isAdmin => this.isAdmin = isAdmin);
+
+    this.cargarServicios();
+  }
+
+  cargarServicios(): void {
+    this.serv.obtenerServicios().subscribe({
+      next: (serviciosTodos) => this.miServi = serviciosTodos,
+      error: (errorData) => {
+        console.error('Error cargando servicios', errorData);
+        this.router.navigate(['']);
+      }
+    });
+  }
+
+  irAReservar(servicioId: number) {
+  if (!this.isLogged) {
+    // si no esta logueado, lo mandamos al login
+    alert('Debes iniciar sesión para reservar un servicio.');
+    this.router.navigate(['/login']);
+    return;
+  }
+
+  // si lo esta lo llevamos a la ruta de reserva
+  this.router.navigate(['/servicios', servicioId, 'reservar']);
+}
+
+  // Modal
+  abrirModal(servicio?: Servicio) {
+    this.servicioActual = servicio || null;
+
+    if (servicio) {
+      this.nombre = servicio.nombre ?? '';
+      this.descripcion = servicio.descripcion ?? '';
+      this.precio = servicio.precio;
+    } else {
+      this.nombre = '';
+      this.descripcion = '';
+      this.precio = 0;
+      this.imagenSeleccionada = null;
+    }
+
+    const modalEl = document.getElementById('modalServicio');
+    this.modalInstance = new bootstrap.Modal(modalEl);
+    this.modalInstance.show();
+  }
+
+  seleccionarImagen(event: any): void {
+    if (event.target.files.length > 0) {
+      this.imagenSeleccionada = event.target.files[0];
+    }
+  }
+
+  guardarServicio() {
+    if (!this.nombre || !this.descripcion || !this.precio) {
+      alert('⚠️ Todos los campos excepto la imagen son obligatorios.');
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('nombre', this.nombre);
+    formData.append('descripcion', this.descripcion);
+    formData.append('precio', this.precio.toString());
+
+    if (this.imagenSeleccionada) {
+      formData.append('imagen', this.imagenSeleccionada);
+    }
+
+    if (this.servicioActual?.id) {
+      if (!window.confirm('¿Confirmas actualizar este servicio?')) return;
+
+      this.serv.actualizarServicio(this.servicioActual.id, formData).subscribe({
+        next: () => {
+          alert('✅ Servicio actualizado con éxito');
+          this.cargarServicios();
+          this.modalInstance.hide();
+        },
+        error: (error) => {
+          console.error(error);
+          alert('❌ Error al actualizar servicio.');
+        }
+      });
+    } else {
+      if (!window.confirm('¿Confirmas crear este servicio?')) return;
+
+      this.serv.crearServicio(formData).subscribe({
+        next: () => {
+          alert('✅ Servicio creado con éxito');
+          this.cargarServicios();
+          this.modalInstance.hide();
+        },
+        error: (error) => {
+          console.error(error);
+          alert('❌ Error al crear servicio.');
+        }
+      });
+    }
+  }
+
+  delete(item: Servicio) {
+    if (window.confirm(`⚠️ ¿Seguro que deseas eliminar "${item.nombre}"?`)) {
+      this.serv.eliminarServicio(item.id!).subscribe({
+        next: () => {
+          alert(`✅ Servicio "${item.nombre}" eliminado.`);
+          this.cargarServicios();
+        },
+        error: (error) => {
+          console.error('Error eliminando servicio:', error);
+          alert('❌ No se pudo eliminar el servicio.');
+        }
+      });
+    }
+  }
 
 }

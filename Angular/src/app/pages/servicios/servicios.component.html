@@ -1,30 +1,70 @@
 <main>
-    <h1>Servicios</h1>
-   
-    <a routerLink="/lista-servicios" class="btn btn-info" id="list" *ngIf="isAdmin">Lista de Servicios</a>
-    <a routerLink="/agregar-servicios" class="btn btn-info" id="list" *ngIf="isAdmin">Agregar</a>
-    <div class="row">
+    <div class="container my-5">
+        <h2 class="text-center mb-4">Nuestras Servicios</h2>
+        <!-- botones solo para admin -->
+        <div *ngIf="isAdmin" class="mb-3 d-flex justify-content-end">
+            <button class="btn btn-success" (click)="abrirModal()">+ Agregar Servicio</button>
+        </div>
+
+
         <div class="row row-cols-1 row-cols-md-3 g-4">
+            <div *ngFor="let servicio of miServi" class="col">
+                <div class="card">
+                    <img [src]="servicio.imagen" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">{{servicio.nombre}}</h5>
+                        <!-- <p>{{servicio.descripcion}}</p> -->
+                        <p>Precio: ${{servicio.precio}}</p>
 
-            <ul *ngFor="let servicio of miServi">
-                <li>
-                    <div class="col">
-                        <div class="card">
-                            <img src="{{servicio.imagen}}" class="card-img-top" alt="...">
+                        <button class="btn btn-primary me-2" (click)="irAReservar(servicio.id)">Reservar</button>
 
-                            <div class="card-body">
-                                <h5 class="card-title ">{{servicio.nombre}}</h5>
-                                <!-- <a href="servicio/{{servicio.id}}/" class="btn btn-primary" >Reservar</a> -->
-                                  <button [routerLink]="['/servicios', servicio.id, 'reservar']">Reservar</button>
-                            
-                            </div>
-                        </div>
+
+                        <!-- botones solo para admin -->
+                        <ng-container *ngIf="isAdmin">
+                            <button class="btn btn-warning me-2" (click)="abrirModal(servicio)">Editar</button>
+                            <button class="btn btn-danger" (click)="delete(servicio)">Eliminar</button>
+                        </ng-container>
                     </div>
-
-                </li>
-            </ul>
-
+                </div>
+            </div>
         </div>
     </div>
 </main>
 
+<!-- modal para editar y crear -->
+<div class="modal fade" id="modalServicio" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">{{servicioActual ? 'Editar Servicio' : 'Agregar Servicio'}}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="mb-3">
+                        <label>Nombre</label>
+                        <input type="text" class="form-control" [(ngModel)]="nombre" name="nombre">
+                    </div>
+                    <div class="mb-3">
+                        <label>Descripción</label>
+                        <textarea class="form-control" [(ngModel)]="descripcion" name="descripcion"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label>Precio</label>
+                        <input type="number" class="form-control" [(ngModel)]="precio" name="precio">
+                    </div>
+                    <div class="mb-3">
+                        <label>Imagen</label>
+                        <input type="file" class="form-control" (change)="seleccionarImagen($event)">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button class="btn btn-primary" (click)="guardarServicio()">
+                    {{servicioActual ? 'Actualizar' : 'Crear'}}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

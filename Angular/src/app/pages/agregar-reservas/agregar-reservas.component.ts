@@ -18,14 +18,14 @@ export class AgregarReservasComponent {
   turnosDisponibles: any[] = [];
   reservaActual: any = null;
   modalInstance: any;
-   isAdmin: boolean = false;
+  isAdmin: boolean = false;
 
-   constructor(private fb: FormBuilder, private servicioService: ServicioService,private authService: AuthService) { }
+  constructor(private fb: FormBuilder, private servicioService: ServicioService, private authService: AuthService) { }
 
 
-   ngOnInit(): void {
-      this.isAdmin = this.authService.isAdmin();
-       console.log('isAdmin:', this.isAdmin);
+  ngOnInit(): void {
+    this.isAdmin = this.authService.isAdmin();
+    console.log('isAdmin:', this.isAdmin);
 
     this.reservaForm = this.fb.group({
       cliente: ['', Validators.required],
@@ -34,10 +34,10 @@ export class AgregarReservasComponent {
       turno: ['', Validators.required]
     });
 
-      this.servicioService.obtenerSucursales().subscribe(data => this.sucursales = data);
+    this.servicioService.obtenerSucursales().subscribe(data => this.sucursales = data);
     this.servicioService.getTurnos().subscribe(data => this.turnosDisponibles = data);
 
-      if (this.isAdmin) {
+    if (this.isAdmin) {
       // cargar reservas y clientes para admin
       this.cargarReservas();
       this.cargarClientes();
@@ -45,18 +45,23 @@ export class AgregarReservasComponent {
     }
   }
 
-  cargarReservas() {
-    this.servicioService.obtenerReservas().subscribe(data => {
-    console.log('Reservas recibidas:', data); // <-- esto ayuda a depurar
-    this.reservas = data;
-  });
+  cargarReservas(): void {
+    this.servicioService.obtenerReservas().subscribe({
+      next: (data) => {
+        this.reservas = data;
+        console.log("Reservas cargadas:", this.reservas);  // 👈 para revisar la respuesta
+      },
+      error: (err) => {
+        console.error("Error cargando reservas:", err);
+      }
+    });
   }
 
   cargarClientes() {
-     this.authService.obtenerClientes().subscribe(data => {
-       console.log('Clientes raw:', data);
-    this.clientes=data;// directamente asignas el array
-  });
+    this.authService.obtenerClientes().subscribe(data => {
+      console.log('Clientes raw:', data);
+      this.clientes = data;
+    });
   }
 
   cargarServicios() {
@@ -77,42 +82,47 @@ export class AgregarReservasComponent {
   abrirModal(reserva?: any) {
     this.reservaActual = reserva || null;
 
-      // Si no hay clientes cargados, cargarlos antes
-  if (this.clientes.length === 0) {
-    this.cargarClientes();
-  }
+    //cargo clientes antes
+    if (this.clientes.length === 0) {
+      this.cargarClientes();
+    }
     const modalEl = document.getElementById('modalReserva');
     this.modalInstance = new bootstrap.Modal(modalEl);
 
-      setTimeout(() => {
-    if (reserva) {
-      this.reservaForm.patchValue({
-        cliente: reserva.cliente.id,
-        servicio: reserva.servicio.id,
-        sucursal: reserva.sucursal.id,
-        turno: reserva.turno.id
-      });
-    } else {
-      this.reservaForm.reset();
-    }
-    this.modalInstance.show();
-  });
+    setTimeout(() => {
+      if (reserva) {
+        this.reservaForm.patchValue({
+          cliente: reserva.cliente.id,
+          servicio: reserva.servicio,   
+          estado: reserva.estado
+        });
+      } else {
+        this.reservaForm.reset();
+      }
+      this.modalInstance.show();
+    });
   }
 
+  // cargo las reservas y actualizo
   guardarReserva() {
-    const datos = this.reservaForm.value;
-    if (this.reservaActual?.id) {
+  const datos = this.reservaForm.value;
+
+  if (this.reservaActual?.id) {
+    if (confirm('¿Desea actualizar esta reserva?')) {
       this.servicioService.actualizarReserva(this.reservaActual.id, datos).subscribe(() => {
         this.cargarReservas();
         this.modalInstance.hide();
       });
-    } else {
+    }
+  } else {
+    if (confirm('¿Desea crear una nueva reserva?')) {
       this.servicioService.crearReserva(datos).subscribe(() => {
         this.cargarReservas();
         this.modalInstance.hide();
       });
     }
   }
+}
 
   eliminarReserva(id: number) {
     if (confirm('¿Desea eliminar esta reserva?')) {

@@ -34,30 +34,15 @@ export class ServicioService {
   }
 
   // crear un nuevo servicio (con imagen)
-  crearServicio(servicio: Servicio, imagen?: File): Observable<Servicio> {
-    const formData = new FormData();
-    formData.append('nombre', servicio.nombre ?? '');
-    formData.append('descripcion', servicio.descripcion ?? '');
-    formData.append('precio', servicio.precio ? servicio.precio.toString() : ''); // Asegura que sea string
-
-    // solo agrega la imagen si existe
-    if (imagen) {
-      formData.append('imagen', imagen, imagen.name);
-    }
-
-    return this.http.post<Servicio>(this.url, formData);
-  }
+ crearServicio(formData: FormData): Observable<Servicio> {
+  return this.http.post<Servicio>(this.url, formData);
+}
 
 
   // ctualizar un servicio
-  actualizarServicio(id: number, servicio: FormData, imagen?: File): Observable<Servicio> {
-    const formData = new FormData();
-    if (imagen) {
-      formData.append('imagen', imagen);
-    }
-
-    return this.http.put<Servicio>(`${this.url}${id}/`, servicio);
-  }
+  actualizarServicio(id: number, formData: FormData): Observable<Servicio> {
+  return this.http.put<Servicio>(`${this.url}${id}/`, formData);
+}
 
   // Eliminar un servicio
   eliminarServicio(id: number): Observable<any> {
