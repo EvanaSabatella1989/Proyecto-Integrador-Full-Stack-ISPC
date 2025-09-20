@@ -27,6 +27,7 @@ class ProductoUpdateDelete(generics.RetrieveUpdateDestroyAPIView):
 @api_view(['GET', 'POST','PUT','DELETE'])
 @permission_classes([AllowAny])
 def productoList(request, format=None):
+    parser_classes = (MultiPartParser, FormParser)  # ✅ habilitar multipart
     '''
     List all code snippets, or create a new snippet.
     Enumere todos los fragmentos de código o cree uno nuevo.
@@ -43,16 +44,14 @@ def productoList(request, format=None):
         # data = JSONParser().parse(request)    
         # data.imagen=request.FILES.get('imagen')
         # serializer = SnippetSerializer(data=data)     #1
-        parser_classes = (MultiPartParser, FormParser)  # ✅ habilitar multipart
+        
         serializer = ProductoSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-  
+
     elif request.method == 'PUT':
-       
-         # Verifica si el usuario es admin
         if not request.user.is_staff:
             return Response({'detail': 'No tiene permiso para realizar esta acción.'}, 
                             status=status.HTTP_403_FORBIDDEN)
@@ -63,11 +62,31 @@ def productoList(request, format=None):
             return Response({'detail': 'Producto no encontrado.'}, 
                             status=status.HTTP_404_NOT_FOUND)
 
-        serializer = ProductoSerializer(producto, data=request.data)
+        old_public_id = producto.public_id  # public_id anterior
+
+        data = request.data.copy()
+        serializer = ProductoSerializer(producto, data=data, partial=True)
+
         if serializer.is_valid():
+            # Si hay nueva imagen y existe una anterior
+            if 'imagen' in request.FILES and old_public_id:
+                import cloudinary.uploader
+
+                # Asegurarse de pasar solo el public_id correcto
+                # Por ejemplo, si guardaste "tapizado" en public_id, así está correcto
+                try:
+                    cloudinary.uploader.destroy(old_public_id, invalidate=True)
+                except Exception as e:
+                    print(f"No se pudo borrar la imagen anterior: {e}")
+
             serializer.save()
-            return Response(serializer.data)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+
   
     elif request.method == 'DELETE':
        # Verifica si el usuario es admin
@@ -80,6 +99,13 @@ def productoList(request, format=None):
         except Producto.DoesNotExist:
             return Response({'detail': 'Producto no encontrado.'}, 
                             status=status.HTTP_404_NOT_FOUND)
+        
+        #  # ✅ Eliminar imagen de Cloudinary si tiene public_id
+        # if producto.public_id:
+        #     try:
+        #         cloudinary.uploader.destroy(producto.public_id)
+        #     except Exception as e:
+        #         print("Error eliminando en Cloudinary:", e)
 
         producto.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
