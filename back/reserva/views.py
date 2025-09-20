@@ -9,14 +9,14 @@ import logging
 from datetime import datetime, timedelta
 # from sucursal.models import HorarioSucursal
 from rest_framework import status
-from user.models import Cliente
+
 from django.conf import settings
 from django.http import JsonResponse
 import json
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework import viewsets, serializers
 from rest_framework.permissions import IsAuthenticated
-
+from user.models import Cliente
 logger = logging.getLogger(__name__)
 
 class ReservaViewSet(viewsets.ModelViewSet):
