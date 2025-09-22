@@ -237,6 +237,6 @@ def create_cliente(sender, instance, created, **kwargs):
 
         Cliente.objects.create(user=instance)
 
-        Cliente.objects.create(user=instance)
+        # Cliente.objects.create(user=instance)
 
 
