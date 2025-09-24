@@ -1,6 +1,9 @@
 from django.db import models
 from datetime import datetime
 from cloudinary_storage.storage import MediaCloudinaryStorage
+import os
+from urllib.parse import urlparse
+import cloudinary.uploader
 
 
 
@@ -13,6 +16,8 @@ class Servicio(models.Model):
     descripcion = models.TextField()
     precio = models.DecimalField(max_digits=6, decimal_places=3)
     fecha_creacion= models.DateTimeField(default=datetime.now)
+    # 👇 nuevo campo para identificar la imagen en Cloudinary
+    public_id = models.CharField(max_length=255, blank=True, null=True)
 
     class Meta:
         db_table = "servicio"
@@ -26,4 +31,45 @@ class Servicio(models.Model):
 
     def __str__(self):
         return self.nombre
+
+
+    def save(self, *args, **kwargs):
+        # ✅ Si el servicio ya existe en la BD, buscamos la versión anterior
+        if self.pk:
+            try:
+                old = type(self).objects.get(pk=self.pk)
+                # Si el public_id existe y la imagen cambió → borrar de Cloudinary
+                if old.public_id and old.imagen != self.imagen:
+                    try:
+                        cloudinary.uploader.destroy(old.public_id)
+                    except Exception as e:
+                        print(f"Error al eliminar imagen anterior en Cloudinary: {e}")
+            except type(self).DoesNotExist:
+                pass  # Si no existía antes, seguimos normal
+
+        # ✅ Guardamos primero
+        super().save(*args, **kwargs)
+
+        # ✅ Luego calculamos el nuevo public_id
+        if self.imagen:
+            try:
+                url = str(self.imagen.url)
+                path = urlparse(url).path
+                filename = os.path.basename(path).rstrip('/')
+                public_id_candidate = filename
+
+                if public_id_candidate and public_id_candidate != self.public_id:
+                    final_public_id = "media/servicios/" + public_id_candidate
+                    self.public_id = final_public_id
+                    type(self).objects.filter(pk=self.pk).update(public_id=final_public_id)
+            except Exception as e:
+                print("Error extrayendo public_id:", e)
+
+    def delete(self, *args, **kwargs):
+        if self.public_id:
+            try:
+                cloudinary.uploader.destroy(self.public_id)
+            except Exception as e:
+                print(f"Error al eliminar imagen en Cloudinary: {e}")
+        super().delete(*args, **kwargs)
 
