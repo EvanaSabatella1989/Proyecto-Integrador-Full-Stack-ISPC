@@ -1,5 +1,5 @@
 <app-header></app-header>
-<div class="album py-5">
+<!-- <div class="album py-5">
   <div class="container">
     <h2>Nuestros Servicios</h2>
     <div class="row">
@@ -51,7 +51,42 @@
     </div>
     <h4><a routerLink="/servicios" style="color: #F5C057;">Ver todos ></a></h4>
   </div>
+</div> -->
+
+<div class="album py-5 bg-light">
+  <div class="container">
+    <h2 class="mb-4 text-center">Nuestros Servicios</h2>
+
+    <div class="row g-4">
+      <div class="col-md-4" *ngFor="let servicio of servicios">
+        <div class="card h-100 shadow-sm border-0 rounded-3 hover-card">
+          <!-- <a [routerLink]="['/servicios', servicio.id]" class="text-decoration-none text-dark"> -->
+            <img
+              class="card-img-top"
+              [src]="servicio.imagen"
+              [alt]="servicio.nombre"
+              height="250"
+              style="object-fit: cover;"
+            />
+            <div class="card-body text-center">
+              <h5 class="fw-bold">{{ servicio.nombre }}</h5>
+              <!-- <p class="text-muted small" *ngIf="servicio.descripcion">
+                {{ servicio.descripcion | slice:0:80 }}...
+              </p> -->
+            </div>
+          <!-- </a> -->
+        </div>
+      </div>
+    </div>
+
+    <div class="text-center mt-4">
+      <h4>
+        <a routerLink="/servicios" class="text-warning fw-bold">Ir a más servicios</a>
+      </h4>
+    </div>
+  </div>
 </div>
+
 
 <div class="album py-5">
   <div class="container">

@@ -87,10 +87,10 @@ export class ServiciosComponent implements OnInit {
   }
 
   guardarServicio() {
-    if (!this.nombre || !this.descripcion || !this.precio) {
-      alert('⚠️ Todos los campos excepto la imagen son obligatorios.');
-      return;
-    }
+   if (!this.nombre?.trim() || !this.descripcion?.trim() || this.precio == null || !this.imagenSeleccionada) {
+  alert('⚠️ Todos los campos excepto la imagen son obligatorios.');
+  return;
+}
 
     const formData = new FormData();
     formData.append('nombre', this.nombre);
@@ -132,19 +132,19 @@ export class ServiciosComponent implements OnInit {
     }
   }
 
-  delete(item: Servicio) {
-    if (window.confirm(`⚠️ ¿Seguro que deseas eliminar "${item.nombre}"?`)) {
-      this.serv.eliminarServicio(item.id!).subscribe({
-        next: () => {
-          alert(`✅ Servicio "${item.nombre}" eliminado.`);
-          this.cargarServicios();
-        },
-        error: (error) => {
-          console.error('Error eliminando servicio:', error);
-          alert('❌ No se pudo eliminar el servicio.');
-        }
-      });
-    }
-  }
+  // delete(item: Servicio) {
+  //   if (window.confirm(`⚠️ ¿Seguro que deseas eliminar "${item.nombre}"?`)) {
+  //     this.serv.eliminarServicio(item.id!).subscribe({
+  //       next: () => {
+  //         alert(`✅ Servicio "${item.nombre}" eliminado.`);
+  //         this.cargarServicios();
+  //       },
+  //       error: (error) => {
+  //         console.error('Error eliminando servicio:', error);
+  //         alert('❌ No se pudo eliminar el servicio.');
+  //       }
+  //     });
+  //   }
+  // }
 
 }

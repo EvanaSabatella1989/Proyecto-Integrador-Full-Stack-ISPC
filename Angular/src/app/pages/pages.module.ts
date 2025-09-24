@@ -34,6 +34,7 @@ import { ReservaComponent } from './reserva/reserva.component';
 import { TurnosComponent } from './turnos/turnos.component';
 import { AgregarReservasComponent } from './agregar-reservas/agregar-reservas.component';
 import { PanelAdminComponent } from './panel-admin/panel-admin.component';
+import { ListaServiciosComponent } from './lista-servicios/lista-servicios.component';
 
 
 
@@ -71,6 +72,7 @@ import { PanelAdminComponent } from './panel-admin/panel-admin.component';
     TurnosComponent,
     AgregarReservasComponent,
     PanelAdminComponent,
+    ListaServiciosComponent,
  
 
   ],

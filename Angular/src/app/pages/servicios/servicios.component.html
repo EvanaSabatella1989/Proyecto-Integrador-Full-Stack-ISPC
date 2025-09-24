@@ -20,10 +20,10 @@
 
 
                         <!-- botones solo para admin -->
-                        <ng-container *ngIf="isAdmin">
+                        <!-- <ng-container *ngIf="isAdmin">
                             <button class="btn btn-warning me-2" (click)="abrirModal(servicio)">Editar</button>
                             <button class="btn btn-danger" (click)="delete(servicio)">Eliminar</button>
-                        </ng-container>
+                        </ng-container> -->
                     </div>
                 </div>
             </div>
@@ -51,7 +51,8 @@
                     </div>
                     <div class="mb-3">
                         <label>Precio</label>
-                        <input type="number" class="form-control" [(ngModel)]="precio" name="precio">
+                        <input type="number" class="form-control" [(ngModel)]="precio" name="precio" placeholder="Ej: 30000">
+
                     </div>
                     <div class="mb-3">
                         <label>Imagen</label>

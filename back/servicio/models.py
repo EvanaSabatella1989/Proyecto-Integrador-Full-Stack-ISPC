@@ -14,7 +14,7 @@ class Servicio(models.Model):
     # imagen = models.ImageField(upload_to='servicios/') # Cloudinary maneja el upload
     imagen = models.ImageField(storage=MediaCloudinaryStorage(), upload_to='servicios/', blank=True, null=True)
     descripcion = models.TextField()
-    precio = models.DecimalField(max_digits=6, decimal_places=3)
+    precio = models.DecimalField(max_digits=10, decimal_places=2)
     fecha_creacion= models.DateTimeField(default=datetime.now)
     # 👇 nuevo campo para identificar la imagen en Cloudinary
     public_id = models.CharField(max_length=255, blank=True, null=True)

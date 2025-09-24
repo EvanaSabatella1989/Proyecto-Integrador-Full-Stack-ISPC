@@ -14,7 +14,7 @@ import { PreguntasFrecuentesComponent } from './pages/preguntas-frecuentes/pregu
 import { ProductosComponent } from './pages/productos/productos.component';
 import { ArticuloComponent } from './pages/articulo/articulo.component';
 import { ServicioComponent } from './pages/servicio/servicio.component';
-
+import { ListaServiciosComponent } from './pages/lista-servicios/lista-servicios.component';
 
 import { CategoriasComponent } from './pages/categorias/categorias.component';
 import { ListaProductosComponent } from './pages/lista-productos/lista-productos.component'
@@ -60,7 +60,7 @@ const routes: Routes = [
  
   { path: 'categorias', component: CategoriasComponent, canActivate: [AuthAdminGuard] },
   { path: 'lista-productos', component: ListaProductosComponent, canActivate: [AuthAdminGuard] },
-
+  {path: 'lista-servicios', component:ListaServiciosComponent,canActivate: [AuthAdminGuard] },
   { path: 'agregar-categorias', component: AgregarCategoriasComponent, canActivate: [AuthAdminGuard] },
   { path: 'agregar-productos', component: AgregarProductosComponent, canActivate: [AuthAdminGuard] },
   { path: 'editar-categorias/:id', component: EditarCategoriasComponent, canActivate: [AuthAdminGuard] },

@@ -1,0 +1,23 @@
+img{
+    
+    height:50px ;
+}
+
+.table{
+    margin-top: 25px;
+}
+
+
+#edit{
+    color: greenyellow;
+}
+#borrar{
+    color: red;
+}
+
+
+
+h4{
+    text-align: center;
+    margin-bottom: 5px;
+}
