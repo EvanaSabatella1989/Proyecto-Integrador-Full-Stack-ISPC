@@ -95,6 +95,24 @@
 
   <div *ngIf="!isAdmin">
     <h2>Mis turnos</h2>
+    <div *ngIf="reservas.length > 0; else noTurnos">
+      <p>Tiene las siguientes reservas</p>
+        <li *ngFor="let reserva of reservas">
+            <strong>{{ reserva.servicio_info.nombre }}</strong>
+            <p>en sucursal</p>
+            <strong>{{ reserva.sucursal_info.nombre }}</strong>
+            <p>El día: </p>
+            <strong>{{ reserva.turno_info.fecha | date:'dd/MM/yyyy' }}</strong>
+            <p>a las </p>
+            <strong>{{ reserva.turno_info.hora }}</strong> 
+        </li>
+        <p>Lo esperamos!!</p>
+        <!-- <button routerLink="/carrito">Continuar comprando</button> -->
+        
+      </div>
+    <ng-template #noTurnos>
+        <p>No hay reservas de servicios.</p>
+    </ng-template>
   </div>
 
   <div *ngIf="isAdmin">

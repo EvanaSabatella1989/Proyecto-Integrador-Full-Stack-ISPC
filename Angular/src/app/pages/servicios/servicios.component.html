@@ -1,6 +1,6 @@
 <main>
     <div class="container my-5">
-        <h2 class="text-center mb-4">Nuestras Servicios</h2>
+        <h2 class="text-center mb-4">Nuestros Servicios</h2>
         <!-- botones solo para admin -->
         <div *ngIf="isAdmin" class="mb-3 d-flex justify-content-end">
             <button class="btn btn-success" (click)="abrirModal()">+ Agregar Servicio</button>
@@ -16,7 +16,7 @@
                         <!-- <p>{{servicio.descripcion}}</p> -->
                         <p>Precio: ${{servicio.precio}}</p>
 
-                        <button class="btn btn-primary me-2" (click)="irAReservar(servicio.id)">Reservar</button>
+                        <button class="btn btn-primary me-2" (click)="irAReservar(servicio.id)" *ngIf="!isAdmin">Reservar</button>
 
 
                         <!-- botones solo para admin -->

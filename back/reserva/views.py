@@ -23,6 +23,18 @@ class ReservaViewSet(viewsets.ModelViewSet):
     queryset = Reserva.objects.all()
     serializer_class = ReservaSerializer
     permission_classes = [IsAuthenticated] 
+
+    # @action(detail=False, methods=['get'])
+    # def mis_reservas(self, request):
+    #     user = request.user
+    #     try:
+    #         cliente = Cliente.objects.get(user=user)
+    #         reservas = Reserva.objects.filter(cliente=cliente)
+    #     except Cliente.DoesNotExist:
+    #         reservas = Reserva.objects.none()
+
+    #     serializer = self.get_serializer(reservas, many=True)
+    #     return Response(serializer.data)
     
 # SE ENVIA LA RESERVA AL CORREO DEL ADMIN Y CLIENTE
 # TAMBIEN SE CONFIRMA LA RESERVA Y SE ENVIA LOS DATOS A LA DB Y EL TURNO DISPONIBLE PASA A FALSE

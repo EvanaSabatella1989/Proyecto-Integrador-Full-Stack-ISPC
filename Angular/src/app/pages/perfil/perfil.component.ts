@@ -13,6 +13,7 @@ export class PerfilComponent implements OnInit {
   usuario: any = null;
   vehiculos: any[] = [];
   carrito: any[] = [];
+  reservas: any[] = [];
   isAdmin: boolean = false;
 
   constructor(private usuarioService: UsuarioService, private authService: AuthService) {}
@@ -20,9 +21,10 @@ export class PerfilComponent implements OnInit {
   ngOnInit(): void {
     this.usuarioService.obtenerPerfil().subscribe(data => {
       this.usuario = data;
-      this.vehiculos = data.vehiculos || [];;
+      this.vehiculos = data.vehiculos || [];
       this.carrito = data.carrito ? data.carrito.items : [];  // Acceder a items del carrito
-
+      this.reservas = data.reservas || [];
+      console.log(this.reservas)
       this.authService.isAdmin$.subscribe(isAdmin => {
         this.isAdmin = isAdmin; // 🔹 Actualizar la variable local
       });

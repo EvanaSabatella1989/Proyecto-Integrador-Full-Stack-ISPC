@@ -2,7 +2,7 @@ from rest_framework import serializers
 from rest_framework import serializers
 from .models import Reserva,Turno,Servicio
 from user.models import Cliente
-from user.serializers import ClienteSerializer
+# from user.serializers import ClienteSerializer
 from servicio.serializer import ServicioSerializer
 from turno.serializers import TurnoSerializer
 
@@ -48,7 +48,7 @@ from turno.serializers import TurnoSerializer
 #         return None
 
 class ReservaSerializer(serializers.ModelSerializer):
-    cliente = ClienteSerializer(read_only=True)
+    cliente = serializers.SerializerMethodField()
     servicio = serializers.PrimaryKeyRelatedField(queryset=Servicio.objects.all())
     turno = serializers.PrimaryKeyRelatedField(queryset=Turno.objects.all())
     
@@ -59,8 +59,21 @@ class ReservaSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Reserva
-        fields = ['id', 'cliente', 'servicio', 'servicio_info',
-                  'turno', 'turno_info', 'sucursal_info', 'estado']
+        fields = [
+            'id',
+            'cliente',
+            'servicio',
+            'servicio_info',
+            'turno',
+            'turno_info',
+            'sucursal_info',
+            'estado'
+        ]
+        depth = 2  # para expandir turno y sucursal
+
+    def get_cliente(self, obj):
+        from user.serializers import ClienteSerializer  # 👈 import local para evitar circular import
+        return ClienteSerializer(obj.cliente).data if obj.cliente else None
 
     def get_servicio_info(self, obj):
         if obj.servicio:
@@ -86,6 +99,3 @@ class ReservaSerializer(serializers.ModelSerializer):
                 "nombre": obj.turno.sucursal.nombre
             }
         return None
-
-
-     
