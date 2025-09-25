@@ -1,45 +1,4 @@
-<!-- <div class="container mt-4">
-    <h2>Perfil de {{ usuario.nombre }}</h2>
-    <p>Email: {{ usuario.email }}</p>
-    <p>Teléfono: {{ usuario.telefono }}</p>
-  
-    <hr />
-  
-    <h3>Compras Realizadas</h3>
-    <ul>
-      <li *ngFor="let compra of compras">
-        {{ compra.fecha }} - {{ compra.total }} USD
-      </li>
-    </ul>
-  
-    <h3>Carrito de Compras</h3>
-    <ul>
-      <li *ngFor="let item of carrito">
-        {{ item.nombre }} - {{ item.precio }} USD
-      </li>
-    </ul>
-  
-    <h3>Reservas</h3>
-    <ul>
-      <li *ngFor="let reserva of reservas">
-        {{ reserva.fecha }} - {{ reserva.estado }}
-      </li>
-    </ul>
-  
-    <h3>Turnos</h3>
-    <ul>
-      <li *ngFor="let turno of turnos">
-        {{ turno.fecha }} - {{ turno.servicio }}
-      </li>
-    </ul>
-  
-    <h3>Vehículos Cargados</h3>
-    <ul>
-      <li *ngFor="let vehiculo of vehiculos">
-        {{ vehiculo.marca }} - {{ vehiculo.modelo }} - {{ vehiculo.patente }}
-      </li>
-    </ul>
-  </div> -->
+
   <section class="w-100 vh-auto d-flex align-items-center bg-color">
   <div *ngIf="usuario" class="perfil">
     <h2>Perfil de {{ usuario.first_name }} {{ usuario.last_name }}</h2>
@@ -47,7 +6,7 @@
     <p><strong>Teléfono:</strong> {{ usuario.num_telefono }}</p>
 
 <div *ngIf="!isAdmin">
-    <h2>Vehiculos</h2>
+    <h2>Vehiculos <i class="bi bi-car-front-fill"></i></h2>
     <div *ngIf="vehiculos.length > 0; else noVehiculos">
     <ul >
     <li *ngFor="let vehiculo of vehiculos">
@@ -78,14 +37,15 @@
 </ng-template>
     
 <div *ngIf="!isAdmin">
-    <h2>Carrito</h2>
+    <h2>
+    Carrito <i class="bi bi-cart-fill"></i> 
+  </h2>
     <div *ngIf="carrito.length > 0; else noProductos">
-        <!-- <li *ngFor="let item of carrito">
-            <strong>{{ item.producto.nombre }}</strong>
-            
-        </li> -->
+        
         <p>Tiene productos en el carrito</p>
-        <button routerLink="/carrito">Continuar comprando</button>
+        <button routerLink="/carrito">
+        <i class="bi bi-bag-check-fill"></i> Continuar comprando
+      </button>
         
       </div>
     <ng-template #noProductos>
@@ -94,7 +54,7 @@
   </div>
 
   <div *ngIf="!isAdmin">
-    <h2>Mis turnos</h2>
+    <h2>Mis turnos <i class="bi bi-calendar-event"></i></h2>
     <div *ngIf="reservas.length > 0; else noTurnos">
       <p>Tiene las siguientes reservas</p>
         <li *ngFor="let reserva of reservas">
@@ -115,9 +75,9 @@
     </ng-template>
   </div>
 
-  <div *ngIf="isAdmin">
+  <!-- <div *ngIf="isAdmin">
     <h2>Turnos asignados</h2>
-  </div>
+  </div> -->
    
   </div>
 </section>
