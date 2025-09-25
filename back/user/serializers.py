@@ -35,7 +35,8 @@ class UserSerializer(serializers.ModelSerializer):
         )
         
         #para poder crear usuario en angular
-        Cliente.objects.create(user=user, direccion="", num_telefono="")
+        Cliente.objects.get_or_create(user=user, defaults={'direccion': '', 'num_telefono': ''})
+        
         return user
     
 

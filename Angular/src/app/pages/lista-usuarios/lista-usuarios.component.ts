@@ -41,26 +41,28 @@ export class ListaUsuariosComponent {
 
   abrirModal(cliente?: Cliente) {
     if (cliente) {
-      // Editar cliente
+
+      // editar cliente
       this.clienteActual = cliente;
       this.email = cliente.email;
       this.first_name = cliente.first_name;
       this.last_name = cliente.last_name;
       this.direccion = cliente.direccion;
       this.num_telefono = cliente.num_telefono;
-      this.password = ''; // No mostramos contraseña al editar
+      this.password = ''; 
     } else {
-      // Crear cliente/usuario nuevo
+
+      // crear cliente/usuario nuevo
       this.clienteActual = null;
       this.email = '';
-      this.first_name = '';
+        this.first_name = '';
       this.last_name = '';
       this.password = '';
       this.direccion = '';
       this.num_telefono = '';
     }
 
-    // Abrir modal usando Bootstrap
+    // abrir modal
     const modalEl = document.getElementById('modalCliente');
     const modal = new bootstrap.Modal(modalEl!);
     modal.show();
@@ -68,7 +70,7 @@ export class ListaUsuariosComponent {
 
   guardarCliente() {
     if (this.clienteActual) {
-      // Actualizar cliente
+      // actualizar usuario
       const updatedCliente: Cliente = {
         ...this.clienteActual,
         direccion: this.direccion,
@@ -82,7 +84,8 @@ export class ListaUsuariosComponent {
         error: (err) => console.error(err)
       });
     } else {
-      // Crear usuario (y se crea cliente automático)
+
+      // crear usuario 
       this.authService.register(
         this.first_name!,
         this.last_name!,
@@ -97,19 +100,19 @@ export class ListaUsuariosComponent {
       });
     }
   }
-  editarCliente(id: number, cliente: Cliente) {
-    this.clienteService.updateCliente(id, cliente).subscribe({
-      next: () => {
-        console.log("Cliente actualizado correctamente");
-        this.cargarClientes();
-      },
-      error: (err) => {
-        console.error("Error al actualizar cliente:", err);
-        // aquí podrías usar un alert o un toast
-        alert("Ocurrió un error al actualizar el cliente");
-      }
-    });
-  }
+  // editarCliente(id: number, cliente: Cliente) {
+  //   this.clienteService.updateCliente(id, cliente).subscribe({
+  //     next: () => {
+  //       console.log("Cliente actualizado correctamente");
+  //       this.cargarClientes();
+  //     },
+  //     error: (err) => {
+  //       console.error("Error al actualizar cliente:", err);
+  //       
+  //       alert("Ocurrió un error al actualizar el cliente");
+  //     }
+  //   });
+  // }
 
   cerrarModal() {
     const modalEl = document.getElementById('modalCliente');
