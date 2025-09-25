@@ -37,6 +37,7 @@ import { ReservaComponent } from './pages/reserva/reserva.component';
 import { TurnosComponent } from './pages/turnos/turnos.component';
 import { AgregarReservasComponent } from './pages/agregar-reservas/agregar-reservas.component';
 import { PanelAdminComponent } from './pages/panel-admin/panel-admin.component';
+import { ListaUsuariosComponent } from './pages/lista-usuarios/lista-usuarios.component';
 
 
 const routes: Routes = [
@@ -57,7 +58,7 @@ const routes: Routes = [
   { path: 'articulo/:id', component: ArticuloComponent },
   { path: 'articulo/', component: ArticuloComponent },
   { path: 'servicio/:id', component: ServicioComponent },
- 
+  {path:'lista-usuarios',component:ListaUsuariosComponent},
   { path: 'categorias', component: CategoriasComponent, canActivate: [AuthAdminGuard] },
   { path: 'lista-productos', component: ListaProductosComponent, canActivate: [AuthAdminGuard] },
   {path: 'lista-servicios', component:ListaServiciosComponent,canActivate: [AuthAdminGuard] },

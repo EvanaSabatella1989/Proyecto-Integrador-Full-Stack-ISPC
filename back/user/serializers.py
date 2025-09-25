@@ -33,6 +33,9 @@ class UserSerializer(serializers.ModelSerializer):
             first_name=validated_data["first_name"],
             last_name=validated_data["last_name"]
         )
+        
+        #para poder crear usuario en angular
+        Cliente.objects.create(user=user, direccion="", num_telefono="")
         return user
     
 
@@ -40,6 +43,8 @@ class ClienteSerializer(serializers.ModelSerializer):
     email = serializers.CharField(source='user.email', read_only=True)
     first_name = serializers.CharField(source='user.first_name', read_only=True)
     last_name = serializers.CharField(source='user.last_name', read_only=True)
+    direccion = serializers.CharField(required=False, allow_blank=True)
+    num_telefono = serializers.CharField(required=False, allow_blank=True)
 
     class Meta:
         model = Cliente
