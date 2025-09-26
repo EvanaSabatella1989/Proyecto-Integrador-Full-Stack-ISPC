@@ -55,7 +55,7 @@ ngOnInit(): void {
   
 }
 
-//---------PARA QUE EL USUARIO HAGA SU RESERVA--------
+//---------para que el usuario pueda hacer la reserva--------
   alCambiarSucursal() {
    const sucursalId = this.reservaForm.value.sucursal;
   if (sucursalId) {

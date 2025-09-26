@@ -3,12 +3,14 @@ from user.models import Cliente
 from sucursal.models import Sucursal
 from servicio.models import Servicio
 from turno.models import Turno
+from vehiculo.models import Vehiculo
 
 class Reserva(models.Model):
     cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE,null=True, blank=True)
     servicio = models.ForeignKey(Servicio, on_delete=models.CASCADE)
     turno = models.OneToOneField(Turno, on_delete=models.CASCADE,null=True, blank=True)  
-    # OneToOne para que un turno pueda tener solo UNA reserva
+    vehiculo = models.ForeignKey(Vehiculo, on_delete=models.CASCADE, null=True, blank=True)  
+    
     estado = models.CharField(max_length=20, choices=[
         ('pendiente', 'Pendiente'),
         ('confirmada', 'Confirmada'),

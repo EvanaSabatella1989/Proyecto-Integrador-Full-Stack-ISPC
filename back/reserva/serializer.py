@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from rest_framework import serializers
-from .models import Reserva,Turno,Servicio
+from .models import Reserva,Turno,Servicio,Vehiculo
 from user.models import Cliente
 # from user.serializers import ClienteSerializer
 from servicio.serializer import ServicioSerializer
@@ -51,11 +51,13 @@ class ReservaSerializer(serializers.ModelSerializer):
     cliente = serializers.SerializerMethodField()
     servicio = serializers.PrimaryKeyRelatedField(queryset=Servicio.objects.all())
     turno = serializers.PrimaryKeyRelatedField(queryset=Turno.objects.all())
+    vehiculo = serializers.PrimaryKeyRelatedField(queryset=Vehiculo.objects.all(), required=False)
     
     # Campos calculados para la lista
     servicio_info = serializers.SerializerMethodField()
     turno_info = serializers.SerializerMethodField()
     sucursal_info = serializers.SerializerMethodField()
+    vehiculo_info = serializers.SerializerMethodField()
 
     class Meta:
         model = Reserva
@@ -67,6 +69,8 @@ class ReservaSerializer(serializers.ModelSerializer):
             'turno',
             'turno_info',
             'sucursal_info',
+            'vehiculo',        
+            'vehiculo_info',
             'estado'
         ]
         depth = 2  # para expandir turno y sucursal
@@ -99,3 +103,13 @@ class ReservaSerializer(serializers.ModelSerializer):
                 "nombre": obj.turno.sucursal.nombre
             }
         return None
+    
+    def get_vehiculo_info(self, obj):
+        if obj.vehiculo:
+            return {
+                "id": obj.vehiculo.id,
+                "marca": obj.vehiculo.marca,
+                "modelo": obj.vehiculo.modelo,
+                "anio": obj.vehiculo.anio_fabricacion,
+                "categoria": obj.vehiculo.categoria
+            }
