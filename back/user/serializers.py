@@ -42,8 +42,8 @@ class UserSerializer(serializers.ModelSerializer):
 
 class ClienteSerializer(serializers.ModelSerializer):
     email = serializers.CharField(source='user.email', read_only=True)
-    first_name = serializers.CharField(source='user.first_name', read_only=True)
-    last_name = serializers.CharField(source='user.last_name', read_only=True)
+    first_name = serializers.CharField(source='user.first_name',  required=False)
+    last_name = serializers.CharField(source='user.last_name',  required=False)
     direccion = serializers.CharField(required=False, allow_blank=True)
     num_telefono = serializers.CharField(required=False, allow_blank=True)
 
@@ -51,3 +51,18 @@ class ClienteSerializer(serializers.ModelSerializer):
         model = Cliente
         fields = ['id', 'email', 'first_name', 'last_name', 'direccion', 'num_telefono']
 
+    def update(self, instance, validated_data):
+        # aca agregamos los datos del cliente que se quiera editar
+        instance.direccion = validated_data.get('direccion', instance.direccion)
+        instance.num_telefono = validated_data.get('num_telefono', instance.num_telefono)
+        instance.save()
+        
+        # aca agregamos los datos del usuario relacionado al cliente para editar
+        user_data = validated_data.get('user', {})
+        if user_data:
+            user = instance.user
+            user.first_name = user_data.get('first_name', user.first_name)
+            user.last_name = user_data.get('last_name', user.last_name)
+            user.save()
+            
+        return instance

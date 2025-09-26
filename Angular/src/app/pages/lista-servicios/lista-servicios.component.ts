@@ -84,7 +84,7 @@ export class ListaServiciosComponent {
     }
 
     if (this.servicioActual?.id) {
-      if (!window.confirm('¿Confirmas actualizar este servicio?')) return;
+      if (!window.confirm('Deseas actualizar este servicio?')) return;
 
       this.list.actualizarServicio(this.servicioActual.id, formData).subscribe({
         next: () => {
@@ -101,9 +101,10 @@ export class ListaServiciosComponent {
 }
 
   delete(item: any) {
-    if(window.confirm(`⚠️ ¿Seguro que deseas eliminar "${item.nombre}"?`)){
+    if(window.confirm(`⚠️ Deseas eliminar el servicio :"${item.nombre}"?`)){
     this.miList.forEach((servicio: any) => {
       if (servicio.id == item.id) {
+        alert('✅ Servicio eliminado con éxito');
         this.list.eliminarServicio(item.id).subscribe(
           res => this.list.obtenerServicios().subscribe(
             Response => this.miList = Response
