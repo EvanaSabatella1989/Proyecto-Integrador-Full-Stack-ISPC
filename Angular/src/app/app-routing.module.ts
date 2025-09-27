@@ -38,7 +38,7 @@ import { TurnosComponent } from './pages/turnos/turnos.component';
 import { AgregarReservasComponent } from './pages/agregar-reservas/agregar-reservas.component';
 import { PanelAdminComponent } from './pages/panel-admin/panel-admin.component';
 import { ListaUsuariosComponent } from './pages/lista-usuarios/lista-usuarios.component';
-
+import { EditarVehiculoComponent } from './pages/editar-vehiculo/editar-vehiculo.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -75,6 +75,7 @@ const routes: Routes = [
   { path: 'admin/reservas', component: AgregarReservasComponent ,canActivate: [AuthAdminGuard]},
   { path: 'turnos', component: TurnosComponent , canActivate: [AuthAdminGuard]},
   {path:'panel',component:PanelAdminComponent},
+  { path: 'vehiculo/editar/:id', component: EditarVehiculoComponent },
 
 
   { path: '**', component: Pagina404Component }

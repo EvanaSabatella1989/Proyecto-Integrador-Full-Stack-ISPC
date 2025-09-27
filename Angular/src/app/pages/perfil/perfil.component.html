@@ -12,18 +12,33 @@
     <li *ngFor="let vehiculo of vehiculos">
       <!-- {{ vehiculo.marca }} - {{ vehiculo.modelo }} - {{ vehiculo.patente }} -->
         {{vehiculo.modelo}} - {{vehiculo.tipo}}
-        <button>
-          <!-- <i class="bi bi-pencil-fill" id="edit" routerLink="/editar-productos/{{item.id}}">
-          </i> -->
-          <i class="bi bi-pencil-fill" id="edit" routerLink="">
-          </i>
-        </button>
-        <div *ngIf="vehiculo.categoria == 'Moto'">
-          <img  src="http://localhost:8000/media/photos/moto1.png" alt="{{ vehiculo.modelo }}" width="100">
-        </div>
-        <div *ngIf="vehiculo.categoria == 'Auto'">
-          <img  src="http://localhost:8000/media/photos/auto.png" alt="{{ vehiculo.modelo }}" width="100">
-        </div>
+        
+        <div>
+    <!-- Moto -->
+    <i *ngIf="vehiculo.categoria == 'Moto'" class="fa-solid fa-motorcycle fa-2x"></i>
+
+    <!-- Auto -->
+    <i *ngIf="vehiculo.categoria == 'Auto'" class="fa-solid fa-car-side fa-2x"></i>
+
+    <!-- Camión -->
+    <i *ngIf="vehiculo.categoria == 'Camión'" class="fa-solid fa-truck-moving fa-2x"></i>
+
+    <!-- Ómnibus -->
+    <i *ngIf="vehiculo.categoria == 'Ómnibus'" class="fa-solid fa-bus fa-2x"></i>
+
+    <!-- Furgón -->
+    <i *ngIf="vehiculo.categoria == 'Furgón'" class="fa-solid fa-van-shuttle fa-2x"></i>
+
+    <!-- Otro -->
+    <i *ngIf="vehiculo.categoria == 'Otro'" class="fa-solid fa-question fa-2x"></i>
+  </div>
+  <button [routerLink]="['/vehiculo/editar', vehiculo.id]">
+    <i class="bi bi-pencil-fill" id="edit"></i>
+  </button>
+
+  <button type="button" class="btn btn-danger" (click)="eliminarVehiculo(vehiculo.id)">
+    <i class="fa-solid fa-trash"></i>
+  </button>
         
     </li>
     
@@ -58,14 +73,19 @@
     <div *ngIf="reservas.length > 0; else noTurnos">
       <p>Tiene las siguientes reservas</p>
         <li *ngFor="let reserva of reservas">
-            <strong>{{ reserva.servicio_info.nombre }}</strong>
-            <p>en sucursal</p>
-            <strong>{{ reserva.sucursal_info.nombre }}</strong>
-            <p>El día: </p>
-            <strong>{{ reserva.turno_info.fecha | date:'dd/MM/yyyy' }}</strong>
-            <p>a las </p>
-            <strong>{{ reserva.turno_info.hora }}</strong> 
-        </li>
+  <strong>{{ reserva.servicio_info.nombre }}</strong>
+  <p>en sucursal</p>
+  <strong>{{ reserva.sucursal_info.nombre }}</strong>
+  <p>El día: </p>
+  <strong>{{ reserva.turno_info.fecha | date:'dd/MM/yyyy' }}</strong>
+  <p>a las </p>
+  <strong>{{ reserva.turno_info.hora }}</strong>
+  
+  <!-- Mostrar alerta de turno vencido -->
+  <p *ngIf="isTurnoVencido(reserva)" class="text-danger">
+    Turno vencido
+  </p>
+</li>
         <p>Lo esperamos!!</p>
         <!-- <button routerLink="/carrito">Continuar comprando</button> -->
         

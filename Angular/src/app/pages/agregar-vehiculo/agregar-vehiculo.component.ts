@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { VehiculoService } from 'src/app/service/vehiculo.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-agregar-vehiculo',
@@ -31,7 +32,7 @@ export class AgregarVehiculoComponent {
     Otro: ['Otro']
   }
 
-  constructor(private fb: FormBuilder, private vehiculoService: VehiculoService) {
+  constructor(private fb: FormBuilder, private vehiculoService: VehiculoService, private router: Router) {
     this.vehiculoForm = this.fb.group({
       marca: ['', Validators.required],
       modelo: ['', Validators.required],
@@ -39,6 +40,7 @@ export class AgregarVehiculoComponent {
       tipo: ['', Validators.required],
       anio_fabricacion: ['', [Validators.required, Validators.min(1900), Validators.max(new Date().getFullYear())]]
     });
+    
   }
 
   ngOnInit() {
@@ -56,7 +58,8 @@ export class AgregarVehiculoComponent {
       this.vehiculoService.agregarVehiculo(this.vehiculoForm.value).subscribe({
         next: () => {
           alert('Vehículo agregado exitosamente');
-          this.vehiculoForm.reset();
+          // this.vehiculoForm.reset();
+          this.router.navigate(['/perfil']); // 👈 redirige al perfil
         },
         error: (error) => {
           alert('Error al agregar el vehículo');

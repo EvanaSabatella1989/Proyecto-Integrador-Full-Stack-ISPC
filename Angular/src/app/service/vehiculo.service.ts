@@ -21,4 +21,16 @@ export class VehiculoService {
   agregarVehiculo(vehiculoData: FormData): Observable<any> {
     return this.http.post(`${this.apiUrl}/agregar/`, vehiculoData, { headers: this.getHeaders() });
   }
+
+  getVehiculo(id: number): Observable<any> {
+  return this.http.get(`${this.apiUrl}/${id}/`, { headers: this.getHeaders() });
+}
+
+  editarVehiculo(id: number, vehiculoData: any): Observable<any> {
+    return this.http.put(`${this.apiUrl}/${id}/`, vehiculoData, { headers: this.getHeaders() });
+  }
+
+  eliminarVehiculo(id: number): Observable<any> {
+  return this.http.delete(`${this.apiUrl}/eliminar/${id}/`, { headers: this.getHeaders() });
+}
 }
