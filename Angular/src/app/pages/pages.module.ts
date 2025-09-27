@@ -36,6 +36,7 @@ import { AgregarReservasComponent } from './agregar-reservas/agregar-reservas.co
 import { PanelAdminComponent } from './panel-admin/panel-admin.component';
 import { ListaServiciosComponent } from './lista-servicios/lista-servicios.component';
 import { ListaUsuariosComponent } from './lista-usuarios/lista-usuarios.component';
+import { EditarVehiculoComponent } from './editar-vehiculo/editar-vehiculo.component';
 
 
 
@@ -75,6 +76,7 @@ import { ListaUsuariosComponent } from './lista-usuarios/lista-usuarios.componen
     PanelAdminComponent,
     ListaServiciosComponent,
     ListaUsuariosComponent,
+    EditarVehiculoComponent,
  
 
   ],

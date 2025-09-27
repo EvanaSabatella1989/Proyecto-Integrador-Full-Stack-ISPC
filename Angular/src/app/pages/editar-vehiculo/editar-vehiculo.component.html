@@ -1,0 +1,35 @@
+<div class="container mt-4">
+  <h2>Editar Vehículo</h2>
+
+  <form [formGroup]="vehiculoForm" (ngSubmit)="onSubmit()">
+    <div class="mb-3">
+      <label class="form-label">Marca</label>
+      <input type="text" formControlName="marca" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Modelo</label>
+      <input type="text" formControlName="modelo" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Categoría</label>
+      <input type="text" formControlName="categoria" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Tipo</label>
+      <input type="text" formControlName="tipo" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Año de Fabricación</label>
+      <input type="number" formControlName="anio_fabricacion" class="form-control" />
+    </div>
+
+    <button type="submit" class="btn btn-primary" [disabled]="vehiculoForm.invalid" >
+      Guardar Cambios
+    </button>
+  </form>
+</div>
+
