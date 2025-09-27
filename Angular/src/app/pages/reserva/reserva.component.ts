@@ -4,6 +4,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'src/app/service/auth.service';
 import { ServicioService } from 'src/app/service/servicio.service';
 import { TokenService } from 'src/app/service/token.service';
+import { UsuarioService } from 'src/app/service/usuario.service';
+import { VehiculoService } from 'src/app/service/vehiculo.service';
 declare var bootstrap: any;
 
 @Component({
@@ -18,21 +20,33 @@ export class ReservaComponent {
   turnosDisponibles: any[] = [];
   mensaje = '';
   diasDisponibles: string[] = [];
-  clienteId?='';
-  
+  clienteId?: number;
+  vehiculos: any[] = [];
   modalInstance: any;
   isAdmin: boolean = false;
 
- constructor(private authService: AuthService, private servicioService: ServicioService, 
-  private fb: FormBuilder, private route: ActivatedRoute, 
-  private router: Router, private tokenService: TokenService) { }
+  constructor(private authService: AuthService, private servicioService: ServicioService,
+    private fb: FormBuilder, private route: ActivatedRoute,
+    private router: Router, private tokenService: TokenService, private usuarioService: UsuarioService) { }
 
-ngOnInit(): void {
-    this.isAdmin = this.authService.isAdmin(); 
+  ngOnInit(): void {
+    this.isAdmin = this.authService.isAdmin();
+
+
+    this.clienteId = this.authService.obtenerIdUsuario2(); // ID del cliente
+
+    this.usuarioService.obtenerPerfil().subscribe(data => {
+      this.clienteId = data.cliente?.id;
+      this.vehiculos = data.vehiculos || [];
+      if (!this.vehiculos || this.vehiculos.length === 0) {
+
+        // this.router.navigate(['/agregar-vehiculo']);
+      }
+    });
 
     const servicioId = this.route.snapshot.params['id'];
 
-     // cargar servicio
+    // cargar servicio
     this.servicioService.obtenerServicio(servicioId).subscribe(data => {
       this.servicio = data;
       this.reservaForm.patchValue({ servicio: this.servicio.id });
@@ -44,33 +58,33 @@ ngOnInit(): void {
       console.log(data)
     });
 
-     // inicializar formulario
+    // inicializar formulario
     this.reservaForm = this.fb.group({
       sucursal: ['', Validators.required],
       servicio: ['', Validators.required],
       turno: ['', Validators.required],
-     
-    });  
-
-  
-}
-
-//---------para que el usuario pueda hacer la reserva--------
-  alCambiarSucursal() {
-   const sucursalId = this.reservaForm.value.sucursal;
-  if (sucursalId) {
-    this.servicioService.obtenerTurnosPorSucursal(sucursalId).subscribe(turnos => {
-      console.log("Turnos recibidos del backend:", turnos);
-      this.turnosDisponibles = turnos;
-      this.reservaForm.patchValue({ turno: '' }); // limpia 
-
-      if (turnos.length === 0) {
-        this.mensaje = '❌ Esta sucursal no tiene turnos disponibles';
-      } else {
-        this.mensaje = ''; // limpia mensaje si hay turnos
-      }
+      vehiculo: ['', Validators.required],
     });
+
+
   }
+
+  //---------para que el usuario pueda hacer la reserva--------
+  alCambiarSucursal() {
+    const sucursalId = this.reservaForm.value.sucursal;
+    if (sucursalId) {
+      this.servicioService.obtenerTurnosPorSucursal(sucursalId).subscribe(turnos => {
+        console.log("Turnos recibidos del backend:", turnos);
+        this.turnosDisponibles = turnos;
+        this.reservaForm.patchValue({ turno: '' }); // limpia 
+
+        if (turnos.length === 0) {
+          this.mensaje = '❌ Esta sucursal no tiene turnos disponibles';
+        } else {
+          this.mensaje = ''; // limpia mensaje si hay turnos
+        }
+      });
+    }
   }
 
   // cuando cambia la fecha  se carga los turnos
@@ -87,20 +101,31 @@ ngOnInit(): void {
     }
   }
 
+  // realizar la reserva
   reservar() {
-    console.log("➡️ Se ejecutó reservar()", this.reservaForm.value);
-    const clienteId = this.authService.obtenerIdUsuario2(); // el ID del cliente logueado
-    const servicioId = this.servicio.id;
-    console.log(clienteId+"saberl el id del cliente")
-    // if (this.reservaForm.invalid) return;
+    console.log(" Se ejecutó reservar()", this.reservaForm.value);
 
+    // para que cargue el vehiculo si no tiene
+    if (!this.vehiculos || this.vehiculos.length === 0) {
+      this.mensaje = '⚠️ Necesitás cargar un vehículo antes de reservar.';
+      localStorage.setItem('returnToReserva', this.router.url);
+      this.router.navigate(['/agregar-vehiculo']);
+    }
+
+    const clienteId = this.authService.obtenerIdUsuario2();
+    const servicioId = this.servicio.id;
+    console.log(clienteId + "saberl el id del cliente")
+    // if (this.reservaForm.invalid) return;
     // const clienteId = this.tokenService.getToken();
 
+    
+    // envia los datos al back
     const reserva = {
       cliente: clienteId,
       servicio: servicioId,
-      turno: parseInt(this.reservaForm.value.turno, 10),   
+      turno: parseInt(this.reservaForm.value.turno, 10),
       sucursal: parseInt(this.reservaForm.value.sucursal, 10),
+      vehiculo: parseInt(this.reservaForm.value.vehiculo, 10),
 
     };
     console.log(this.reservaForm);
@@ -116,5 +141,5 @@ ngOnInit(): void {
     );
   }
 
-  
+
 }
