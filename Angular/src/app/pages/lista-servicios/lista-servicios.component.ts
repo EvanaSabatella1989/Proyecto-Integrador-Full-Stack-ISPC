@@ -22,7 +22,8 @@ export class ListaServiciosComponent {
   nombre: string = '';
   descripcion: string = '';
   precio: number = 0;
-
+  categorias: any[] = [];
+  categoriaSeleccionada: number | null = null;
 
   constructor(private list: ServicioService, private activatedRouter: ActivatedRoute, private router: Router) {
 
@@ -31,7 +32,16 @@ export class ListaServiciosComponent {
 
   ngOnInit(): void {
     this.listarServicios()
-
+    // 🔹 Traer categorías de tipo servicio
+    this.list.obtenerCategorias('servicio').subscribe({
+      next: (resp) => {
+        this.categorias = resp;
+        console.log("Categorías de servicios cargadas", this.categorias);
+      },
+      error: (error) => {
+        console.error("Error al traer categorías de servicios", error);
+      }
+    });
   }
 
   listarServicios() {
@@ -74,10 +84,17 @@ export class ListaServiciosComponent {
   }
 
   guardarServicio(){
-     const formData = new FormData();
+    const formData = new FormData();
     formData.append('nombre', this.nombre);
     formData.append('descripcion', this.descripcion);
     formData.append('precio', this.precio.toString());
+
+    if (this.categoriaSeleccionada) {
+      formData.append('categoria', this.categoriaSeleccionada.toString());
+    } else {
+      alert("⚠️ Debes seleccionar una categoría");
+      return;
+    }
 
     if (this.imagenSeleccionada) {
       formData.append('imagen', this.imagenSeleccionada);
@@ -87,16 +104,28 @@ export class ListaServiciosComponent {
       if (!window.confirm('Deseas actualizar este servicio?')) return;
 
       this.list.actualizarServicio(this.servicioActual.id, formData).subscribe({
-        next: () => {
-          alert('✅ Servicio actualizado con éxito');
-          this.  listarServicios();
-          this.modalInstance.hide();
-        },
-        error: (error) => {
-          console.error(error);
-          alert('❌ Error al actualizar servicio.');
-        }
-      });
+      next: () => {
+        alert('✅ Servicio actualizado con éxito');
+        this.listarServicios();
+        this.modalInstance.hide();
+      },
+      error: (error) => {
+        console.error(error);
+        alert('❌ Error al actualizar servicio.');
+      }
+    });
+  } else {
+    this.list.crearServicio(formData).subscribe({
+      next: () => {
+        alert('✅ Servicio creado con éxito');
+        this.listarServicios();
+        this.modalInstance.hide();
+      },
+      error: (error) => {
+        console.error(error);
+        alert('❌ Error al crear servicio.');
+      }
+    });
   }
 }
 

@@ -33,10 +33,18 @@ export class ProductoService {
     return this.http.get<any>(this.url + 'producto?idCategoria='+ Id);
   };
 
-  public traerCategorias():Observable<any>{
-    return this.http.get(this.url +"categoria/");
+  // public traerCategorias():Observable<any>{
+  //   return this.http.get(this.url +"categoria/");
 
-  };
+  // };
+
+  traerCategorias(tipo: string = '') {
+  let url = this.url + 'categorias/';
+  if(tipo){
+    url += `?tipo=${tipo}`;
+  }
+  return this.http.get<any[]>(url); // <-- indicamos que devuelve un array
+}
   public categoria(Id:number): Observable<any>{
     return this.http.get<any>(this.url + 'categoria/'+ Id);
   };

@@ -21,6 +21,10 @@ export class ServicioService {
 
   ngOnInit() { }
 
+  obtenerCategorias(tipo: string) {
+    return this.http.get<any[]>(`http://localhost:8000/api/categorias/?tipo=${tipo}`);
+  }
+
   // ----------SERVICIOS-------
 
   // obtener todos los servicios

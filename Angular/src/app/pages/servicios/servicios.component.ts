@@ -15,7 +15,8 @@ declare var bootstrap: any;
 })
 export class ServiciosComponent implements OnInit {
 
-  miServi: any;
+  miServi: any[] = [];
+  serviciosFiltrados: any[] = [];
   isLogged: boolean = false;
   isAdmin: boolean = false;  // verifica si el usuario es admin
   servicioActual: Servicio | null = null;
@@ -25,7 +26,9 @@ export class ServiciosComponent implements OnInit {
   nombre: string = '';
   descripcion: string = '';
   precio: number = 0;
-
+  categorias: any[] = [];
+  categoriaSeleccionada: number | null = null;
+  catSelec: any = { id: 0, nombre: 'Todos' };
 
   constructor(private tokenService: TokenService, private authService: AuthService, private serv: ServicioService, private activatedRouter: ActivatedRoute, private router: Router, private fb: FormBuilder) {
 
@@ -35,18 +38,56 @@ export class ServiciosComponent implements OnInit {
     this.authService.isLoggedIn$.subscribe(resp => this.isLogged = resp);
     this.authService.isAdmin$.subscribe(isAdmin => this.isAdmin = isAdmin);
 
-    this.cargarServicios();
+    // 🔹 Traer categorías de tipo servicio
+    this.serv.obtenerCategorias('servicio').subscribe({
+      next: (resp) => {
+        this.categorias = resp;
+        console.log("Categorías de servicios cargadas", this.categorias);
+        this.cargarServicios();
+      },
+      error: (error) => {
+        console.error("Error al traer categorías de servicios", error);
+      }
+    });
+
+    
   }
 
   cargarServicios(): void {
-    this.serv.obtenerServicios().subscribe({
-      next: (serviciosTodos) => this.miServi = serviciosTodos,
-      error: (errorData) => {
-        console.error('Error cargando servicios', errorData);
-        this.router.navigate(['']);
-      }
-    });
+  this.serv.obtenerServicios().subscribe({
+    next: (serviciosTodos) => {
+      this.miServi = serviciosTodos.map((s: any) => {
+        const categoriaEncontrada = this.categorias.find((c: any) => c.id === s.categoria);
+        return {
+          ...s,
+          categoriaNombre: categoriaEncontrada ? categoriaEncontrada.nombre : 'Sin categoría'
+        };
+      });
+
+      // Por defecto mostramos todos
+      this.serviciosFiltrados = [...this.miServi];
+    },
+    error: (errorData) => {
+      console.error('Error cargando servicios', errorData);
+      this.router.navigate(['']);
+    }
+  });
+  
+}
+
+
+ filtrarPorCategoria(cat: any) {
+  this.catSelec = cat;
+
+  if (cat.id === 0) {
+    // Todas las categorías
+    this.serviciosFiltrados = [...this.miServi];
+  } else {
+    // Solo la seleccionada
+    this.serviciosFiltrados = this.miServi.filter(s => s.categoria === cat.id);
   }
+}
+
 
   irAReservar(servicioId: number) {
   if (!this.isLogged) {
@@ -97,6 +138,13 @@ export class ServiciosComponent implements OnInit {
     formData.append('descripcion', this.descripcion);
     formData.append('precio', this.precio.toString());
 
+    if (this.categoriaSeleccionada) {
+      formData.append('categoria', this.categoriaSeleccionada.toString());
+    } else {
+      alert("⚠️ Debes seleccionar una categoría");
+      return;
+    }
+
     if (this.imagenSeleccionada) {
       formData.append('imagen', this.imagenSeleccionada);
     }
@@ -121,11 +169,13 @@ export class ServiciosComponent implements OnInit {
       this.serv.crearServicio(formData).subscribe({
         next: () => {
           alert('✅ Servicio creado con éxito');
+          console.log("categoria elegida:" + this.categoriaSeleccionada)
           this.cargarServicios();
           this.modalInstance.hide();
         },
         error: (error) => {
           console.error(error);
+          console.log("categoria elegida:" + this.categoriaSeleccionada)
           alert('❌ Error al crear servicio.');
         }
       });

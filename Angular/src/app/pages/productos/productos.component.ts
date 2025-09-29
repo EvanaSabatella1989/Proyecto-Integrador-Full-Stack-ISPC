@@ -32,9 +32,10 @@ export class ProductosComponent implements OnInit {
     this.isAdmin = this.tokenService.isAdmin();
 
     // Traer todas las categorías
-    this.miProductos.traerCategorias().subscribe(resp => {
-      this.categorias = resp;
-    });
+    this.miProductos.traerCategorias('producto').subscribe(resp => {
+  this.categorias = resp;  // ya es any[]
+  
+});
 
     // Verificar si hay categoría seleccionada en la URL
     let id = this.activatedRouter.snapshot.params['id'];
@@ -66,12 +67,21 @@ export class ProductosComponent implements OnInit {
   }
 
   // Filtra productos según la categoría seleccionada
- filtrarPorCategoria(cat: any) {
+//  filtrarPorCategoria(cat: any) {
+//   this.catSelec = cat;
+//   if (cat.id === 0) {
+//     this.productosFiltrados = this.productos;
+//   } else {
+//     this.productosFiltrados = this.productos.filter(p => p.categoria === cat.id);
+//   }
+// }
+
+  filtrarPorCategoria(cat: any) {
   this.catSelec = cat;
   if (cat.id === 0) {
     this.productosFiltrados = this.productos;
   } else {
-    this.productosFiltrados = this.productos.filter(p => p.categoria === cat.id);
+    this.productosFiltrados = this.productos.filter(p => p.categoria?.id === cat.id);
   }
 }
 

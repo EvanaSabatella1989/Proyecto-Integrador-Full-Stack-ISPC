@@ -24,7 +24,9 @@ from reserva.models import Reserva
 from servicio.serializer import ServicioSerializer
 from servicio import views
 
-from categoria.views import CategoriaUpdateDelete, categoriaList
+# from categoria.views import CategoriaUpdateDelete, categoriaList
+from categoria.views import CategoriaViewSet
+
 
 from carrito.views import Carrito
 from vehiculo.views import Vehiculo
@@ -48,11 +50,12 @@ urlpatterns = [
     path('api/',include('contacto.urls')),
     # path('api/servicio/servicioList/',views.servicioList),
     # path('api/servicio/delete/<pk>/', ServicioUpdateDelete.as_view()),
+    # path('api/', include('categoria.urls')),
+    # path('api/categoria/<pk>/', categoriaList),
+    # path('api/categoria/update/<pk>/', categoriaList),
+    # path('api/categoria/', categoriaList),
+    # path('api/categoria/detail/<pk>/', categoriaList),
     path('api/', include('categoria.urls')),
-    path('api/categoria/<pk>/', categoriaList),
-    path('api/categoria/update/<pk>/', categoriaList),
-    path('api/categoria/', categoriaList),
-    path('api/categoria/detail/<pk>/', categoriaList),
     path('api/',include('turno.urls')),
     path('api/', include('carrito.urls')),
     path('api/', include('vehiculo.urls'))
