@@ -4,7 +4,7 @@ from servicio.models import Servicio
 
 class Turno(models.Model):
     sucursal = models.ForeignKey(Sucursal, on_delete=models.CASCADE)
-    servicio = models.ForeignKey(Servicio, on_delete=models.CASCADE, related_name="turnos")
+    servicio = models.ForeignKey(Servicio, on_delete=models.CASCADE, related_name="turnos",null=True, blank=True)
     fecha = models.DateField()
     hora = models.TimeField()
     disponible = models.BooleanField(default=True)  

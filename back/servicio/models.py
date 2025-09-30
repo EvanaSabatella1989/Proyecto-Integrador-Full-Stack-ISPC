@@ -12,15 +12,13 @@ from sucursal.models import Sucursal
 class Servicio(models.Model):
     id=models.AutoField(primary_key=True)
     nombre = models.CharField(max_length=255)
-    categoria = models.ForeignKey(Categoria, on_delete=models.CASCADE, related_name="servicios")
-     # imagen = models.ImageField(upload_to='photos/', null=True, blank=True)
-    # imagen = models.ImageField(upload_to='servicios/') # Cloudinary maneja el upload
+    categoria = models.ForeignKey(Categoria, on_delete=models.CASCADE, related_name="servicios",null=True, blank=True)
     imagen = models.ImageField(storage=MediaCloudinaryStorage(), upload_to='servicios/', blank=True, null=True)
     descripcion = models.TextField()
     precio = models.DecimalField(max_digits=10, decimal_places=2)
     fecha_creacion= models.DateTimeField(default=datetime.now)
     public_id = models.CharField(max_length=255, blank=True, null=True)
-    sucursal = models.ForeignKey(Sucursal, on_delete=models.CASCADE, related_name="servicios")
+    sucursal = models.ForeignKey(Sucursal, on_delete=models.CASCADE, related_name="servicios",null=True, blank=True)
 
     class Meta:
         db_table = "servicio"

@@ -3,7 +3,7 @@
   <h2 class="text-center mb-4">Nuestras Servicios</h2>
 
   <div class="d-flex justify-content-end mb-3">
-    <a routerLink="/agregar-servicios" class="btn btn-success">Agregar Servicio</a>
+    <a (click)="abrirModal()" class="btn btn-success">Agregar Servicio</a>
   </div>
 
   <table class="table table-bordered table-striped text-center align-middle">
@@ -14,6 +14,8 @@
         <th scope="col">Imagen</th>
         <th scope="col">Descripción</th>
         <th scope="col">Precio</th>
+        <th scope="col">Categoría</th>
+        <th scope="col">Sucursal</th>
         <th scope="col">Fecha Creación</th>
         <th scope="col">Acciones</th>
         <!-- <th scope="col">Eliminar</th> -->
@@ -28,6 +30,8 @@
         </td>
         <td>{{ item.descripcion }}</td>
         <td>{{ item.precio | currency:'ARS':'symbol':'1.0-0' }}</td>
+        <td>{{ item.categoriaNombre }}</td>
+        <td>{{ item.sucursalNombre || 'Sin sucursal' }}</td>
         <td>{{ item.fecha_creacion | date:'dd/MM/yyyy' }}</td>
         <td>
           <!-- <a [routerLink]="['/editar-servicios', item.id]" class="btn btn-primary btn-sm">Editar</a> -->
@@ -55,6 +59,16 @@
       </div>
       <div class="modal-body">
         <form>
+
+          <div class="mb-3">
+  <label>Sucursal</label>
+  <select class="form-select" [(ngModel)]="sucursalSeleccionada" name="sucursal" required>
+    <option [ngValue]="null">-- Selecciona una sucursal --</option>
+    <option *ngFor="let suc of sucursales" [value]="suc.id">
+      {{ suc.nombre }}
+    </option>
+  </select>
+</div>
           <div class="mb-3">
             <label>Nombre</label>
             <input type="text" class="form-control" [(ngModel)]="nombre" name="nombre">
