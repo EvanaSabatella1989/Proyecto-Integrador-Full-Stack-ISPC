@@ -18,14 +18,14 @@ class ServicioViewSet(viewsets.ModelViewSet):
     serializer_class=ServicioSerializer
     parser_classes=(MultiPartParser, FormParser,JSONParser)
 
-    @permission_classes([AllowAny])  # Esto hace que la vista sea pública
+    @permission_classes([AllowAny])  
     def list(self,request):
         # lista todos los servicios
         servicios=self.get_queryset()
         serializer=self.get_serializer(servicios,many=True)
         return Response(serializer.data)
 
-    @permission_classes([AllowAny])  # Esto hace que la vista sea pública
+    @permission_classes([AllowAny])  
     def detail(self,request,pk=None):
         # SOLO UN SERVICIO
         try:
@@ -35,7 +35,7 @@ class ServicioViewSet(viewsets.ModelViewSet):
         except Servicio.DoesNotExist:
             return Response({'error','servicio no encontrado'},status=status.HTTP_404_NOT_FOUND)
         
-    @permission_classes([AllowAny])  # Esto hace que la vista sea pública
+    @permission_classes([AllowAny])  
     def create(self, request):
         # crea un nuevo servicio
         serializer=self.get_serializer(data=request.data)
@@ -44,17 +44,17 @@ class ServicioViewSet(viewsets.ModelViewSet):
             return Response(serializer.data,status=status.HTTP_201_CREATED)
         return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
     
-    @permission_classes([AllowAny])  # Esto hace que la vista sea pública
+    @permission_classes([AllowAny])  
     def update(self, request, pk=None):
         """Actualizar un servicio"""
         try:
             servicio = self.get_queryset().get(pk=pk)
-            data = request.data.copy()  # Hacemos una copia de los datos enviados
+            data = request.data.copy()  
 
             if 'imagen' not in data or data['imagen'] == 'null':
-                data.pop('imagen', None)  # Si no se envía imagen, se mantiene la existente
+                data.pop('imagen', None)  
 
-            serializer = self.get_serializer(servicio, data=data, partial=True)  # partial=True permite actualizaciones parciales
+            serializer = self.get_serializer(servicio, data=data, partial=True)  
 
 
             if serializer.is_valid():
@@ -64,7 +64,7 @@ class ServicioViewSet(viewsets.ModelViewSet):
         except Servicio.DoesNotExist:
             return Response({"error": "Servicio no encontrado"}, status=status.HTTP_404_NOT_FOUND)
 
-    @permission_classes([AllowAny])  # Esto hace que la vista sea pública    
+    @permission_classes([AllowAny])     
     def destroy(self, request, pk=None):
         """Eliminar un servicio"""
         try:
