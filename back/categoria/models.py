@@ -7,6 +7,7 @@ class Categoria(models.Model):
     TIPO_CHOICES = [
         ("producto", "Producto"),
         ("servicio", "Servicio"),
+        ("vehiculo", "Vehiculo"),
     ]
 
     nombre = models.CharField(max_length=100, blank=False)

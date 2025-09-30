@@ -8,5 +8,5 @@ class ServicioSerializer(serializers.ModelSerializer):
     class Meta:
         model=Servicio
         fields='__all__'
-        depth = 1
+        # depth = 1
         
