@@ -1,5 +1,6 @@
 from django.db import models
 from datetime import datetime
+from categoria.models import Categoria
 from cloudinary_storage.storage import MediaCloudinaryStorage
 import os
 from urllib.parse import urlparse
@@ -11,6 +12,7 @@ from sucursal.models import Sucursal
 class Servicio(models.Model):
     id=models.AutoField(primary_key=True)
     nombre = models.CharField(max_length=255)
+    categoria = models.ForeignKey(Categoria, on_delete=models.CASCADE, related_name="servicios")
      # imagen = models.ImageField(upload_to='photos/', null=True, blank=True)
     # imagen = models.ImageField(upload_to='servicios/') # Cloudinary maneja el upload
     imagen = models.ImageField(storage=MediaCloudinaryStorage(), upload_to='servicios/', blank=True, null=True)

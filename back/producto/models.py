@@ -18,7 +18,7 @@ class Producto(models.Model):
     public_id = models.CharField(max_length=255, blank=True, null=True)       # ✅ nuevo campo
     descripcion = models.TextField()
     precio = models.DecimalField(max_digits=6, decimal_places=2)
-    categoria = models.ForeignKey(Categoria, on_delete=models.CASCADE)
+    categoria = models.ForeignKey(Categoria, on_delete=models.CASCADE, related_name="productos")
     cantidad = models.IntegerField(default=0)
     date_created = models.DateTimeField(default=datetime.now)
 

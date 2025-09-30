@@ -59,6 +59,17 @@
             <label>Nombre</label>
             <input type="text" class="form-control" [(ngModel)]="nombre" name="nombre">
           </div>
+
+          <div class="mb-3">
+  <label>Categoría</label>
+  <select class="form-select" [(ngModel)]="categoriaSeleccionada" name="categoria" required>
+    <option [ngValue]="null">-- Selecciona una categoría --</option>
+    <option *ngFor="let cat of categorias" [value]="cat.id">
+      {{ cat.nombre }}
+    </option>
+  </select>
+</div>
+
           <div class="mb-3">
             <label>Descripción</label>
             <textarea class="form-control" [(ngModel)]="descripcion" name="descripcion"></textarea>

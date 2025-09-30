@@ -17,3 +17,4 @@ class ProductoSerializer(serializers.ModelSerializer):
         extra_kwargs = {
             'imagen': {'required': False, 'allow_null': True}
         }
+        depth = 1
