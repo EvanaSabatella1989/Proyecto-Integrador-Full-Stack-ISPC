@@ -15,6 +15,19 @@
             </li>
           </ul>
         </div>
+
+        <div class="dropdown">
+  <a class="btn btn-light dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+    Sucursales
+  </a>
+  <ul class="dropdown-menu">
+    <li><button class="dropdown-item" (click)="filtrarPorSucursal({id:0,nombre:'Todas'})">Todas</button></li>
+    <li *ngFor="let suc of sucursales">
+      <button class="dropdown-item" (click)="filtrarPorSucursal(suc)">{{suc.nombre}}</button>
+    </li>
+  </ul>
+</div>
+
        
 
 

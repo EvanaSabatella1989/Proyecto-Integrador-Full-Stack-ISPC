@@ -52,11 +52,17 @@ export class ReservaComponent {
       this.reservaForm.patchValue({ servicio: this.servicio.id });
     });
 
+    // cargar sucursales que tiene solo ese servicio
+     this.servicioService.obtenerSucursalesPorServicio(servicioId).subscribe(data => {
+    this.sucursales = data;
+    console.log("Sucursales disponibles:", data);
+  });
+
     // cargar sucursales
-    this.servicioService.obtenerSucursales().subscribe(data => {
-      this.sucursales = data;
-      console.log(data)
-    });
+    // this.servicioService.obtenerSucursales().subscribe(data => {
+    //   this.sucursales = data;
+    //   console.log(data)
+    // });
 
     // inicializar formulario
     this.reservaForm = this.fb.group({

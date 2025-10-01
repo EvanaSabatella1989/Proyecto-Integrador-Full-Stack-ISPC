@@ -126,6 +126,12 @@ export class ServicioService {
     return this.http.get<Sucursal>(`${this.url4}${id}/`);
   }
 
+  obtenerSucursalesPorServicio(servicioId: number) {
+  return this.http.get<Sucursal[]>(this.url4+`por-servicio/?servicio_id=${servicioId}`);
+  // obtenerSucursalesPorServicio(servicioId: number) {
+  //  return this.http.get<Sucursal[]>(`/api/sucursal/por-servicio/?servicio_id=${servicioId}`);
+}
+
   // ---------TURNOS-------------
 
     obtenerSucursales(): Observable<Sucursal[]> {

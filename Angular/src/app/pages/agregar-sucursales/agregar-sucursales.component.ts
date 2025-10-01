@@ -14,11 +14,11 @@ export class AgregarSucursalesComponent {
   sucursales: Sucursal[] = [];
   form!: FormGroup;
   sucursalSeleccionada?: Sucursal;
-   modalInstance: any;
-   servicios: Servicio[] = [];
-   isAdmin: boolean = false;
+  modalInstance: any;
+  servicios: Servicio[] = [];
+  isAdmin: boolean = false;
 
-  constructor(private sucursalService:ServicioService, private fb:FormBuilder,private servicioService:ServicioService){
+  constructor(private sucursalService: ServicioService, private fb: FormBuilder, private servicioService: ServicioService) {
     this.form = this.fb.group({
       nombre: [''],
       direccion: [''],
@@ -27,19 +27,19 @@ export class AgregarSucursalesComponent {
     });
   }
 
-    ngOnInit(): void {
+  ngOnInit(): void {
     this.cargarSucursales();
     this.cargarServicios();
-    
+
   }
 
   cargarServicios() {
-  this.servicioService.obtenerServicios().subscribe(data => {
-    this.servicios = data;
-  });
+    this.servicioService.obtenerServicios().subscribe(data => {
+      this.servicios = data;
+    });
   }
 
-   cargarSucursales() {
+  cargarSucursales() {
     this.sucursalService.getSucursales().subscribe(data => {
       console.log('Sucursales recibidas del backend:', data);
       this.sucursales = data;
@@ -47,36 +47,37 @@ export class AgregarSucursalesComponent {
   }
 
   eliminar(id: number) {
-    if(confirm('¿Seguro que querés eliminar esta sucursal?')) {
+    if (confirm('¿Seguro que querés eliminar esta sucursal?')) {
       this.sucursalService.deleteSucursal(id).subscribe(() => {
         this.cargarSucursales();
       });
     }
   }
 
-  abrirModal(sucursal?:Sucursal){
-    this.sucursalSeleccionada=sucursal;
+  abrirModal(sucursal?: Sucursal) {
+    this.sucursalSeleccionada = sucursal;
 
-      const modalEl = document.getElementById('sucursalModal');
+    const modalEl = document.getElementById('sucursalModal');
     if (modalEl) {
       this.modalInstance = new bootstrap.Modal(modalEl);
     }
 
-    if(sucursal){
+    if (sucursal) {
       // this.form.patchValue(sucursal);
       this.form.patchValue({
-    nombre: sucursal.nombre,
-    direccion: sucursal.direccion,
-    telefono: sucursal.telefono,
-    servicios: sucursal.servicios?.map(s => s.id) 
-  });
-    }else{
+        nombre: sucursal.nombre,
+        direccion: sucursal.direccion,
+        telefono: sucursal.telefono,
+        servicios: sucursal.servicios?.map(s => s.id)
+      });
+    } else {
       this.form.reset();
+      this.form.get('servicios')?.setValue([]);
     }
     this.modalInstance.show();
   }
 
-  guardar(){
+  guardar() {
     const sucursal: Sucursal = this.form.value;
 
     if (this.sucursalSeleccionada?.id) {
@@ -93,16 +94,21 @@ export class AgregarSucursalesComponent {
   }
 
   onCheckboxChange(event: any) {
-  const servicios = this.form.get('servicios')?.value || [];
-  if(event.target.checked){
-    servicios.push(event.target.value);
+  const servicios: number[] = this.form.get('servicios')?.value || [];
+  const valor = Number(event.target.value);
+
+  if (event.target.checked) {
+    if (!servicios.includes(valor)) {
+      servicios.push(valor);
+    }
   } else {
-    const index = servicios.indexOf(event.target.value);
-    if(index > -1){
+    const index = servicios.indexOf(valor);
+    if (index > -1) {
       servicios.splice(index, 1);
     }
   }
+
   this.form.get('servicios')?.setValue(servicios);
 }
-  
+
 }

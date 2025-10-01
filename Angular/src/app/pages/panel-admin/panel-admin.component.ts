@@ -14,7 +14,7 @@ modulosAdmin = [
   { titulo: 'Usuarios', descripcion: 'Administrar usuarios', ruta: '/lista-usuarios', icono: 'bi bi-people' },
 
 
-  { titulo: 'Sucursales', descripcion: 'Administrar sucursales', ruta: '/lista-sucursales', icono: 'bi bi-people' }
+  { titulo: 'Sucursales', descripcion: 'Administrar sucursales', ruta: '/lista-sucursales', icono: 'bi bi-building' }
 ];
 
 }

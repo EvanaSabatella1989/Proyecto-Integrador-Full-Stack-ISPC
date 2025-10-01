@@ -62,10 +62,12 @@
     
 <div formArrayName="servicios">
   <div *ngFor="let s of servicios; let i = index">
-    <input type="checkbox" [value]="s.id" (change)="onCheckboxChange($event)">
+    <input type="checkbox" [value]="s.id" (change)="onCheckboxChange($event)"
+           [checked]="form.get('servicios')?.value.includes(s.id)">
     {{ s.nombre }}
   </div>
 </div>
+
         </form>
       </div>
       <div class="modal-footer">
