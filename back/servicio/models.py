@@ -5,21 +5,20 @@ from cloudinary_storage.storage import MediaCloudinaryStorage
 import os
 from urllib.parse import urlparse
 import cloudinary.uploader
+from sucursal.models import Sucursal
 
 
 
 class Servicio(models.Model):
     id=models.AutoField(primary_key=True)
     nombre = models.CharField(max_length=255)
-    categoria = models.ForeignKey(Categoria, on_delete=models.CASCADE, related_name="servicios")
-     # imagen = models.ImageField(upload_to='photos/', null=True, blank=True)
-    # imagen = models.ImageField(upload_to='servicios/') # Cloudinary maneja el upload
+    categoria = models.ForeignKey(Categoria, on_delete=models.CASCADE, related_name="servicios",null=True, blank=True)
     imagen = models.ImageField(storage=MediaCloudinaryStorage(), upload_to='servicios/', blank=True, null=True)
     descripcion = models.TextField()
     precio = models.DecimalField(max_digits=10, decimal_places=2)
     fecha_creacion= models.DateTimeField(default=datetime.now)
-    # 👇 nuevo campo para identificar la imagen en Cloudinary
     public_id = models.CharField(max_length=255, blank=True, null=True)
+    sucursal = models.ForeignKey(Sucursal, on_delete=models.CASCADE, related_name="servicios",null=True, blank=True)
 
     class Meta:
         db_table = "servicio"
@@ -36,23 +35,23 @@ class Servicio(models.Model):
 
 
     def save(self, *args, **kwargs):
-        # ✅ Si el servicio ya existe en la BD, buscamos la versión anterior
+        # si el servicio ya existe en la BD buscamos la versión anterior
         if self.pk:
             try:
                 old = type(self).objects.get(pk=self.pk)
-                # Si el public_id existe y la imagen cambió → borrar de Cloudinary
+                # Si el public_id existe y la imagen cambió  borrar de Cloudinary
                 if old.public_id and old.imagen != self.imagen:
                     try:
                         cloudinary.uploader.destroy(old.public_id)
                     except Exception as e:
                         print(f"Error al eliminar imagen anterior en Cloudinary: {e}")
             except type(self).DoesNotExist:
-                pass  # Si no existía antes, seguimos normal
+                pass  # Si no existía antes seguimos normal
 
-        # ✅ Guardamos primero
+        # Guardamos primero
         super().save(*args, **kwargs)
 
-        # ✅ Luego calculamos el nuevo public_id
+        # Luego calculamos el nuevo public_id
         if self.imagen:
             try:
                 url = str(self.imagen.url)
