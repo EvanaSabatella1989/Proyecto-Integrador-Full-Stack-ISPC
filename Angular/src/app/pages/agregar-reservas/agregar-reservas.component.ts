@@ -3,6 +3,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from 'src/app/service/auth.service';
 import { ServicioService } from 'src/app/service/servicio.service';
 declare var bootstrap: any;
+
+
 @Component({
   selector: 'app-agregar-reservas',
   templateUrl: './agregar-reservas.component.html',

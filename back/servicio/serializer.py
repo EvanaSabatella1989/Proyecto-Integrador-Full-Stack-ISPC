@@ -10,3 +10,9 @@ class ServicioSerializer(serializers.ModelSerializer):
         fields='__all__'
         depth = 1
         
+
+#para que traiga el nombre del servicio    
+# class ServicioNombreSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = Servicio
+#         fields = ['id', 'nombre', 'precio']  

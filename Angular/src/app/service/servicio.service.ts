@@ -54,12 +54,6 @@ export class ServicioService {
   }
 
 
-
- 
-
-
- 
-
   // ---------RESERVA---------------
   crearReserva(reserva: any): Observable<any> {
     const token = localStorage.getItem('token');
@@ -122,6 +116,14 @@ export class ServicioService {
 
   deleteSucursal(id: number): Observable<any> {
     return this.http.delete(`${this.url4}${id}/`);
+  }
+
+  getSucursales():Observable<Sucursal[]>{
+      return this.http.get<Sucursal[]>(this.url4);
+  }
+
+  getSucursal(id: number): Observable<Sucursal> {
+    return this.http.get<Sucursal>(`${this.url4}${id}/`);
   }
 
   // ---------TURNOS-------------
