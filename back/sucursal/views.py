@@ -11,9 +11,10 @@ from django.shortcuts import render,get_object_or_404
 from datetime import datetime, timedelta
 from rest_framework.decorators import api_view
 from django.db.models import Prefetch
-from sucursal.serializers import SucursalReadSerializer,SucursalWriteSerializer 
+from sucursal.serializers import SucursalReadSerializer,SucursalWriteSerializer,ServicioMiniSerializer
 # from sucursal.models import HorarioSucursal
 from rest_framework.decorators import action
+from servicio.serializer import ServicioNombreSerializer
 
 logger = logging.getLogger(__name__)
 
@@ -32,4 +33,12 @@ class SucursalViewSet(viewsets.ModelViewSet):
         servicio_id = request.query_params.get('servicio_id')
         sucursales = Sucursal.objects.filter(servicios__id=servicio_id)
         serializer = SucursalReadSerializer(sucursales, many=True)
+        return Response(serializer.data)
+
+    # para ver los servicios que tiene cada sucursal
+    @action(detail=True, methods=['get'])
+    def servicios(self, request, pk=None):
+        sucursal = self.get_object()
+        servicios = sucursal.servicios.all()
+        serializer = ServicioNombreSerializer(servicios, many=True)
         return Response(serializer.data)

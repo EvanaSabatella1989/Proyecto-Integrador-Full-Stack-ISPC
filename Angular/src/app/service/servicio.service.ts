@@ -126,11 +126,18 @@ export class ServicioService {
     return this.http.get<Sucursal>(`${this.url4}${id}/`);
   }
 
+  // para seleccionar sucursal en la reserva
   obtenerSucursalesPorServicio(servicioId: number) {
   return this.http.get<Sucursal[]>(this.url4+`por-servicio/?servicio_id=${servicioId}`);
-  // obtenerSucursalesPorServicio(servicioId: number) {
-  //  return this.http.get<Sucursal[]>(`/api/sucursal/por-servicio/?servicio_id=${servicioId}`);
+  
 }
+
+// para realizar el filtro en servicios, x servicios por x sucursal
+obtenerServiciosPorSucursal(sucursalId: number): Observable<any[]> {
+  return this.http.get<any[]>(`${this.url4}${sucursalId}/servicios/`);
+}
+
+
 
   // ---------TURNOS-------------
 

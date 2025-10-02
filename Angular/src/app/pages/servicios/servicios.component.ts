@@ -47,6 +47,7 @@ sucursalSeleccionada: any = { id: 0, nombre: 'Todas' };
       },
       error: (error) => console.error("Error al traer categorías:", error)
     });
+    this.cargarSucursales();
   }
 
   cargarServicios(): void {
@@ -88,7 +89,7 @@ sucursalSeleccionada: any = { id: 0, nombre: 'Todas' };
   cargarSucursales() {
   this.serv.obtenerSucursales().subscribe({
     next: (data) => {
-      console.log(data);
+      console.log("ver las sucursales cargadas",data);
       this.sucursales = data;
     },
     error: (err) => console.error(err)
@@ -101,7 +102,10 @@ filtrarPorSucursal(suc: any) {
   if (suc.id === 0) {
     this.serviciosFiltrados = [...this.miServi];  
   } else {
-    this.serviciosFiltrados = this.miServi.filter(s => s.sucursales.some((su: any) => su.id === suc.id));
+    this.serv.obtenerServiciosPorSucursal(suc.id).subscribe({
+      next: (resp) => this.serviciosFiltrados = resp,
+      error: (err) => console.error(err)
+    });
   }
 }
 

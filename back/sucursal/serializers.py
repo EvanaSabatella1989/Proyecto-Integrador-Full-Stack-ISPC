@@ -5,22 +5,25 @@ from servicio.models import Servicio
 # from sucursal.models import HorarioSucursal
 
 
-# para realizar psot put con id
+# para realizar post put con id
 class SucursalWriteSerializer(serializers.ModelSerializer):
     servicios = serializers.PrimaryKeyRelatedField(
         many=True,
-        queryset=Servicio.objects.all()
+        queryset=Servicio.objects.all(),
+        required=False
     )
     
     class Meta:
         model = Sucursal
         fields = ['id', 'nombre', 'direccion', 'telefono', 'servicios']
 
-# solo get tare todos los datos del servicio
+# solo get trae todos los datos del servicio
 class ServicioMiniSerializer(serializers.ModelSerializer):
     class Meta:
         model = Servicio
         fields = ['id', 'nombre', 'precio']
+        
+        
 
 class SucursalReadSerializer(serializers.ModelSerializer):
     servicios = ServicioMiniSerializer(many=True, read_only=True)
