@@ -28,4 +28,6 @@ __pycache__/
 # Ignorar migraciones excepto __init__.py
 **/migrations/
 !**/migrations/__init__.py
-                                                                                                                                                                                                                                                                                           
+node_modules/
+package-lock.json       
+                                                                                                                                                                                                                                                                                    
