@@ -32,73 +32,41 @@ export class ReservaComponent {
     private router: Router, private tokenService: TokenService, private usuarioService: UsuarioService) { }
 
 ngOnInit(): void {
-  this.isAdmin = this.authService.isAdmin();
-  this.clienteId = this.authService.obtenerIdUsuario2();
-
   const servicioId = this.route.snapshot.params['id'];
 
-  forkJoin({
-    perfil: this.usuarioService.obtenerPerfil(),
-    servicio: this.servicioService.obtenerServicio(servicioId),
-    sucursales: this.servicioService.obtenerSucursales()
-  }).subscribe(({ perfil, servicio, sucursales }) => {
-    // perfil
-    this.clienteId = perfil.cliente?.id;
-    this.vehiculos = perfil.vehiculos || [];
-
-    // servicio
-    this.servicio = servicio;
-
-    // sucursales
-    this.sucursales = sucursales;
-
-    // filtrar vehículos
-    console.log("👉 Servicio.categoria:", this.servicio.categoria);
-    console.log("👉 Vehículos antes de filtrar:", this.vehiculos);
-
-    this.vehiculosFiltrados = this.vehiculos.filter(v => {
-      console.log(
-        "Comparando -> Vehiculo.categoria:",
-        v.categoria,
-        " con Servicio.categoria:",
-        this.servicio.categoria
-      );
-      return String(v.categoria) === String(this.servicio.categoria);
-    });
-
-
-    console.log("👉 Vehículos filtrados:", this.vehiculosFiltrados);
-
-    const servicioId = this.route.snapshot.params['id'];
-
-    // cargar servicio
-    this.servicioService.obtenerServicio(servicioId).subscribe(data => {
-      this.servicio = data;
-      this.reservaForm.patchValue({ servicio: this.servicio.id });
-    });
-
-    // cargar sucursales que tiene solo ese servicio
-     this.servicioService.obtenerSucursalesPorServicio(servicioId).subscribe(data => {
-    this.sucursales = data;
-    console.log("Sucursales disponibles:", data);
+  // inicializar el formulario vacío para evitar error NG01052
+  this.reservaForm = this.fb.group({
+    sucursal: [''],
+    servicio: [''],
+    turno: [''],
+    vehiculo: [''],
   });
 
-    // cargar sucursales
-    // this.servicioService.obtenerSucursales().subscribe(data => {
-    //   this.sucursales = data;
-    //   console.log(data)
-    // });
+  // obtener perfil y servicio
+  forkJoin({
+    perfil: this.usuarioService.obtenerPerfil(),
+    servicio: this.servicioService.obtenerServicio(servicioId)
+  }).subscribe(({ perfil, servicio }) => {
+    this.clienteId = perfil.cliente?.id;
+    this.vehiculos = perfil.vehiculos || [];
+    this.servicio = servicio;
 
+    // filtrar vehículos por categoría del servicio
+    this.vehiculosFiltrados = this.vehiculos.filter(v => String(v.categoria) === String(this.servicio.categoria));
 
-    // inicializar formulario
-    this.reservaForm = this.fb.group({
-      sucursal: ['', Validators.required],
-      servicio: [this.servicio.id, Validators.required],
-      turno: ['', Validators.required],
-      vehiculo: ['', Validators.required],
+    // ahora obtenemos solo las sucursales que tienen este servicio
+    this.servicioService.obtenerSucursalesPorServicio(servicioId).subscribe(sucursales => {
+      console.log("Sucursales recibidas del backend:", sucursales); // <--- debug
+      this.sucursales = sucursales;
+
+      // parchear formulario con datos del servicio
+      this.reservaForm.patchValue({
+        servicio: this.servicio.id
+      });
     });
   });
 }
+
 
 
   //---------para que el usuario pueda hacer la reserva--------

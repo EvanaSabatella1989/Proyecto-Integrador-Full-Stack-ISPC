@@ -28,12 +28,29 @@ class SucursalViewSet(viewsets.ModelViewSet):
 
 
  # endpoint para sucursales por servicio
+    # @action(detail=False, methods=['get'], url_path='por-servicio')
+    # def por_servicio(self, request):
+    #     servicio_id = request.query_params.get('servicio_id')
+    #     sucursales = Sucursal.objects.filter(servicios__id=servicio_id)
+    #     serializer = SucursalReadSerializer(sucursales, many=True)
+    #     return Response(serializer.data)
     @action(detail=False, methods=['get'], url_path='por-servicio')
     def por_servicio(self, request):
         servicio_id = request.query_params.get('servicio_id')
-        sucursales = Sucursal.objects.filter(servicios__id=servicio_id)
+
+        if not servicio_id:
+            return Response({"error": "Falta servicio_id"}, status=400)
+
+        try:
+            servicio_id = int(servicio_id)
+        except ValueError:
+            return Response({"error": "servicio_id debe ser un número"}, status=400)
+
+        sucursales = Sucursal.objects.filter(servicios__id=servicio_id).distinct()  # distinct por si hay duplicados
         serializer = SucursalReadSerializer(sucursales, many=True)
         return Response(serializer.data)
+
+
 
     # para ver los servicios que tiene cada sucursal
     @action(detail=True, methods=['get'])

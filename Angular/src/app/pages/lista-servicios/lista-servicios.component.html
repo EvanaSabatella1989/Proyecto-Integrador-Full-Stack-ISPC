@@ -1,6 +1,6 @@
 <main>
 
-  <h2 class="text-center mb-4">Nuestras Servicios</h2>
+  <h2 class="text-center mb-4">Nuestros Servicios</h2>
 
   <div class="d-flex justify-content-end mb-3">
     <a (click)="abrirModal()" class="btn btn-success">Agregar Servicio</a>
@@ -16,7 +16,7 @@
         <th scope="col">Precio</th>
         <th scope="col">Categoría</th>
         <th scope="col">Sucursal</th>
-        <th scope="col">Fecha Creación</th>
+        <!-- <th scope="col">Fecha Creación</th> -->
         <th scope="col">Acciones</th>
         <!-- <th scope="col">Eliminar</th> -->
       </tr>
@@ -32,7 +32,7 @@
         <td>{{ item.precio | currency:'ARS':'symbol':'1.0-0' }}</td>
         <td>{{ item.categoriaNombre }}</td>
         <td>{{ item.sucursalNombre  }}</td>
-        <td>{{ item.fecha_creacion | date:'dd/MM/yyyy' }}</td>
+        <!-- <td>{{ item.fecha_creacion | date:'dd/MM/yyyy' }}</td> -->
         <td>
           <!-- <a [routerLink]="['/editar-servicios', item.id]" class="btn btn-primary btn-sm">Editar</a> -->
           <button (click)="abrirModal(item)" class="btn btn-primary btn-sm me-2">Editar</button>

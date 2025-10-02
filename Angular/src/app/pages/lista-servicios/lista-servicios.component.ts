@@ -67,29 +67,28 @@ export class ListaServiciosComponent {
 
 
   listarServicios() {
-    this.list.obtenerServicios().subscribe({
-      next: (todaLaLista) => {
-        // se agrega la catgoria a la lista
-        this.miList = todaLaLista.map((s:any)=>{
-          const categoriaEncontrada = this.categorias.find(c => c.id === s.categoria);
-          // const sucursalEncontrada= this.sucursales.find(suc => suc.id ===s.sucursal );
-        return{
+  this.list.obtenerServiciosConSucursales().subscribe({
+    next: (todaLaLista) => {
+      this.miList = todaLaLista.map((s: any) => {
+        const categoriaEncontrada = this.categorias.find(c => c.id === s.categoria);
+        const sucursalesNombres = s.sucursales?.map((suc: any) => suc.nombre).join(', ') || 'sin sucursal';
+        return {
           ...s,
-          categoriaNombre:categoriaEncontrada ? categoriaEncontrada.nombre : 'Sin categoría',
-          sucursalNombre: s.sucursal ? s.sucursal.nombre:'sin sucursal'
+          categoriaNombre: categoriaEncontrada ? categoriaEncontrada.nombre : 'Sin categoría',
+          sucursalNombre: sucursalesNombres
         };
       });
-        console.log("cargo toda la lista");
-        console.log(this.miList);
-        console.log("Servicios cargados con categoría:", this.miList);
-      },
-      error: (errorData) => {
-        console.log("no cargo lista");
-        console.log(errorData);
-        this.router.navigate(['']);
-      }
-    })
-  }
+      console.log("Servicios cargados con categoría y sucursales:", this.miList);
+    },
+    error: (errorData) => {
+      console.log("no cargo lista");
+      console.log(errorData);
+      this.router.navigate(['']);
+    }
+  });
+}
+
+
 
   abrirModal(servicio?:Servicio){
     this.servicioActual=servicio || null;

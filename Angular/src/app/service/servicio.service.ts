@@ -53,6 +53,9 @@ export class ServicioService {
     return this.http.delete(`${this.url}${id}/`);
   }
 
+  obtenerServiciosConSucursales(): Observable<any[]> {
+  return this.http.get<any[]>(this.url+'con-sucursales/');
+}
 
   // ---------RESERVA---------------
   crearReserva(reserva: any): Observable<any> {

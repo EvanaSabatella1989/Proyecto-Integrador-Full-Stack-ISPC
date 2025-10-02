@@ -11,7 +11,8 @@ from django.core.files.storage import FileSystemStorage
 from django.http import HttpResponse
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.permissions import AllowAny
-
+from servicio.serializer import ServicioConSucursalesSerializer
+from rest_framework.decorators import action
 
 class ServicioViewSet(viewsets.ModelViewSet):
     queryset=Servicio.objects.all()
@@ -73,4 +74,12 @@ class ServicioViewSet(viewsets.ModelViewSet):
             return Response({"message": "Servicio eliminado correctamente"}, status=status.HTTP_204_NO_CONTENT)
         except Servicio.DoesNotExist:
             return Response({"error": "Servicio no encontrado"}, status=status.HTTP_404_NOT_FOUND)
+
+
+    @action(detail=False, methods=['get'], url_path='con-sucursales')
+    @permission_classes([AllowAny])
+    def con_sucursales(self, request):
+        servicios = self.get_queryset()
+        serializer = ServicioConSucursalesSerializer(servicios, many=True)
+        return Response(serializer.data)
 
