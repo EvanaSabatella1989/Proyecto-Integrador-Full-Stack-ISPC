@@ -38,6 +38,8 @@ import { ListaServiciosComponent } from './lista-servicios/lista-servicios.compo
 import { ListaUsuariosComponent } from './lista-usuarios/lista-usuarios.component';
 import { EditarVehiculoComponent } from './editar-vehiculo/editar-vehiculo.component';
 
+import { AgregarSucursalesComponent } from './agregar-sucursales/agregar-sucursales.component';
+
 
 
 
@@ -77,6 +79,8 @@ import { EditarVehiculoComponent } from './editar-vehiculo/editar-vehiculo.compo
     ListaServiciosComponent,
     ListaUsuariosComponent,
     EditarVehiculoComponent,
+    
+    AgregarSucursalesComponent,
  
 
   ],

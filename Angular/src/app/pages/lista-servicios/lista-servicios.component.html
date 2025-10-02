@@ -31,7 +31,7 @@
         <td>{{ item.descripcion }}</td>
         <td>{{ item.precio | currency:'ARS':'symbol':'1.0-0' }}</td>
         <td>{{ item.categoriaNombre }}</td>
-        <td>{{ item.sucursalNombre || 'Sin sucursal' }}</td>
+        <td>{{ item.sucursalNombre  }}</td>
         <td>{{ item.fecha_creacion | date:'dd/MM/yyyy' }}</td>
         <td>
           <!-- <a [routerLink]="['/editar-servicios', item.id]" class="btn btn-primary btn-sm">Editar</a> -->

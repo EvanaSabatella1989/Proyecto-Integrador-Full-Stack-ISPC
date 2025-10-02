@@ -29,6 +29,8 @@ export class ServiciosComponent implements OnInit {
   categorias: any[] = [];
   categoriaSeleccionada: number | null = null;
   catSelec: any = { id: 0, nombre: 'Todos' };
+  sucursales: any[] = [];         // todas las sucursales
+sucursalSeleccionada: any = { id: 0, nombre: 'Todas' };
 
   constructor(private tokenService: TokenService, private authService: AuthService, private serv: ServicioService, private activatedRouter: ActivatedRoute, private router: Router, private fb: FormBuilder) {
 
@@ -82,6 +84,26 @@ export class ServiciosComponent implements OnInit {
     }
     this.router.navigate(['/servicios', servicioId, 'reservar']);
   }
+
+  cargarSucursales() {
+  this.serv.obtenerSucursales().subscribe({
+    next: (data) => {
+      console.log(data);
+      this.sucursales = data;
+    },
+    error: (err) => console.error(err)
+  });
+}
+
+// Filtrar por sucursal
+filtrarPorSucursal(suc: any) {
+  this.sucursalSeleccionada = suc;
+  if (suc.id === 0) {
+    this.serviciosFiltrados = [...this.miServi];  
+  } else {
+    this.serviciosFiltrados = this.miServi.filter(s => s.sucursales.some((su: any) => su.id === suc.id));
+  }
+}
 
 
   // delete(item: Servicio) {

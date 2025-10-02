@@ -46,17 +46,24 @@ export class ListaServiciosComponent {
       next: (resp) => {
         this.categorias = resp;
         console.log("Categorías de servicios cargadas", this.categorias);
-      },
-      error: (error) => {
-        console.error("Error al traer categorías de servicios", error);
-      }
-    });
 
-     this.list.obtenerSucursales().subscribe({
-    next: (resp) => this.sucursales = resp,
-    error: (error) => console.error("Error al traer sucursales:", error)
+        this.list.obtenerSucursales().subscribe({
+        next: (respSuc) => {
+          this.sucursales = respSuc;
+          console.log("Sucursales cargadas", this.sucursales);
+
+          // Ahora sí, cargamos los servicios
+          this.listarServicios();
+      },
+      
+     error: (error) => console.error("Error al traer sucursales:", error)
+      });
+    },
+    error: (error) => {
+      console.error("Error al traer categorías de servicios", error);
+    }
   });
-  }
+}
 
 
   listarServicios() {
@@ -65,11 +72,11 @@ export class ListaServiciosComponent {
         // se agrega la catgoria a la lista
         this.miList = todaLaLista.map((s:any)=>{
           const categoriaEncontrada = this.categorias.find(c => c.id === s.categoria);
-          const sucursalEncontrada= this.sucursales.find(suc => suc.id ===s.sucursal );
+          // const sucursalEncontrada= this.sucursales.find(suc => suc.id ===s.sucursal );
         return{
           ...s,
           categoriaNombre:categoriaEncontrada ? categoriaEncontrada.nombre : 'Sin categoría',
-          sucursalNombre:sucursalEncontrada ? sucursalEncontrada.nombre : 'Sin sucursal'
+          sucursalNombre: s.sucursal ? s.sucursal.nombre:'sin sucursal'
         };
       });
         console.log("cargo toda la lista");

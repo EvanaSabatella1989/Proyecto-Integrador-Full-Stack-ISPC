@@ -66,7 +66,29 @@ ngOnInit(): void {
       return String(v.categoria) === String(this.servicio.categoria);
     });
 
+
     console.log("👉 Vehículos filtrados:", this.vehiculosFiltrados);
+
+    const servicioId = this.route.snapshot.params['id'];
+
+    // cargar servicio
+    this.servicioService.obtenerServicio(servicioId).subscribe(data => {
+      this.servicio = data;
+      this.reservaForm.patchValue({ servicio: this.servicio.id });
+    });
+
+    // cargar sucursales que tiene solo ese servicio
+     this.servicioService.obtenerSucursalesPorServicio(servicioId).subscribe(data => {
+    this.sucursales = data;
+    console.log("Sucursales disponibles:", data);
+  });
+
+    // cargar sucursales
+    // this.servicioService.obtenerSucursales().subscribe(data => {
+    //   this.sucursales = data;
+    //   console.log(data)
+    // });
+
 
     // inicializar formulario
     this.reservaForm = this.fb.group({

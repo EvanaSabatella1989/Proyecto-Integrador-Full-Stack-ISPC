@@ -10,6 +10,7 @@ class Reserva(models.Model):
     servicio = models.ForeignKey(Servicio, on_delete=models.CASCADE)
     turno = models.OneToOneField(Turno, on_delete=models.CASCADE,null=True, blank=True)  
     vehiculo = models.ForeignKey(Vehiculo, on_delete=models.CASCADE, null=True, blank=True)  
+    sucursal = models.ForeignKey(Sucursal, on_delete=models.CASCADE,null=True, blank=True)
     estado = models.CharField(max_length=20, choices=[
         ('pendiente', 'Pendiente'),
         ('confirmada', 'Confirmada'),

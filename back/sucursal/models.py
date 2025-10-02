@@ -2,6 +2,7 @@ from django.db import models
 from django.core.validators import RegexValidator
 from datetime import time
 from datetime import date
+from servicio.models import Servicio
 
 class Sucursal(models.Model):
     nombre = models.CharField(max_length=100)
@@ -9,6 +10,7 @@ class Sucursal(models.Model):
     telefono = models.CharField(max_length=20, default='')
     ciudad = models.CharField(max_length=100, default='', blank=True)
     provincia = models.CharField(max_length=100, default='', blank=True)
+    servicios = models.ManyToManyField(Servicio, related_name="sucursales")
 
     class Meta:
         db_table = "sucursal"
