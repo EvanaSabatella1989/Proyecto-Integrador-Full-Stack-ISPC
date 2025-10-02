@@ -13,6 +13,7 @@ class ServicioSerializer(serializers.ModelSerializer):
         depth = 1
         
 
+
 #para que traiga el nombre de los atributos del servicio    
 class ServicioNombreSerializer(serializers.ModelSerializer):
     categoriaNombre = serializers.CharField(source='categoria.nombre', read_only=True)
@@ -20,3 +21,5 @@ class ServicioNombreSerializer(serializers.ModelSerializer):
     class Meta:
         model = Servicio
         fields = ['id', 'nombre', 'descripcion', 'precio', 'imagen', 'categoria', 'categoriaNombre']
+
+

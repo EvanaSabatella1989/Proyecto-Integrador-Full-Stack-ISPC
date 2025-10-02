@@ -35,13 +35,13 @@
           </div>
 
 
-          <div class="mb-3" *ngIf="vehiculos.length > 0">
+          <div class="mb-3" *ngIf="vehiculosFiltrados.length > 0">
             <label class="form-label">Vehículo:</label>
             <select formControlName="vehiculo" class="form-select">
-              <option *ngFor="let v of vehiculos" [value]="v.id">{{ v.marca }} {{ v.modelo }} </option>
+              <option *ngFor="let v of vehiculosFiltrados" [value]="v.id">{{ v.marca }} {{ v.modelo }} </option>
             </select>
           </div>
-          <div class="mb-3" *ngIf="vehiculos.length === 0">
+          <div class="mb-3" *ngIf="vehiculosFiltrados.length === 0">
             <p class="text-warning">⚠️ No tenés vehículos cargados. Antes de confirmar la reserva deberás <a
                 routerLink="/agregar-vehiculo">agregar uno</a>.</p>
           </div>

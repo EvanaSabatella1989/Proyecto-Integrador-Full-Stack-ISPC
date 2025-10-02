@@ -6,6 +6,7 @@ import { ServicioService } from 'src/app/service/servicio.service';
 import { TokenService } from 'src/app/service/token.service';
 import { UsuarioService } from 'src/app/service/usuario.service';
 import { VehiculoService } from 'src/app/service/vehiculo.service';
+import { forkJoin } from 'rxjs';
 declare var bootstrap: any;
 
 @Component({
@@ -24,25 +25,49 @@ export class ReservaComponent {
   vehiculos: any[] = [];
   modalInstance: any;
   isAdmin: boolean = false;
+  vehiculosFiltrados: any[] = [];  // ✅ los que coinciden con la categoría del servicio
 
   constructor(private authService: AuthService, private servicioService: ServicioService,
     private fb: FormBuilder, private route: ActivatedRoute,
     private router: Router, private tokenService: TokenService, private usuarioService: UsuarioService) { }
 
-  ngOnInit(): void {
-    this.isAdmin = this.authService.isAdmin();
+ngOnInit(): void {
+  this.isAdmin = this.authService.isAdmin();
+  this.clienteId = this.authService.obtenerIdUsuario2();
 
+  const servicioId = this.route.snapshot.params['id'];
 
-    this.clienteId = this.authService.obtenerIdUsuario2(); // ID del cliente
+  forkJoin({
+    perfil: this.usuarioService.obtenerPerfil(),
+    servicio: this.servicioService.obtenerServicio(servicioId),
+    sucursales: this.servicioService.obtenerSucursales()
+  }).subscribe(({ perfil, servicio, sucursales }) => {
+    // perfil
+    this.clienteId = perfil.cliente?.id;
+    this.vehiculos = perfil.vehiculos || [];
 
-    this.usuarioService.obtenerPerfil().subscribe(data => {
-      this.clienteId = data.cliente?.id;
-      this.vehiculos = data.vehiculos || [];
-      if (!this.vehiculos || this.vehiculos.length === 0) {
+    // servicio
+    this.servicio = servicio;
 
-        // this.router.navigate(['/agregar-vehiculo']);
-      }
+    // sucursales
+    this.sucursales = sucursales;
+
+    // filtrar vehículos
+    console.log("👉 Servicio.categoria:", this.servicio.categoria);
+    console.log("👉 Vehículos antes de filtrar:", this.vehiculos);
+
+    this.vehiculosFiltrados = this.vehiculos.filter(v => {
+      console.log(
+        "Comparando -> Vehiculo.categoria:",
+        v.categoria,
+        " con Servicio.categoria:",
+        this.servicio.categoria
+      );
+      return String(v.categoria) === String(this.servicio.categoria);
     });
+
+
+    console.log("👉 Vehículos filtrados:", this.vehiculosFiltrados);
 
     const servicioId = this.route.snapshot.params['id'];
 
@@ -64,16 +89,17 @@ export class ReservaComponent {
     //   console.log(data)
     // });
 
+
     // inicializar formulario
     this.reservaForm = this.fb.group({
       sucursal: ['', Validators.required],
-      servicio: ['', Validators.required],
+      servicio: [this.servicio.id, Validators.required],
       turno: ['', Validators.required],
       vehiculo: ['', Validators.required],
     });
+  });
+}
 
-
-  }
 
   //---------para que el usuario pueda hacer la reserva--------
   alCambiarSucursal() {

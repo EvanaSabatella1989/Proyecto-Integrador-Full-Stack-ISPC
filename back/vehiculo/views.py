@@ -22,9 +22,16 @@ def agregar_vehiculo(request):
         
         if vehiculo_serializer.is_valid():
             vehiculo_serializer.save()
-            return Response({'message': 'Vehículo agregado exitosamente'}, status=status.HTTP_201_CREATED)
+            return Response({
+                'message': 'Vehículo agregado exitosamente',
+                'vehiculo': vehiculo_serializer.data
+            }, status=status.HTTP_201_CREATED)
+
         else:
-            return Response(vehiculo_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return Response({
+                'message': 'Error al agregar vehículo',
+                'errors': vehiculo_serializer.errors
+            }, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET', 'PUT'])
 @permission_classes([IsAuthenticated])
@@ -42,7 +49,7 @@ def vehiculo_detalle(request, pk):
         vehiculo_data = {
             'marca': request.data.get('marca', vehiculo.marca),
             'modelo': request.data.get('modelo', vehiculo.modelo),
-            'categoria': request.data.get('categoria', vehiculo.categoria),
+            'categoria': request.data.get('categoria', vehiculo.categoria.id if vehiculo.categoria else None),
             'tipo': request.data.get('tipo', vehiculo.tipo),
             'anio_fabricacion': request.data.get('anio_fabricacion', vehiculo.anio_fabricacion),
             'cliente': request.user.cliente.id
@@ -51,8 +58,16 @@ def vehiculo_detalle(request, pk):
         serializer = VehiculoSerializer(vehiculo, data=vehiculo_data)
         if serializer.is_valid():
             serializer.save()
-            return Response({'message': 'Vehículo actualizado correctamente'}, status=status.HTTP_200_OK)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return Response({
+                'message': 'Vehículo actualizado exitosamente',
+                'vehiculo': serializer.data   # 👈 usamos serializer
+            }, status=status.HTTP_200_OK)
+
+        return Response({
+            'message': 'Error al actualizar vehículo',
+            'errors': serializer.errors      # 👈 usamos serializer
+        }, status=status.HTTP_400_BAD_REQUEST)
+
 
 @api_view(['DELETE'])
 @permission_classes([IsAuthenticated])
