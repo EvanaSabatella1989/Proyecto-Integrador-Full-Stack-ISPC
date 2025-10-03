@@ -17,29 +17,42 @@ import { Observable } from 'rxjs';
 })
 export class UsuarioService {
   private apiUrl = "http://localhost:8000/api/perfil/";
-  private apiUrl2="http://localhost:8000/api";
+  private apiUrl2 = "http://localhost:8000/api";
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   private getHeaders(): HttpHeaders {
-      const token = localStorage.getItem('token'); // Recuperar el token JWT
-      return new HttpHeaders({
-        'Authorization': `Bearer ${token}`, // Agregar el token al header
-        'Content-Type': 'application/json'
-      });
-    }
+    const token = localStorage.getItem('token'); // Recuperar el token JWT
+    return new HttpHeaders({
+      'Authorization': `Bearer ${token}`, // Agregar el token al header
+      'Content-Type': 'application/json'
+    });
+  }
 
   // obtenerPerfil(userId: string): Observable<any> {
   //   return this.http.get(`${this.apiUrl}/${userId}/perfil`);
   // }
 
   obtenerPerfil(): Observable<any> {
-    return this.http.get<any>(this.apiUrl,{ headers: this.getHeaders()});
+    return this.http.get<any>(this.apiUrl, { headers: this.getHeaders() });
   }
 
   // para obtener los id de clientes relacionados a usuario
   obtenerClienteId(): Observable<any> {
     return this.http.get<any>(`${this.apiUrl2}/perfil-cliente/`, { headers: this.getHeaders() });
   }
-  
+
+  // para la reserva
+  obtenerPerfilReserva(): Observable<any> {
+    const token = localStorage.getItem('token'); 
+  if (!token) {
+    throw new Error("No hay token de autenticación guardado.");
+  }
+
+  const headers = new HttpHeaders({
+    'Authorization': `Bearer ${token}`
+  });
+    return this.http.get(`${this.apiUrl2}/perfil-reserva/`);
+  }
+
 }

@@ -111,5 +111,9 @@ class ReservaSerializer(serializers.ModelSerializer):
                 "marca": obj.vehiculo.marca,
                 "modelo": obj.vehiculo.modelo,
                 "anio": obj.vehiculo.anio_fabricacion,
-                "categoria": obj.vehiculo.categoria
+                "categoria": {
+                    "id": obj.vehiculo.categoria.id,
+                    "nombre": obj.vehiculo.categoria.nombre,
+                    "tipo": obj.vehiculo.categoria.tipo
+                } if obj.vehiculo.categoria else None
             }

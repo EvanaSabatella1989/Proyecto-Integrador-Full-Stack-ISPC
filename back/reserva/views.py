@@ -24,17 +24,6 @@ class ReservaViewSet(viewsets.ModelViewSet):
     serializer_class = ReservaSerializer
     permission_classes = [IsAuthenticated] 
 
-    # @action(detail=False, methods=['get'])
-    # def mis_reservas(self, request):
-    #     user = request.user
-    #     try:
-    #         cliente = Cliente.objects.get(user=user)
-    #         reservas = Reserva.objects.filter(cliente=cliente)
-    #     except Cliente.DoesNotExist:
-    #         reservas = Reserva.objects.none()
-
-    #     serializer = self.get_serializer(reservas, many=True)
-    #     return Response(serializer.data)
     
 # SE ENVIA LA RESERVA AL CORREO DEL ADMIN Y CLIENTE
 # TAMBIEN SE CONFIRMA LA RESERVA Y SE ENVIA LOS DATOS A LA DB Y EL TURNO DISPONIBLE PASA A FALSE
@@ -52,17 +41,21 @@ class ReservaViewSet(viewsets.ModelViewSet):
             turno = serializer.validated_data['turno']
             logger.debug(f"Intentando reservar horario ID={turno.id} | Fecha={turno.fecha} | Hora={turno.hora}")
 
+            # verifico si hay disponibilidad
             if not turno.disponible:
                 logger.warning(f"Horario ID={turno.id} ya estaba reservado.")
                 raise serializers.ValidationError("Este horario ya está reservado")
 
-            # horario como no disponible
+            # marco turno como no disponible
             turno.disponible = False
             turno.save()
             logger.info(f"Horario ID={turno.id} marcado como no disponible.")
 
            
-            
+            # guardo la reserva asignando cliente y sucursal desde el turno
+            reserva = serializer.save(
+            cliente=cliente,
+            sucursal=turno.sucursal)
 
             # obtener datos del cliente
             cliente=reserva.cliente
@@ -70,7 +63,7 @@ class ReservaViewSet(viewsets.ModelViewSet):
             correo_cliente=cliente.user.email
             
              # se guarda la reserva
-            reserva = serializer.save(cliente=cliente)
+            # reserva = serializer.save(cliente=cliente)
             
             logger.info(f"Reserva creada con éxito ID={reserva.id} para cliente {nombre_cliente}")
 

@@ -5,6 +5,7 @@ from vehiculo.serializers import VehiculoSerializer
 from carrito.serializers import CarritoSerializer
 from user.models import Cliente
 from reserva.serializer import ReservaSerializer
+from vehiculo.serializers import VehiculoReservaSerializer
 
 class UserSerializer(serializers.ModelSerializer):
     vehiculos = VehiculoSerializer(many=True, read_only=True, source="cliente.vehiculo_set")
@@ -66,3 +67,12 @@ class ClienteSerializer(serializers.ModelSerializer):
             user.save()
             
         return instance
+    
+
+# para usar en reserva
+class UserReservaSerializer(serializers.ModelSerializer):
+    vehiculos = VehiculoReservaSerializer(many=True, read_only=True, source="cliente.vehiculo_set")
+
+    class Meta:
+        model = User
+        fields = ["id", "first_name", "last_name", "vehiculos"]

@@ -64,6 +64,7 @@ from rest_framework.views import APIView
 from user.models import Cliente
 from rest_framework import viewsets
 from .serializers import ClienteSerializer
+from user.serializers import UserReservaSerializer
 
 
 from .serializers import UserSerializer
@@ -120,6 +121,14 @@ def obtener_perfil(request):
     serializer = UserSerializer(usuario)
     return Response(serializer.data)
 
+# para reserva 
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def obtener_perfil_reserva(request):
+    usuario = request.user
+    serializer = UserReservaSerializer(usuario)
+    return Response(serializer.data)  
+
 
 # para obtener los id de los clientes relacionados a usuario
 class PerfilClienteView(APIView):
@@ -144,4 +153,6 @@ class PerfilClienteView(APIView):
 #para el admin 
 class ClienteViewSet(viewsets.ModelViewSet):
     queryset = Cliente.objects.all()
-    serializer_class = ClienteSerializer        
+    serializer_class = ClienteSerializer      
+    
+    

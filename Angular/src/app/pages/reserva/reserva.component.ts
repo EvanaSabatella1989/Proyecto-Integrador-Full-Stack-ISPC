@@ -44,7 +44,7 @@ ngOnInit(): void {
 
   // obtener perfil y servicio
   forkJoin({
-    perfil: this.usuarioService.obtenerPerfil(),
+    perfil: this.usuarioService.obtenerPerfilReserva(),
     servicio: this.servicioService.obtenerServicio(servicioId)
   }).subscribe(({ perfil, servicio }) => {
     this.clienteId = perfil.cliente?.id;

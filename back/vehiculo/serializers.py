@@ -9,3 +9,10 @@ class VehiculoSerializer(serializers.ModelSerializer):
         fields = '__all__'
         # fields = ['id', 'marca', 'modelo', 'categoria', 'tipo', 'anio_fabricacion', 'cliente']
         
+
+# para la reserva
+class VehiculoReservaSerializer(serializers.ModelSerializer):
+    categoria = serializers.PrimaryKeyRelatedField(read_only=True)  
+    class Meta:
+        model = Vehiculo
+        fields = ['id', 'marca', 'modelo', 'tipo', 'anio_fabricacion', 'categoria']
