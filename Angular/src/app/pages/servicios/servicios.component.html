@@ -1,60 +1,71 @@
 <main>
-    <div class="container my-5">
-        <h2 class="text-center mb-4">Nuestros Servicios</h2>
+  <div class="container my-5">
+    <h2 class="text-center mb-4">Nuestros Servicios</h2>
 
-        <div class="dropdown">
-          <a class="btn btn-light dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-            Categorías
-          </a>
-          <ul class="dropdown-menu">
-            <li>
-              <button class="dropdown-item" (click)="filtrarPorCategoria({id:0, nombre:''})">Todas</button>
+    <div class="row">
+      <!-- Sidebar de filtro único -->
+      <div class="col-md-3">
+        <div class="card shadow-sm rounded-3 p-3 mb-4">
+          <h5 class="mb-3">Filtros</h5>
+
+          <h6 class="mb-2">Categoría</h6>
+          <ul class="list-group list-group-flush mb-3">
+            <li class="list-group-item">
+              <button class="btn btn-link w-100 text-start" (click)="filtrarPorCategoria({id:0, nombre:''})">
+                Todas
+              </button>
             </li>
-            <li *ngFor="let cat of categorias">
-              <button class="dropdown-item" (click)="filtrarPorCategoria(cat)">{{cat.nombre}}</button>
+            <li class="list-group-item" *ngFor="let cat of categorias">
+              <button class="btn btn-link w-100 text-start" (click)="filtrarPorCategoria(cat)">
+                {{cat.nombre}}
+              </button>
             </li>
           </ul>
+
+          <h6 class="mb-2">Sucursal</h6>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+              <button class="btn btn-link w-100 text-start" (click)="filtrarPorSucursal({id:0,nombre:'Todas'})">
+                Todas
+              </button>
+            </li>
+            <li class="list-group-item" *ngFor="let suc of sucursales">
+              <button class="btn btn-link w-100 text-start" (click)="filtrarPorSucursal(suc)">
+                {{suc.nombre}}
+              </button>
+            </li>
+          </ul>
+
         </div>
+      </div>
 
-        <div class="dropdown">
-  <a class="btn btn-light dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-    Sucursales
-  </a>
-  <ul class="dropdown-menu">
-    <li><button class="dropdown-item" (click)="filtrarPorSucursal({id:0,nombre:'Todas'})">Todas</button></li>
-    <li *ngFor="let suc of sucursales">
-      <button class="dropdown-item" (click)="filtrarPorSucursal(suc)">{{suc.nombre}}</button>
-    </li>
-  </ul>
-</div>
-
-       
-
-
+      <!-- Tarjetas de servicios -->
+      <div class="col-md-9">
         <div class="row row-cols-1 row-cols-md-3 g-4">
-            <div *ngFor="let servicio of serviciosFiltrados" class="col">
-                <div class="card">
-                    <img [src]="servicio.imagen" class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">{{servicio.nombre}} </h5>
-                        <h6 class="card-subtitle text-muted">Tipo de vehículo: {{servicio.categoriaNombre}}</h6>
-                        <!-- <p>{{servicio.descripcion}}</p> -->
-                        <p>Precio: ${{servicio.precio}}</p>
-                        
-                        <button class="btn btn-primary me-2" (click)="irAReservar(servicio.id)" *ngIf="!isAdmin">Reservar</button>
+          <div *ngFor="let servicio of serviciosFiltrados" class="col">
+            <div class="card h-100 shadow-sm">
+              <img [src]="servicio.imagen" class="card-img-top" alt="imagen servicio">
+              <div class="card-body d-flex flex-column">
+                <h5 class="card-title">{{servicio.nombre}}</h5>
+                <h6 class="card-subtitle text-muted mb-2">
+                  Tipo de vehículo: {{servicio.categoriaNombre}}
+                </h6>
+                <p class="mb-2">Precio: ${{servicio.precio}}</p>
 
-
-                        <!-- botones solo para admin -->
-                        <!-- <ng-container *ngIf="isAdmin">
-                            <button class="btn btn-warning me-2" (click)="abrirModal(servicio)">Editar</button>
-                            <button class="btn btn-danger" (click)="delete(servicio)">Eliminar</button>
-                        </ng-container> -->
-                    </div>
+                <div class="mt-auto">
+                  <button class="btn btn-primary w-100" (click)="irAReservar(servicio.id)" *ngIf="!isAdmin">
+                    Reservar
+                  </button>
                 </div>
+              </div>
             </div>
+          </div>
         </div>
-    </div>
+      </div> <!-- fin tarjetas -->
+    </div> <!-- fin row -->
+  </div>
 </main>
+
 
 <!-- modal para editar y crear -->
 <!-- <div class="modal fade" id="modalServicio" tabindex="-1">
