@@ -42,7 +42,7 @@ export class EditarProductosComponent {
   ngOnInit(): void {
 
 
-    this.productoServicio.traerCategorias().subscribe(resp2 => {
+    this.productoServicio.traerCategorias('producto').subscribe(resp2 => {
       this.categorias = resp2;
 
     })

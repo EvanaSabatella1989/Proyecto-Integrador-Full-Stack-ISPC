@@ -130,18 +130,18 @@ export class ListaServiciosComponent {
 
    
 
-       if (!this.sucursalSeleccionada) {
-    alert("⚠️ Debes seleccionar una sucursal");
-    console.log('ver sucursal'+this.sucursalSeleccionada);
-    return;
-  }
+    //    if (!this.sucursalSeleccionada) {
+    // alert("⚠️ Debes seleccionar una sucursal");
+    // console.log('ver sucursal'+this.sucursalSeleccionada);
+    // return;
+  //}
 
 
     const formData = new FormData();
     formData.append('nombre', this.nombre);
     formData.append('descripcion', this.descripcion);
     formData.append('precio', this.precio.toString());
-    formData.append('sucursal', this.sucursalSeleccionada.toString());
+    // formData.append('sucursal', this.sucursalSeleccionada.toString());
 
     
    if (this.categoriaSeleccionada) {
