@@ -10,8 +10,8 @@ export class AuthInterceptor implements HttpInterceptor {
 
     // vistas sin autorizacion
     if (req.url.includes('/login') || 
-    req.url.includes('/registro') || 
-    req.url.includes('/home')) {
+    req.url.includes('/registro') 
+    ) {
       return next.handle(req);
     }
 
