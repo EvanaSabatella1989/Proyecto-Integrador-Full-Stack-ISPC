@@ -9,9 +9,7 @@ export class AuthInterceptor implements HttpInterceptor {
     const token = localStorage.getItem('token');
 
     // vistas sin autorizacion
-    if (req.url.includes('/login') || 
-    req.url.includes('/registro') 
-    ) {
+    if (req.url.includes('/login') || req.url.includes('/registro') || req.url.includes('/home')) {
       return next.handle(req);
     }
 

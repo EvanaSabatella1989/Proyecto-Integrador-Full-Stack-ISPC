@@ -29,7 +29,7 @@ class ReservaViewSet(viewsets.ModelViewSet):
 # TAMBIEN SE CONFIRMA LA RESERVA Y SE ENVIA LOS DATOS A LA DB Y EL TURNO DISPONIBLE PASA A FALSE
     def perform_create(self, serializer):
     
-        logger.debug(f"📥 Datos validados recibidos: {serializer.validated_data}")
+        logger.debug(f" Datos validados recibidos: {serializer.validated_data}")
         self.reservar_turno(serializer)
 
     def reservar_turno(self, serializer):
@@ -78,8 +78,8 @@ class ReservaViewSet(viewsets.ModelViewSet):
                     Servicio: {reserva.servicio.nombre}
                     Sucursal: {turno.sucursal.nombre}
                     """,
-                    'autoservicebsas@gmail.com',
-                    ['autoservicebsas@gmail.com'],
+                    settings.EMAIL_HOST_USER,
+                    [settings.EMAIL_HOST_USER, correo_cliente],
                     fail_silently=False,
                 )
                 logger.info(f"Correo enviado correctamente para la reserva ID={reserva.id}")

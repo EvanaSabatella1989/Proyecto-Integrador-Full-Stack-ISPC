@@ -2,7 +2,7 @@ from django.db import models
 
 class Contacto(models.Model):
     nombre = models.CharField(max_length=50)
-    email = models.EmailField(max_length=50, unique=True)
+    email = models.EmailField(max_length=50, unique=False)
     mensaje = models.CharField(max_length=255)
     fecha_envio = models.DateTimeField(auto_now_add=True)
 
