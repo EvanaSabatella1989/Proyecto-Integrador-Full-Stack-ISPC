@@ -53,42 +53,114 @@
   </div>
 </div> -->
 
+<!-- tarjetas con iconos de servicios -->
 <div class="album py-5 bg-light">
   <div class="container">
     <h2 class="mb-4 text-center text-dark">Nuestros Servicios</h2>
 
-    <!-- <div id="serviciosCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="4000"> -->
-      <div id="serviciosCarousel" class="carousel slide">
-      <div class="carousel-inner">
+    <p class="text-center text-muted mb-3">
+      Mantenimiento y reparación integral para todo tipo de vehículos
+    </p>
 
-    <div *ngFor="let grupo of chunkedServicios; let i = index" 
-         class="carousel-item" 
-         [class.active]="i === 0">
-         
-      <div class="row justify-content-center">
-        <div class="col-md-4" *ngFor="let servicio of grupo">
-          <div class="card shadow-sm border-0 rounded-3 h-100">
-            <img [src]="servicio.imagen" [alt]="servicio.nombre" class="card-img-top" style="height: 300px; object-fit: cover;">
-            <div class="card-body text-center">
-              <h5 class="fw-bold">{{ servicio.nombre }}</h5>
-            </div>
-          </div>
+    <div class="row g-3 justify-content-center">
+
+      <!-- Electricidad -->
+      <div class="col-6 col-md-3 col-lg-2">
+        <div class="card text-center p-3 shadow-sm h-100 service-card">
+          <div class="icon-circle"><i class="fas fa-bolt"></i></div>
+          <p class="mb-0 fw-bold service-title">Electricidad</p>
         </div>
       </div>
+
+      <!-- Carrocería -->
+      <div class="col-6 col-md-3 col-lg-2">
+        <div class="card text-center p-3 shadow-sm h-100 service-card">
+          <div class="icon-circle"><i class="fas fa-hammer"></i></div>
+          <p class="mb-0 fw-bold service-title">Carrocería</p>
+        </div>
+      </div>
+
+      <!-- Mecánica -->
+      <div class="col-6 col-md-3 col-lg-2">
+        <div class="card text-center p-3 shadow-sm h-100 service-card">
+          <div class="icon-circle"><i class="fas fa-tools"></i></div>
+          <p class="mb-0 fw-bold service-title">Mecánica</p>
+        </div>
+      </div>
+
+      <!-- Inyección -->
+      <div class="col-6 col-md-3 col-lg-2">
+        <div class="card text-center p-3 shadow-sm h-100 service-card">
+          <div class="icon-circle"><i class="fas fa-gas-pump"></i></div>
+          <p class="mb-0 fw-bold service-title">Inyección</p>
+        </div>
+      </div>
+
+      <!-- Electrónica -->
+      <div class="col-6 col-md-3 col-lg-2">
+        <div class="card text-center p-3 shadow-sm h-100 service-card">
+          <div class="icon-circle"><i class="fas fa-microchip"></i></div>
+          <p class="mb-0 fw-bold service-title">Electrónica</p>
+        </div>
+      </div>
+
+      <!-- Diagnóstico -->
+      <div class="col-6 col-md-3 col-lg-2">
+        <div class="card text-center p-3 shadow-sm h-100 service-card">
+          <div class="icon-circle"><i class="fas fa-stethoscope"></i></div>
+          <p class="mb-0 fw-bold service-title">Diagnóstico</p>
+        </div>
+      </div>
+
+      <!-- Frenos -->
+      <div class="col-6 col-md-3 col-lg-2">
+        <div class="card text-center p-3 shadow-sm h-100 service-card">
+          <div class="icon-circle"><i class="fas fa-car-crash"></i></div>
+          <p class="mb-0 fw-bold service-title">Frenos</p>
+        </div>
+      </div>
+
+      <!-- Neumáticos -->
+      <div class="col-6 col-md-3 col-lg-2">
+        <div class="card text-center p-3 shadow-sm h-100 service-card">
+          <div class="icon-circle"><i class="fas fa-circle-notch"></i></div>
+          <p class="mb-0 fw-bold service-title">Neumáticos</p>
+        </div>
+      </div>
+
+      <!-- Aire acondicionado -->
+      <div class="col-6 col-md-3 col-lg-2">
+        <div class="card text-center p-3 shadow-sm h-100 service-card">
+          <div class="icon-circle"><i class="fas fa-snowflake"></i></div>
+          <p class="mb-0 fw-bold service-title">Aire Acondicionado</p>
+        </div>
+      </div>
+
+      <!-- Parabrisas -->
+      <div class="col-6 col-md-3 col-lg-2">
+        <div class="card text-center p-3 shadow-sm h-100 service-card">
+          <div class="icon-circle"><i class="fas fa-wind"></i></div>
+          <p class="mb-0 fw-bold service-title">Parabrisas</p>
+        </div>
+      </div>
+
+      <!-- Lavandería -->
+      <div class="col-6 col-md-3 col-lg-2">
+        <div class="card text-center p-3 shadow-sm h-100 service-card">
+          <div class="icon-circle"><i class="fas fa-soap"></i></div>
+          <p class="mb-0 fw-bold service-title">Lavandería</p>
+        </div>
+      </div>
+
+      <!-- Chapa y Pintura -->
+      <div class="col-6 col-md-3 col-lg-2">
+        <div class="card text-center p-3 shadow-sm h-100 service-card">
+          <div class="icon-circle"><i class="fas fa-paint-roller"></i></div>
+          <p class="mb-0 fw-bold service-title">Chapa y Pintura</p>
+        </div>
+      </div>
+
     </div>
-
-  </div>
-
-  <!-- Controles -->
-  <button class="carousel-control-prev" type="button" data-bs-target="#serviciosCarousel" data-bs-slide="prev">
-    <span class="carousel-control-prev-icon"></span>
-  </button>
-  <button class="carousel-control-next" type="button" data-bs-target="#serviciosCarousel" data-bs-slide="next">
-    <span class="carousel-control-next-icon"></span>
-  </button>
-</div>
-
-
 
     <div class="text-center mt-4">
       <h4>
@@ -97,7 +169,7 @@
     </div>
   </div>
 </div>
-
+<!-- fin tarjetas con iconos de servicios -->
 
 <div class="album py-5 bg-light">
   <div class="container">
@@ -163,41 +235,43 @@
 </div>
 
 
-<div class="album py-5">
+<!-- productos -->
+<div class="album py-5 bg-light">
   <div class="container">
-    <h2 class="mb-4 text-center">Nuestros Productos</h2>
-    <!-- <div id="productosCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3500"> -->
-  <div id="productosCarousel" class="carousel slide" >
+    <h2 class="mb-4 text-center text-dark">Nuestros Productos</h2>
+
+    <div id="productosCarousel" class="carousel slide">
       <div class="carousel-inner">
+        <div *ngFor="let grupo of chunkedProductos; let i = index"
+             class="carousel-item"
+             [class.active]="i === 0">
 
-    <div *ngFor="let grupo of chunkedProductos; let i = index"
-         class="carousel-item"
-         [class.active]="i === 0">
-
-      <div class="row justify-content-center">
-        <div class="col-md-4" *ngFor="let producto of grupo">
-          <div class="card shadow-sm border-0 rounded-3 h-100">
-            <img [src]="producto.imagen" [alt]="producto.nombre" class="card-img-top" style="height: 300px; object-fit: cover;">
-            <div class="card-body text-center">
-              <h5 class="fw-bold">{{ producto.nombre }}</h5>
+          <div class="row justify-content-center g-3">
+            <div class="col-6 col-md-4 col-lg-3" *ngFor="let producto of grupo">
+              <div class="card text-center p-3 shadow-sm h-100 product-card">
+                <div class="product-img-wrapper">
+                  <img [src]="producto.imagen" [alt]="producto.nombre" class="card-img-top product-img">
+                </div>
+                <p class="mb-0 fw-bold product-title">{{ producto.nombre }}</p>
+              </div>
             </div>
           </div>
+
         </div>
       </div>
 
+      <!-- Controles -->
+      <button class="carousel-control-prev" type="button" data-bs-target="#productosCarousel" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon"></span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#productosCarousel" data-bs-slide="next">
+        <span class="carousel-control-next-icon"></span>
+      </button>
     </div>
 
-  </div>
-
-  <!-- Controles -->
-  <button class="carousel-control-prev" type="button" data-bs-target="#productosCarousel" data-bs-slide="prev">
-    <span class="carousel-control-prev-icon"></span>
-  </button>
-  <button class="carousel-control-next" type="button" data-bs-target="#productosCarousel" data-bs-slide="next">
-    <span class="carousel-control-next-icon"></span>
-  </button>
-</div>
-    <h4><a href="/productos" style="color: #F5C057;">Ver todos ></a></h4>
+    <div class="text-center mt-3">
+      <h4><a href="/productos" class="text-warning fw-bold">Ver todos ></a></h4>
+    </div>
   </div>
 </div>
 

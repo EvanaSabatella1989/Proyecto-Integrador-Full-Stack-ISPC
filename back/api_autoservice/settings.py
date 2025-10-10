@@ -22,8 +22,6 @@ ADMIN_EMAIL = config('ADMIN_EMAIL', default=EMAIL_HOST_USER)
 
 
 
-
-
 # evitar que se cierre sesion 
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(hours=1),  # 
