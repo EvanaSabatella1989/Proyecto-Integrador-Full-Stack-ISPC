@@ -81,7 +81,7 @@ export class ProductosComponent implements OnInit {
   if (cat.id === 0) {
     this.productosFiltrados = this.productos;
   } else {
-    this.productosFiltrados = this.productos.filter(p => p.categoria?.id === cat.id);
+    this.productosFiltrados = this.productos.filter(p => p.categoria === cat.id);
   }
 }
 
