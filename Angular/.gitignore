@@ -43,3 +43,11 @@ testem.log
 .DS_Store
 Thumbs.db
 
+.vscode/
+Angular/.vscode/
+package-lock.json
+Angular/package-lock.json
+back/package-lock.json
+node_modules/
+package-lock.json    
+package.json

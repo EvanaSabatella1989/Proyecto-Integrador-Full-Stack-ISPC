@@ -29,5 +29,9 @@ __pycache__/
 **/migrations/
 !**/migrations/__init__.py
 node_modules/
-package-lock.json       
+      
                                                                                                                                                                                                                                                                                     
+#  para que el json quede local solamente
+package-lock.json
+Angular/package-lock.json
+back/package-lock.json 
